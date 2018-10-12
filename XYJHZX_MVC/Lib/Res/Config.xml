@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Servers>
+  <Connect1>
+    <SqlType>SQLITE</SqlType>
+    <ServerPath>DB_XYJHZX.db</ServerPath>
+    <DataBaseName>DB_XYJHZX</DataBaseName>
+  </Connect1>
+</Servers>

@@ -1,0 +1,89 @@
+﻿@{
+    Layout = null;
+    var Keyid = "OldSchedulTable";
+    var Message = ViewBag.Message;
+    int DateCounts = 0;
+    string OldSchedulDate = "";
+    string OldSchedulTime = "";
+
+    List<XYJHZX_MVC.Models.SchedulShowModel> Dates = ViewBag.SchedulDate;
+    List<string> arr_times = new List<string>();
+    arr_times.Add("上午");
+    arr_times.Add("下午");
+    arr_times.Add("晚上");
+    if (Dates != null)
+    {
+        DateCounts = Dates.Count();
+        OldSchedulDate = Dates[0].SchedulDate;
+        OldSchedulTime = Dates[0].SchedulTime;
+    }
+    else
+    {
+        OldSchedulDate = DateTime.Now.ToShortDateString();
+        OldSchedulTime = "上午";
+    }
+}
+
+<script type="text/javascript">
+    function SelectOldSchedulInf() {
+
+    }
+    function CopyOldSchedulInf() {
+
+    }
+</script>
+
+<div>
+    <ul>
+        <li><label id="lab_OldSchedulDate" class="form-control-static">日期:</label></li>
+        <li><input id="txt_OldSchedulDate" type="text" class="form-control" style="width:120px" value="@OldSchedulDate" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" /></li>
+        <li>@Html.DropDownList("txt_OldSchedulTime", new SelectList(arr_times), OldSchedulTime, new { @class = "form-control", @style = "width:80px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })" })</li>
+        <li><input id="btn_OldSchedulSelect" class="btn-info" type="submit" value="查 询" onclick="SelectOldSchedulInf()" style="margin:3px 20px 0 0;" /></li>
+        <li><input id="btn_OldSchedulCopy" class="btn-info" type="submit" value="复制排班" onclick="CopyOldSchedulInf()" style="margin:3px 10px 0 0;" /></li>
+    </ul>
+</div>
+
+<div id="OldSchedulDiv"  style="overflow:scroll;width:580px;height:700px;">
+    <table id="@Keyid" class="table table-striped table-bordered">
+        <tr>
+            <td><div style="width:30px;">机号</div></td>
+            <td><div style="width:60px;">姓名</div></td>
+            <td><div style="width:60px;">透析器</div></td>
+            <td><div style="width:60px;">路径</div></td>
+            <td><div style="width:120px;">抗凝剂</div></td>
+            <td><div style="width:120px;">备注</div></td>
+        </tr>
+        @if (Dates != null)
+        {
+            for (int i = 0; i < Dates.Count; i++)
+            {
+                <tr id="OldSchedulRows_@(i)">
+                    <td>@Dates[i].macname</td>
+                    <td>@Dates[i].patName</td>
+                    <td>@Dates[i].dialyzerName</td>
+                    <td>@Dates[i].routeName</td>
+                    <td>@Dates[i].anticoagulantName</td>
+                    <td>@Dates[i].remark</td>
+                    <td style="display:none">@Dates[i].macid </td>
+                    <td style="display:none">@Dates[i].mainid></td>
+                    <td style="display:none">@Dates[i].patid</td>
+                    <td style="display:none">@Dates[i].SchedulDate</td>
+                    <td style="display:none">@Dates[i].SchedulTime</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">
+                    查无数据！
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="6">
+                共 @DateCounts 条记录
+            </td>
+        </tr>
+    </table>
+</div>

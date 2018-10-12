@@ -1,0 +1,25 @@
+﻿@{
+    var GroupList = ViewBag.GroupDate;
+    var TeamList = ViewBag.TeamDate;
+}
+
+<script type="text/javascript">
+    function Redirect() {
+        
+        window.location.href = 'http://localhost:6611/MacGroup/Config/' + $("#DropDownGroupList option:selected").val() + '/' + $("#DropDownTeamList option:selected").val();
+    }
+</script>
+
+    <h2>@ViewBag.Title</h2>
+    <h3>分组维护</h3>
+    <div class="GroupView" style="overflow:scroll;width:800px;height:400px;">@{Html.RenderAction("GetGroup");}</div>
+    <div>
+        <h3>分区维护 - </h3> @Html.DropDownList("DropDownGroupList", GroupList as List<SelectListItem>
+                        , new { @ID = "DropDownGroupList", @class = "form-control", @style = "width:180px; margin:2mm 0cm 3mm 0cm;", @onchange = "Redirect()" })
+    </div>
+    <div class="TeamView" style="overflow:scroll;width:800px;height:400px;">@{Html.RenderAction("GetTeam");}</div>
+    <div>
+        <h3>机位维护</h3>@Html.DropDownList("DropDownTeamList", TeamList as List<SelectListItem>
+           , new { @ID = "DropDownTeamList", @class = "form-control", @style = "width:180px; margin:2mm 0cm 3mm 0cm;", @onchange = "Redirect()" })
+    </div>
+    <div class="MachineView" style="overflow:scroll;width:800px;height:400px;">@{Html.RenderAction("GetMachine");}</div>

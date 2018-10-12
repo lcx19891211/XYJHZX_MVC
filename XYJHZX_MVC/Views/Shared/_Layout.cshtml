@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>佛山市第二人民医院 - 血液净化中心 - @ViewBag.Title </title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script language="javascript" type="text/javascript" src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        //验证是否正整数格式
+        function CheckNum(obj) {
+            if (!obj.value.match(/^[0-9]*[1-9][0-9]*$/))
+                obj.value = 999;
+        }
+        //检查是否为空
+        function isEmpty(obj) {
+            if (typeof obj == "undefined" || obj == null || obj == "") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+    <style type="text/css">
+        ul li {
+            list-style: none;
+            padding: 0; /* 将默认的内边距去掉 */
+            margin: 2px 8px 2px 2px; /* 将默认的外边距去掉 */
+            float: left; /* 往左浮动 */
+        }
+    </style>
+
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header" style="font-family:'Microsoft YaHei UI';font-size:50px">
+                @Html.ActionLink("血液净化中心", "Config", "MacGroup", new { @class = "navbar-brand" })
+            </div>
+            <div></div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a class="navbar-brand" href="/MacGroup/Config">区域维护</a></li>
+                    <li><a class="navbar-brand" href="/Patient/PatientManage">病人维护</a></li>
+                    <li><a class="navbar-brand" href="/Schedul/SchedulConfig">检查排队</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" >
+        @RenderBody()
+        <br />
+        <hr />
+        <div class="clearfix">
+            <footer>
+                <p>&copy; @DateTime.Now.Year - 佛山市第二人民医院</p>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

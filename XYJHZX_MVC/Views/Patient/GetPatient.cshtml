@@ -1,0 +1,236 @@
+﻿
+
+@{
+    Layout = null;
+    var Keyid = "PatientTable";
+    var Message = ViewBag.Message;
+    int DateCounts = 0;
+    List<XYJHZX_MVC.Models.PatientModel> Dates = ViewBag.PatientDate;
+    List<string> arr_sex = new List<string>();
+    arr_sex.Add("男");
+    arr_sex.Add("女");
+    if (Dates != null)
+    {
+        DateCounts = Dates.Count();
+    }
+}
+
+<script type="text/javascript">
+    var DataCounts = @DateCounts;
+
+    function EditPatientRows(obj) {
+        var x = "PatientChange_" + obj;
+        document.getElementById(x).value = "1";
+    }
+
+    function DeletePatientRows(obj) {
+        $('#PatientRows_' + obj).hide();
+        var x = "PatientChange_" + obj
+        document.getElementById(x).value = "-1";
+    }
+
+    function DeleteNewPatientRows(obj) {
+        var index = obj;
+        $("#PatientRows_" + index).remove();
+    }
+    
+    function AddPatientRows() {
+        DataCounts = DataCounts + 1;
+        var indexInt = DataCounts;
+
+        var tr = $("#@Keyid tr").eq(-2).clone();
+        tr.attr('id', "PatientRows_" + indexInt);
+
+        var newAdd = tr.children("td").eq(0).children("div").eq(0).children("input").eq(0);
+        var newDel = tr.children("td").eq(0).children("div").eq(0).children("input").eq(1);
+
+        var PatName = tr.children("td").eq(1).children("input").eq(0);
+        var PatSex = tr.children("td").eq(2).children("select").eq(0);
+        var PatBrithday = tr.children("td").eq(3).children("input").eq(0);
+        var PatAge = tr.children("td").eq(4).children("input").eq(0);
+        var PatIdCardNo = tr.children("td").eq(5).children("input").eq(0);
+        var SendDeptName = tr.children("td").eq(6).children("input").eq(0);
+        var PatOutCardNo = tr.children("td").eq(7).children("input").eq(0);
+        var TelphoneNo = tr.children("td").eq(8).children("input").eq(0);
+        var PaymentDate = tr.children("td").eq(9).children("input").eq(0);
+        var Remark = tr.children("td").eq(10).children("input").eq(0);
+        var PatId = tr.children("td").eq(11).children("input").eq(0);
+        var SendDeptId = tr.children("td").eq(12).children("input").eq(0);
+        var PatientChange = tr.children("td").eq(13).children("input").eq(0);
+        
+        PatName.attr({ 'id': 'PatName_' + indexInt, 'name': 'PatName_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': ''});
+        PatSex.attr({ 'id': 'PatSex_' + indexInt, 'name': 'PatSex_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '男' });
+        PatBrithday.attr({ 'id': 'PatBrithday_' + indexInt, 'name': 'PatBrithday_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '' });
+        PatAge.attr({ 'id': 'PatAge_' + indexInt, 'name': 'PatAge_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '' });
+        PatIdCardNo.attr({ 'id': 'PatIdCardNo_' + indexInt, 'name': 'PatIdCardNo_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '' });
+        SendDeptName.attr({ 'id': 'SendDeptName_' + indexInt, 'name': 'SendDeptName_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '' });
+        PatOutCardNo.attr({ 'id': 'PatOutCardNo_' + indexInt, 'name': 'PatOutCardNo_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': ''});
+        TelphoneNo.attr({ 'id': 'TelphoneNo_' + indexInt, 'name': 'TelphoneNo_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': ''});
+        PaymentDate.attr({ 'id': 'PaymentDate_' + indexInt, 'name': 'PaymentDate_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': ''});
+        Remark.attr({ 'id': 'Remark_' + indexInt, 'name': 'Remark_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '' });
+        PatId.attr({ 'id': 'PatId_' + indexInt, 'name': 'PatId_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '' });
+        SendDeptId.attr({ 'id': 'SendDeptId_' + indexInt, 'name': 'SendDeptId_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '' });
+        PatientChange.attr({ 'id': 'PatientChange_' + indexInt, 'name': 'PatientChange_' + indexInt, 'onchange': 'EditPatientRows(' + indexInt + ')', 'value': '0' });
+        
+        newAdd.attr({ 'id': 'PatientAdd_' + indexInt, 'onclick': 'AddPatientRows(' + indexInt + ')', 'style': 'display:block' } );
+        newDel.attr({ 'id': 'PatientDel_' + indexInt, 'onclick': 'DeleteNewPatientRows(' + indexInt + ')', 'style': 'display:none' });
+        
+        var newtr = $("#@Keyid tr").eq(-2).after(tr);
+
+        document.getElementById("PatientAdd_" + (indexInt - 1)).style.display = "none";
+        document.getElementById("PatientDel_" + (indexInt - 1)).style.display = "block";
+    }
+
+
+
+
+    function SavePatientRows() {
+
+        var _PatList = {};
+
+        var trIndex = 0;
+        var msg = "";
+        $("#@Keyid tr:gt(0)").each(function () {
+
+
+            var tr = $(this);
+            var PatName = tr.children("td").eq(1).children("input").eq(0);
+            var PatSex = tr.children("td").eq(2).children("select").eq(0);
+            var PatBrithday = tr.children("td").eq(3).children("input").eq(0);
+            var PatAge = tr.children("td").eq(4).children("input").eq(0);
+            var PatIdCardNo = tr.children("td").eq(5).children("input").eq(0);
+            var SendDeptName = tr.children("td").eq(6).children("input").eq(0);
+            var PatOutCardNo = tr.children("td").eq(7).children("input").eq(0);
+            var TelphoneNo = tr.children("td").eq(8).children("input").eq(0);
+            var PaymentDate = tr.children("td").eq(9).children("input").eq(0);
+            var Remark = tr.children("td").eq(10).children("input").eq(0);
+            var PatId = tr.children("td").eq(11).children("input").eq(0);
+            var SendDeptId = tr.children("td").eq(12).children("input").eq(0);
+            var PatientChange = tr.children("td").eq(13).children("input").eq(0);
+
+            if (PatientChange.val() == '0' || isEmpty(tr.attr("id")))
+                return;
+            if (isEmpty(PatName.val())) {
+                PatName.attr('style','width:80px;background-color:red;')
+                PatName.focus();
+                msg = "病人姓名不能为空！";
+                return;
+            }
+            if (isEmpty(PatIdCardNo.val())) {
+                PatIdCardNo.attr('style', 'width:120px;background-color:red;')
+                msg = "病人身份证号不能为空！";
+                PatIdCardNo.focus();
+                return;
+            }
+            _PatList["_PatList[" + trIndex + "].PatName"] = PatName.val();
+            _PatList["_PatList[" + trIndex + "].PatSex"] = PatSex.val();
+            _PatList["_PatList[" + trIndex + "].PatBrithday"] = PatBrithday.val();
+            _PatList["_PatList[" + trIndex + "].PatAge"] = PatAge.val();
+            _PatList["_PatList[" + trIndex + "].PatIdCardNo"] = PatIdCardNo.val();
+            _PatList["_PatList[" + trIndex + "].SendDeptName"] = SendDeptName.val();
+            _PatList["_PatList[" + trIndex + "].PatOutCardNo"] = PatOutCardNo.val();
+            _PatList["_PatList[" + trIndex + "].TelphoneNo"] = TelphoneNo.val();
+            _PatList["_PatList[" + trIndex + "].PaymentDate"] = PaymentDate.val();
+            _PatList["_PatList[" + trIndex + "].Remark"] = Remark.val();
+            _PatList["_PatList[" + trIndex + "].PatId"] = PatId.val();
+            _PatList["_PatList[" + trIndex + "].SendDeptId"] = SendDeptId.val();
+            _PatList["_PatList[" + trIndex + "].IsRead"] = PatientChange.val();
+            trIndex++;
+        });
+        if (!isEmpty(msg)) {
+            alert("保存失败：" + msg);
+            return;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/Patient/SetPatient",
+            //contentType: "application/json",
+            data: _PatList,
+            //dataType: "json",
+            async: true,
+            traditional: true,
+            beforeSend: function () {
+                $('#PatDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function () {
+                location.reload(true);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("保存失败：" + errorThrown);
+                location.reload(true);
+            }
+        });
+    }
+</script>
+
+<div id="PatDiv">
+    <table id="@Keyid" class="table table-striped table-bordered">
+        <tr>
+            <td></td>
+            <td><div style="width:80px;">姓名</div></td>
+            <td><div style="width:60px;">性别</div></td>
+            <td><div style="width:80px;">出生日期</div></td>
+            <td><div style="width:60px;">年龄</div></td>
+            <td><div style="width:120px;">身份证号</div></td>
+            <td><div style="width:100px;">开单科室</div></td>
+            <td><div style="width:120px;">诊疗卡号</div></td>
+            <td><div style="width:80px;">联系电话</div></td>
+            <td><div style="width:80px;">缴费日期</div></td>
+            <td><div style="width:180px;">备注</div></td>
+        </tr>
+        @if (Dates != null)
+        {
+            for (int i = 0; i < Dates.Count; i++)
+            {
+                <tr id="PatientRows_@(i)">
+                    <td>
+                        <input class="btn-info" type="button" value="删 除" onclick="DeletePatientRows(@(i))" style="margin:3px 20px 0 0;" />
+                    </td>
+                    <td>@Html.TextBox("PatName_" + i, Dates[i].PatName, new { @class = "form-control", @style = "width:80px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.DropDownList("PatSex_" + i, new SelectList(arr_sex, Dates[i].PatSex), Dates[i].PatSex, new { @class = "form-control", @style = "width:60px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("PatBrithday_" + i, Dates[i].PatBrithday, new { @class = "form-control", @style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("PatAge_" + i, Dates[i].PatAge, new { @class = "form-control", style = "width:60px", @onKeyUp = "CheckNum(this)", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("PatIdCardNo_" + i, Dates[i].PatIdCardNo, new { @class = "form-control", style = "width:120px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("SendDeptName_" + i, Dates[i].SendDeptName, new { @class = "form-control", style = "width:100px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("PatOutCardNo_" + i, Dates[i].PatOutCardNo, new { @class = "form-control", style = "width:120px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("TelphoneNo_" + i, Dates[i].TelphoneNo, new { @class = "form-control", style = "width:80px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("PaymentDate_" + i, Dates[i].PaymentDate, new { @class = "form-control", style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "DateCounts(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("Remark_" + i, Dates[i].Remark, new { @class = "form-control", style = "width:180px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td style="display:none"><input id="PatId_@(i)" name="PatId_@(i)" value="@Dates[i].PatId" /></td>
+                    <td style="display:none"><input id="SendDeptId_@(i)" name="SendDeptId_@(i)" value="@Dates[i].SendDeptId" /></td>
+                    <td style="display:none"><input id="PatientChange_@(i)" name="PatientChange_@(DateCounts)" value="0" /></td>
+                </tr>
+            }
+        }
+        <tr id="PatientRows_@DateCounts" value="0">
+            <td>
+                <div style="width:50px">
+                    <input id="PatientAdd_@(DateCounts)" class="btn-info" type="button" value="添 加" onclick="AddPatientRows(@DateCounts)" style="margin:3px 20px 0 0;" />
+                    <input id="PatientDel_@(DateCounts)" class="btn-info" type="button" value="删 除" onclick="DeleteNewPatientRows(@DateCounts)" style="margin:3px 20px 0 0;display:none" />
+                </div>
+            </td>
+            <td>@Html.TextBox("PatName_" + DateCounts, "", new { @class = "form-control", @style = "width:80px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.DropDownList("PatSex_" + DateCounts, new SelectList(arr_sex, "男"), new { @class = "form-control", @style = "width:60px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("PatBrithday_" + DateCounts, "", new { @class = "form-control", @style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("PatAge_" + DateCounts, "", new { @class = "form-control", style = "width:60px", @onKeyUp = "CheckNum(this)", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("PatIdCardNo_" + DateCounts, "", new { @class = "form-control", style = "width:120px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("SendDeptName_" + DateCounts, "", new { @class = "form-control", style = "width:100px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("PatOutCardNo_" + DateCounts, "", new { @class = "form-control", style = "width:120px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("TelphoneNo_" + DateCounts, "", new { @class = "form-control", style = "width:80px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("PaymentDate_" + DateCounts, "", new { @class = "form-control", style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("Remark_" + DateCounts, "", new { @class = "form-control", style = "width:180px" })</td>
+            <td style="display:none"><input id="PatId_@(DateCounts)" name="PatId_@(DateCounts)" value="" /></td>
+            <td style="display:none"><input id="SendDeptId_@(DateCounts)" name="SendDeptId_@(DateCounts)" value="" /></td>
+            <td style="display:none"><input id="PatientChange_@(DateCounts)" name="PatientChange_@(DateCounts)" value="0" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                共 @DateCounts 条记录
+            </td>
+            <td colspan="10">
+                <a href="javascript:void(0)" onclick="SavePatientRows()"><h5>保存病人信息</h5></a>
+            </td>
+        </tr>
+    </table>
+</div>

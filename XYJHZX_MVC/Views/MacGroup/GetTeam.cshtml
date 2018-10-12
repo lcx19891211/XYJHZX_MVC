@@ -1,0 +1,161 @@
+﻿
+@{
+    Layout = null;
+    List<XYJHZX_MVC.Models.TeamModel> Dates = ViewBag.TeamDate;
+    var Keyid = "TeamTable";
+    var Message = ViewBag.Message;
+    int DateCounts = 0;
+    if (Dates != null)
+    {
+        DateCounts = Dates.Count;
+    }
+}
+
+<script type="text/javascript">
+    var TeamRowId = @DateCounts;
+    function TeamSave() {
+        var _TeamList = {};
+        
+        var trIndex = 0;
+        var msg = "";
+        $("#@Keyid tr:gt(0)").each(function () {
+            var tr = $(this);
+            var TeamName = tr.children("td").eq(0).children("input").eq(0);
+            var TeamDesciption = tr.children("td").eq(1).children("input").eq(0);
+            var TeamSeqID = tr.children("td").eq(2).children("input").eq(0);
+            var TeamID = tr.children("td").eq(3).children("input").eq(0);
+            var TeamChange = tr.children("td").eq(4).children("input").eq(0);
+
+            if (TeamChange.val() == '0' || isEmpty(tr.attr("id")))
+                return;
+            if (isEmpty(TeamName.val())) {
+                TeamName.attr('style', 'width:80px;background-color:red;')
+                TeamName.focus();
+                msg = "分组名称不能为空！";
+                return;
+            }
+
+            _TeamList["_teamList[" + trIndex + "].TeamName"] = TeamName.val();
+            _TeamList["_teamList[" + trIndex + "].Desciption"] = TeamDesciption.val();
+            _TeamList["_teamList[" + trIndex + "].SeqID"] = TeamSeqID.val();
+            _TeamList["_teamList[" + trIndex + "].TeamID"] = TeamID.val();
+            _TeamList["_teamList[" + trIndex + "].Groupid"] = $("#DropDownGroupList").val();
+            _TeamList["_teamList[" + trIndex + "].Status"] = TeamChange.val();
+            trIndex++;
+        });
+        if (!isEmpty(msg)) {
+            alert("保存失败：" + msg);
+            return;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/MacGroup/SetTeam",
+            data: _TeamList,
+            async: true,
+            traditional: true,
+            beforeSend: function () {
+                $('#TeamDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function () {
+                location.reload(true);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("保存失败：" + errorThrown);
+                location.reload(true);
+            }
+        });
+    }
+
+    function DeleteTeamRows(obj) {
+        $('#TeamRows_' + obj).hide();
+        var x = "TeamChange_" + obj
+        document.getElementById(x).value = "-1";
+    }
+
+    function EditTeamRows(obj) {
+        var x = "TeamChange_" + obj;
+        document.getElementById(x).value = "1";
+    }
+
+    function DeleteNewTeamRows(obj) {
+        var index = obj;
+        $("#TeamRows_" + index).remove();
+    }
+
+    function AddTeamRows() {
+        TeamRowId = TeamRowId + 1;
+        var indexInt = TeamRowId;
+
+        var tr = $("#@Keyid tr").eq(-2).clone();
+        tr.attr('id', "TeamRows_" + indexInt);
+
+        var TeamName = tr.children("td").eq(0).children("input").eq(0);
+        var TeamDesciption = tr.children("td").eq(1).children("input").eq(0);
+        var TeamSeqID = tr.children("td").eq(2).children("input").eq(0);
+        var TeamID = tr.children("td").eq(3).children("input").eq(0);
+        var TeamChange = tr.children("td").eq(4).children("input").eq(0);
+        var newAdd = tr.children("td").eq(5).children("div").eq(0).children("a").eq(0);
+        var newDel = tr.children("td").eq(5).children("div").eq(0).children("a").eq(1);
+
+        TeamName.attr({ 'id': 'TeamName_' + indexInt, 'name': 'TeamName_' + indexInt, 'onchange': 'EditTeamRows(' + indexInt + ')', 'value': '' });
+        TeamDesciption.attr({ 'id': 'TeamDesciption_' + indexInt, 'name': 'TeamDesciption_' + indexInt, 'onchange': 'EditTeamRows(' + indexInt + ')', 'value': '' });
+        TeamSeqID.attr({ 'id': 'TeamSeqID_' + indexInt, 'name': 'TeamSeqID_' + indexInt, 'onchange': 'EditTeamRows(' + indexInt + ')', 'value': (indexInt + 1)+'' });
+        TeamID.attr({ 'id': 'TeamID_' + indexInt, 'name': 'TeamID_' + indexInt, 'value': '0' });
+        TeamChange.attr({ 'id': 'TeamChange_' + indexInt, 'name': 'TeamChange_' + indexInt, 'value': '0' });
+
+        newAdd.attr({ 'id': 'TeamAdd_' + indexInt, 'style': 'display:block', 'onclick': 'AddTeamRows(' + indexInt + ')'});
+        newDel.attr({ 'id': 'TeamDel_' + indexInt, 'style': 'display:none', 'onclick': 'DeleteNewTeamRows(' + indexInt + ')'});
+
+        var newtr = $("#@Keyid tr").eq(-2).after(tr);
+
+        document.getElementById("TeamAdd_" + (indexInt - 1)).style.display = "none";
+        document.getElementById("TeamDel_" + (indexInt - 1)).style.display = "block";
+    }
+
+
+</script>
+
+<div id="TeamDiv">
+    <table id="@Keyid" class="table table-striped table-bordered">
+        <tr>
+            <td><div style="width:100px;">分区名称</div></td>
+            <td><div style="width:300px;">分区描述</div></td>
+            <td><div style="width:60px;">分区排序</div></td>
+            <td><div style="width:100px;display:none;">分区主键</div></td>
+        </tr>
+        @if (Dates != null)
+        {
+            for (int i = 0; i < Dates.Count; i++)
+            {
+                <tr id="TeamRows_@(i)">
+                    <td>@Html.TextBox("TeamName" + (i), @Dates[i].TeamName, new { @class = "form-control", @style = "width:100px", @onchange = "EditTeamRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("TeamDesciption" + (i), @Dates[i].Desciption, new { @class = "form-control", @style = "width:300px", @onchange = "EditTeamRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("TeamSeqID" + (i), @Dates[i].SeqID, new { @class = "form-control", @style = "width:60px", @onKeyUp = "CheckNum(this)", @onchange = "EditTeamRows(" + (i) + ")" })</td>
+                    <td style="display:none"><input id="TeamID_@(i)" name="TeamID_@(i)" value="@Dates[i].Teamid" /></td>
+                    <td style="display:none"><input id="TeamChange_@(i)" name="TeamChange_@(i)" value="0" /></td>
+                    <td>
+                        <a href="javascript:void(0)" onclick="DeleteTeamRows(@(i))">删除</a>
+                    </td>
+                </tr>
+            }
+        }
+        <tr id="TeamRows_@DateCounts" value="0">
+            <td>@Html.TextBox("TeamName_" + DateCounts, "", new { @class = "form-control", @style = "width:100px", @onchange = "EditTeamRows(" + DateCounts + ")" })</td>
+            <td>@Html.TextBox("TeamDesciption_" + DateCounts, "", new { @class = "form-control", @style = "width:300px", @onchange = "EditTeamRows(" + DateCounts + ")" })</td>
+            <td>@Html.TextBox("TeamSeqID_" + DateCounts, "" + (DateCounts + 1), new { @class = "form-control", @style = "width:60px", @onKeyUp = "CheckNum(this)", @onchange = "EditTeamRows(" + DateCounts + ")" })</td>
+            <td style="display:none"><input id="TeamID_@DateCounts" name="TeamID_@DateCounts" value="0" /></td>
+            <td style="display:none"><input id="TeamChange_@DateCounts" name="TeamChange_@DateCounts" value="0" /></td>
+            <td>
+                <div style="width:80px">
+                    <a id="TeamAdd_@DateCounts" href="javascript:void(0)" onclick="AddTeamRows()">添加</a>
+                    <a id="TeamDel_@DateCounts" href="javascript:void(0)" onclick="DeleteNewTeamRows(@DateCounts)" style="display:none">删除</a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5"><a href="javascript:void(0)" onclick="TeamSave()"><h5>保存分区</h5></a></td>
+        </tr>
+    </table>
+</div>
+
