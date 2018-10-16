@@ -1,14 +1,222 @@
-﻿<script type="text/javascript">
-  
+﻿@{ 
+    SelectList GroupList = ViewBag.GroupListDate;
+    if (GroupList != null && GroupList.SelectedValue == null)
+    {
+        GroupList.First().Selected = true;
+    }
+    SelectList SplitDateList = ViewBag.SplitDateList;
+    if (SplitDateList != null && SplitDateList.SelectedValue == null)
+    {
+        SplitDateList.First().Selected = true;
+    }
+    
+    string DefaultSchedulDate = DateTime.Now.ToShortDateString().Replace('/', '-');
+}
+
+<script type="text/javascript">
+    function SelectNewSchedulInf() {
+        $.ajax({
+            type: "post",
+            url: "/Schedul/GetSelectNewSchedul",
+            data: {
+                "GroupId": $('#txt_Group option:selected').val(),
+                "SchedulDate": $('#txt_NewSchedulDate').val(),
+                "SchedulTime": $('#txt_NewSchedulTime option:selected').text()
+            },
+            //dataType: "json",
+            async: true,
+            traditional: false,
+            beforeSend: function () {
+                $('#NewSchedulDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#NewSchedulDiv').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("加载失败：" + errorThrown);
+            }
+        });
+    }
+    function SelectOldSchedulInf() {
+        $.ajax({
+            type: "post",
+            url: "/Schedul/GetSelectOldSchedul",
+            data: {
+                "GroupId": $('#txt_Group option:selected').val(),
+                "SchedulDate": $('#txt_OldSchedulDate').val(),
+                "SchedulTime": $('#txt_OldSchedulTime option:selected').text()
+            },
+            //dataType: "json",
+            async: true,
+            traditional: false,
+            beforeSend: function () {
+                $('#OldSchedulDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#OldSchedulDiv').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("加载失败：" + errorThrown);
+            }
+        });
+    }
+    function CopyOldSchedulInf() {
+        var tbOld = document.getElementById("OldSchedulTable");
+        var tbNew = document.getElementById("NewSchedulTable");
+        var rowsOld = tbOld.rows;
+        var rowsNew = tbNew.rows;
+
+        if (rowsOld.length != rowsNew.length) {
+            return;
+        }
+        else {
+            for (var i = 1; i < rowsOld.length - 1; i++) {
+                var remark = rowsNew[i].cells[6];
+                remark.getElementsByTagName('input')[0].value = rowsOld[i].cells[5].innerHTML + "";
+                var anticoagulantName = rowsNew[i].cells[5].getElementsByTagName('select')[0];
+                var _str = anticoagulantName.options[anticoagulantName.options.length - 1].value;
+                if (_str == "999")
+                    anticoagulantName.options.remove(anticoagulantName.options.length - 1);
+                anticoagulantName.options.add(new Option(rowsOld[i].cells[4].innerHTML + "", "999")); //这个兼容IE与firefox 
+                anticoagulantName.value = "999";
+
+                var RouteName = rowsNew[i].cells[4].getElementsByTagName('select')[0];
+                var _str = RouteName.options[RouteName.options.length - 1].value;
+                if (_str == "999")
+                    RouteName.options.remove(RouteName.options.length - 1);
+                RouteName.options.add(new Option(rowsOld[i].cells[3].innerHTML + "", "999")); //这个兼容IE与firefox 
+                RouteName.value = "999";
+
+                var DialyzerName = rowsNew[i].cells[3].getElementsByTagName('select')[0];
+                var _str = DialyzerName.options[DialyzerName.options.length - 1].value;
+                if (_str == "999")
+                    DialyzerName.options.remove(DialyzerName.options.length - 1);
+                DialyzerName.options.add(new Option(rowsOld[i].cells[2].innerHTML + "", "999")); //这个兼容IE与firefox 
+                DialyzerName.value = "999";
+
+                var PatName = rowsNew[i].cells[2].getElementsByTagName('select')[0];
+                var _str = PatName.options[PatName.options.length - 1].value;
+                if (_str == "999")
+                    PatName.options.remove(PatName.options.length - 1);
+                PatName.options.add(new Option(rowsOld[i].cells[1].innerHTML + "", rowsOld[i].cells[8].innerHTML + "")); //这个兼容IE与firefox 
+                PatName.value = rowsOld[i].cells[8].innerHTML + "";
+
+                if (!isEmpty(PatName.value))
+                {
+                    var Status = rowsNew[i].cells[10].getElementsByTagName('input')[0];
+                    Status.value = "1";
+                }
+            }
+        }
+    }
+
+    function SaveNewSchedulInf() {
+        var _SchedulList = [];
+        $("#NewSchedulTable tr:gt(0)").each(function () {
+            var tr = $(this);
+
+            var status = tr.children("td").eq(10).children("input").eq(0);
+            var patid = tr.children("td").eq(2).children("select").find("option:selected").val();
+            if (status.val() == "1" && !isEmpty(patid)) {
+
+                var mainid = tr.children("td").eq(8).children("input").eq(0).val();
+                var SchedulDate = $("#txt_NewSchedulDate").val();
+                var SchedulTime = $('#txt_NewSchedulTime option:selected').text();
+                var groupid = $("#txt_Group").val();
+                var macid = tr.children("td").eq(7).children("input").eq(0).val();
+                var dialyzerName = tr.children("td").eq(3).children("select").find("option:selected").text();
+                var routeName = tr.children("td").eq(4).children("select").find("option:selected").text();
+                var anticoagulantName = tr.children("td").eq(5).children("select").find("option:selected").text();
+                var remark = tr.children("td").eq(6).children("input").eq(0).val();
+
+                _SchedulList.push({
+                    mainid: mainid.toString(),
+                    SchedulDate: SchedulDate.toString(),
+                    SchedulTime: SchedulTime.toString(),
+                    patid: patid.toString(),
+                    groupid: groupid.toString(),
+                    macid: macid.toString(),
+                    dialyzerName: dialyzerName.toString(),
+                    routeName: routeName.toString(),
+                    anticoagulantName: anticoagulantName.toString(),
+                    remark: remark.toString(),
+                    status: status.val().toString(),
+                    patWeightBefore: "0",
+                    patWeightAfter: "0",
+                    teamid: "0",
+                    signinDate: "",
+                    lastDate: ""
+                });
+            }
+        });
+        
+        $.ajax({
+            type: "post",
+            url: "/Schedul/SetSchedulMain",
+            contentType: "application/json",
+            data: JSON.stringify(_SchedulList),
+            //dataType: "json",
+            async: true,
+            traditional: true,
+            beforeSend: function () {
+                $('#NewSchedulDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function () {
+                $('#NewSchedulDiv').empty().append("<h2>保存成功！</h2>");
+                location.reload(true);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("保存失败：" + errorThrown);
+                location.reload(true);
+            }
+        });
+    }
+    function ClearNewSchedulRows(obj) {
+        $("#PatName_" + obj).val('');
+        $("#DialyzerName_" + obj).val('');
+        $("#RouteName_" + obj).val('');
+        $("#AnticoagulantName_" + obj).val('');
+        $("#PatId_" + obj).val('');
+        $("#SchedulStatus_" + obj).val('1');
+    }
+    function EditSchedulRows(obj) {
+        $("#SchedulStatus_" + obj).val('1');
+    }
 </script>
 
 
 
 <div>
-    <div id="NewSchedulDiv" class="pull-left">
-        @{Html.RenderAction("GetNewSchedul");}
+    <div class="pull-left">
+        <div>
+            <div>
+                <ul>
+                    <li><label id="lab_NewSchedulDate" class="form-control-static">分组:</label></li>
+                    <li>@Html.DropDownList("txt_Group", GroupList, new { @class = "form-control", @style = "width:80px", @onchange = "SelectNewSchedulInf();SelectOldSchedulInf();" })</li>
+                    <li><label id="lab_NewSchedulDate" class="form-control-static">日期:</label></li>
+                    <li><input id="txt_NewSchedulDate" type="text" class="form-control" style="width:100px" value="@DefaultSchedulDate" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" onchange="SelectNewSchedulInf()" /></li>
+                    <li>@Html.DropDownList("txt_NewSchedulTime", SplitDateList, new { @class = "form-control", @style = "width:80px", @onchange = "SelectNewSchedulInf()" })</li>
+                    <li><input id="btn_NewSchedulCopy" class="btn-info" type="submit" value="保 存" onclick="SaveNewSchedulInf()" style="margin:3px;" /></li>
+                </ul>
+            </div>
+            <div id="NewSchedulDiv">
+                @{Html.RenderAction("GetNewSchedul", "Schedul", new { GroupId = GroupList.First().Value });}
+            </div>
+
+        </div>
     </div>
-    <div id="OldSchedulDiv" class="pull-right">
-        @{Html.RenderAction("GetOldSchedul");}
+    <div class="pull-right">
+        <div>
+            <ul>
+                <li><label id="lab_OldSchedulDate" class="form-control-static">日期:</label></li>
+                <li><input id="txt_OldSchedulDate" type="text" class="form-control" style="width:120px" value="@DefaultSchedulDate" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" /></li>
+                <li>@Html.DropDownList("txt_OldSchedulTime", SplitDateList, new { @class = "form-control", @style = "width:80px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })" })</li>
+                <li><input id="btn_OldSchedulSelect" class="btn-info" type="submit" value="查 询" onclick="SelectOldSchedulInf()" style="margin:3px 20px 0 0;" /></li>
+                <li><input id="btn_OldSchedulCopy" class="btn-info" type="submit" value="复制排班" onclick="CopyOldSchedulInf()" style="margin:3px 10px 0 0;" /></li>
+            </ul>
+        </div>
+        <div id="OldSchedulDiv">
+            @{Html.RenderAction("GetOldSchedul", "Schedul", new { GroupId = GroupList.First().Value });}
+        </div>
     </div>
 </div>

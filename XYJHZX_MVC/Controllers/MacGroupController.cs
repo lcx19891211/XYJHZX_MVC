@@ -35,7 +35,6 @@ namespace XYJHZX_MVC.Controllers
             {
                 if (_DataGroup != null && _DataGroup.Tables.Count > 0 && _DataTeam != null && _DataTeam.Tables.Count > 0)
                 {
-
                     List<SelectListItem> arr_GroupSelectitems = new List<SelectListItem>();
                     List<SelectListItem> arr_TeamSelectitems = new List<SelectListItem>();
                     int index = 0;

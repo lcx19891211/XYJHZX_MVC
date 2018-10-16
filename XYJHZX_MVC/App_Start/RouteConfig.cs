@@ -34,13 +34,19 @@ namespace XYJHZX_MVC
             routes.MapRoute(
                 name: "SchedulRoute", // 路由名称
                 url: "{controller}/{action}/{id}", // 带有参数的 URL
-                defaults: new { controller = "MacGroup", action = "Config", id = 1,  } // 参数默认值
+                defaults: new { controller = "MacGroup", action = "Config", id = 1 } // 参数默认值
             );
 
             routes.MapRoute(
                 name: "PatientRoute", // 路由名称
                 url: "{controller}/{action}/{Patientid}", // 带有参数的 URL
-                defaults: new { controller = "Patient", action = "PatientManage", Patientid = 1, } // 参数默认值
+                defaults: new { controller = "Patient", action = "PatientManage", Patientid = 1 } // 参数默认值
+            );
+
+            routes.MapRoute(
+                name: "CurrentSchedulRoute", // 路由名称
+                url: "{controller}/{action}/{groupid}/{teamid}/", // 带有参数的 URL
+                defaults: new { controller = "CurrentSchedul", action = "ViewForTeam", groupid = 1, teamid = "x" } // 参数默认值
             );
         }
     }

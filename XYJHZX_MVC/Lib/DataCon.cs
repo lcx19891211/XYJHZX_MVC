@@ -346,6 +346,12 @@ namespace XYJHZX_MVC.Lib
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
 
+        public bool SelDateTimeSplit(out string str_msg, out DataSet _ResultData)
+        {
+            string str_sql = "select * from t_bse_DateTimeSplit Where Status = 1 order by SeqId";
+            _ResultData = new DataSet();
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
 
         /// <summary>
         /// 查询分组明细
@@ -359,20 +365,65 @@ namespace XYJHZX_MVC.Lib
             _ResultData = new DataSet();
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
+
         /// <summary>
         /// 查询项目明细
         /// </summary>
         /// <param name="str_msg"></param>
         /// <param name="_ResultData"></param>
         /// <returns></returns>
-        public bool SelSchedulColumn(out string str_msg, out DataSet _ResultData)
+        public bool SelSchedulColumn(out string str_msg, out DataSet _ResultData, int int_type)
         {
             string str_sql = "select * from V_SchedulColumn";
+            if(int_type != 0)
+            {
+                str_sql += " where colType = " + int_type;
+            }
             _ResultData = new DataSet();
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
 
-
+        /// <summary>
+        /// 查询检查安排
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <param name="arr_condition"></param>
+        /// <returns></returns>
+        public bool SelViewSchedulMain(out string str_msg, out DataSet _ResultData, string[] arr_condition)
+        {
+            string str_sql = "select * from V_SchedulMain";
+            if (!string.IsNullOrEmpty(arr_condition[0] + arr_condition[1]) && arr_condition[0].ProcessSqlStr() && arr_condition[1].ProcessSqlStr())
+            {
+                string str_condition = string.Format(" Where (Groupid = {0} and SchedulDate = '{1}' and SchedulTime = '{2}')", arr_condition[0], arr_condition[1], arr_condition[2]);
+                str_sql += str_condition;
+            }
+            _ResultData = new DataSet();
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
+        /// <summary>
+        /// 查询当前时间检查
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <param name="arr_condition"></param>
+        /// <returns></returns>
+        public bool SelViewCurrentSchedul(out string str_msg, out DataSet _ResultData, string[] arr_condition)
+        {
+            string str_sql = "select * from V_CurrentSchedul";
+            if (arr_condition.Count() > 0 && !string.IsNullOrEmpty(arr_condition[0]) && arr_condition[0].ProcessSqlStr())
+            {
+                string str_condition = string.Format(" Where Groupid = {0} ", arr_condition[0]);
+                str_sql += str_condition;
+                if(arr_condition.Count() > 1 && !string.IsNullOrEmpty(arr_condition[1]) && arr_condition[1].ProcessSqlStr())
+                {
+                    str_condition = string.Format(" And teamid = {0} ", arr_condition[1]);
+                    str_sql += str_condition;
+                }
+            }
+            _ResultData = new DataSet();
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
         #endregion
 
         #region======update======
@@ -468,6 +519,23 @@ namespace XYJHZX_MVC.Lib
         {
             string[] arr_condition = { "SchedulDate", "SchedulTime", "patid",  "teamid", "groupid", "macid", "dialyzerName", "routeName", "anticoagulantName", "remark", "lastDate"};
             return UpdateBseDir(out str_msg, arr2_values, str_orgid, "t_pro_SchedulMain", arr_condition, "mainid");
+        }
+        /// <summary>
+        /// 检查病人是否存在
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <param name="str_condition"></param>
+        /// <returns></returns>
+        public bool UpadatePatIsRead(out string str_msg, string[] arr_patId)
+        {
+            string[] arr_condition = { "isRead" };
+            List<string[]> arr2_values = new List<string[]>();
+            for (int i = 0; i < arr_patId.Count(); i++)
+            {
+                arr2_values.Add(new string[] { "1" });
+            }
+            return UpdateBseDir(out str_msg, arr2_values, arr_patId, "t_pro_PatInformation", arr_condition, "patId");
         }
         /// <summary>
         /// 更新检查签到时间

@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+    List<XYJHZX_MVC.Models.CurrentSchedulModel> Dates = ViewBag.CurrentData;
+    var Keyid = "ViewForTeam";
+    var Message = ViewBag.Message;
+}
+@Styles.Render("~/Content/css")
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<div><h2 style="float:left;margin:0px 20px 10px 40px;">@Message</h2><h3 id="h3date" style="float:left"></h3></div>
+<div id="divViewForTeam" style="overflow-y:hidden;clear:both;">
+    <table id="@Keyid" class="table table-striped table-bordered">
+        <tr>
+            <td><div style="width:80px;"><h1>机号</h1></div></td>
+            <td><div style="width:150px;"><h1>姓名</h1></div></td>
+            <td><div style="width:200px;"><h1>签到时间</h1></div></td>
+            <td><div style="width:150px;"><h1>排队号</h1></div></td>
+        </tr>
+        @if (Dates != null)
+        {
+            for (int i = 0; i < Dates.Count; i++)
+            {
+                <tr id="CurrentRows_@(i)">
+                    <td><h2>@(Dates[i].macname + "")</h2></td>
+                    <td><h2>@(Dates[i].PatName + "")</h2></td>
+                    <td><h2>@(Dates[i].signInDate + "")</h2></td>
+                    <td><h2>@(Dates[i].SignInSeq + "")</h2></td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<script type="text/javascript">
+
+    $(document.body).css({
+        "overflow-x": "hidden",
+        "overflow-y": "hidden"
+    });
+
+    function updateTime() {
+        var timestamp = new Date();
+        document.getElementById("h3date").innerText = timestamp.toLocaleString();
+    }
+
+    function refresh() {
+        location.reload(true);
+    }
+
+    //先在table的最后增加一行，然后再把第一行中的数据填充到新增加的行中，最后再删除table的第一行
+    function change(table) {
+        for(x = 1; x < 8; x++)
+        {
+            var row = table.insertRow(table.rows.length);//在table的最后增加一行,table.rows.length是表格的总行数
+            for (j = 0; j < table.rows[1].cells.length; j++) {//循环第一行的所有单元格的数据，让其加到最后新加的一行数据中（注意下标是从0开始的）
+                var cell = row.insertCell(j);//给新插入的行中添加单元格
+                cell.height = "24px";//一个单元格的高度，跟css样式中的line-height高度一样
+                cell.innerHTML = table.rows[1].cells[j].innerHTML;//设置新单元格的内容，这个根据需要，自己设置
+            }
+            table.deleteRow(1);//删除table的第一行
+        }
+    }
+
+    function tableInterval() {
+        var table = document.getElementById("@Keyid");//获得表格
+        change(table);//执行表格change函数，删除第一行，最后增加一行，类似行滚动
+    }
+
+    @if (Dates!=null&&Dates.Count> 10)
+    {
+        var html = new MvcHtmlString("setInterval('tableInterval()', 2000);setInterval(refresh, 10000);");
+        @html
+    }
+    else
+    {
+        var html = new MvcHtmlString("setInterval(refresh, 2000);");
+        @html
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+</script>

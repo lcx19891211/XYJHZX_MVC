@@ -35,9 +35,15 @@ namespace XYJHZX_MVC.Lib
 
         bool SelSchedulColumnType(out string str_msg, out DataSet _ResultData);
 
+        bool SelDateTimeSplit(out string str_msg, out DataSet _ResultData);
+
         bool SelGroupDetail(out string str_msg, out DataSet _ResultData);
 
-        bool SelSchedulColumn(out string str_msg, out DataSet _ResultData);
+        bool SelSchedulColumn(out string str_msg, out DataSet _ResultData, int int_type);
+
+        bool SelViewSchedulMain(out string str_msg, out DataSet _ResultData, string[] arr_condition);
+
+        bool SelViewCurrentSchedul(out string str_msg, out DataSet _ResultData, string[] arr_condition);
 
         bool UpdateGroup(out string str_msg, List<string[]> arr2_values, string[] str_orgid);
 
@@ -52,6 +58,8 @@ namespace XYJHZX_MVC.Lib
         bool UpdateSchedulDetail(out string str_msg, List<string[]> arr2_values, string[] str_orgid);
 
         bool UpdateSchedulMain(out string str_msg, List<string[]> arr2_values, string[] str_orgid);
+
+        bool UpadatePatIsRead(out string str_msg, string[] arr_patId);
 
         bool UpdateSchedulSigninDate(out string str_msg, List<string[]> arr2_values, string[] str_orgid);
 

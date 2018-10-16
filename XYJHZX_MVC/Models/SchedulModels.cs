@@ -95,4 +95,26 @@ namespace XYJHZX_MVC.Models
         [Display(Name = "检查修改标识")]
         public int status { get; set; }
     }
+
+    public class SchedulColumns
+    {
+        [Required]
+        [Display(Name = "选项主键")]
+        public Int64 colMainId { get; set; }
+        [Required]
+        [Display(Name = "选项标题")]
+        public string colName { get; set; }
+        [Required]
+        [Display(Name = "选项数据类型")]
+        public string desciption { get; set; }
+        [Required]
+        [Display(Name = "选项必选类型")]
+        public Int32 colType { get; set; }
+        [Required]
+        [Display(Name = "选项明细主键")]
+        public Int64 colDetailId { get; set; }
+        [Required]
+        [Display(Name = "选项明细名称")]
+        public string colDetailName { get; set; }
+    }
 }

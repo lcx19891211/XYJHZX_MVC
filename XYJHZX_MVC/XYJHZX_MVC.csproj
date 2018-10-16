@@ -213,6 +213,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CurrentSchedulController.cs" />
     <Compile Include="Controllers\MacGroupController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="ExtendClass.cs" />
@@ -232,10 +233,12 @@
     <Compile Include="Lib\IDataCon.cs" />
     <Compile Include="Lib\IXmlOper.cs" />
     <Compile Include="Lib\XmlOper.cs" />
+    <Compile Include="Models\CurrentSchedulModels.cs" />
     <Compile Include="Models\MacGroupModels.cs" />
     <Compile Include="Models\PatientModels.cs" />
     <Compile Include="Controllers\SchedulController.cs" />
     <Compile Include="Models\SchedulModels.cs" />
+    <Compile Include="Models\SplitDateModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -300,6 +303,8 @@
     <Content Include="Views\Patient\GetPatient.cshtml" />
     <Content Include="Views\Schedul\GetNewSchedul.cshtml" />
     <Content Include="Views\Schedul\GetOldSchedul.cshtml" />
+    <Content Include="Views\CurrentSchedul\ViewForTeam.cshtml" />
+    <Content Include="Views\CurrentSchedul\CurrentManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
