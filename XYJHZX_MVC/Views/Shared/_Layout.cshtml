@@ -5,10 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>佛山市第二人民医院 - 血液净化中心 - @ViewBag.Title </title>
-    <script src="~/Scripts/jquery-1.10.2.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <script language="javascript" type="text/javascript" src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.4.4.min.js"></script>
+    <script src="~/Scripts/jquery.jqprint-0.3.js"></script>
+    <script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
+    <script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+
 </head>
 <body>
     <script type="text/javascript">
@@ -48,6 +52,7 @@
                     <li><a class="navbar-brand" href="/Patient/PatientManage">病人维护</a></li>
                     <li><a class="navbar-brand" href="/Schedul/SchedulConfig">检查排队</a></li>
                     <li><a class="navbar-brand" href="/CurrentSchedul/CurrentManage">视图管理</a></li>
+                    <li><a class="navbar-brand" href="/Schedul/SchedulExplorer" target="_blank">排班打印</a></li>
                 </ul>
             </div>
         </div>

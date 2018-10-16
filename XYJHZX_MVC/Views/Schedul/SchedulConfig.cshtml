@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     SelectList GroupList = ViewBag.GroupListDate;
     if (GroupList != null && GroupList.SelectedValue == null)
     {
@@ -9,7 +9,7 @@
     {
         SplitDateList.First().Selected = true;
     }
-    
+
     string DefaultSchedulDate = DateTime.Now.ToShortDateString().Replace('/', '-');
 }
 
@@ -77,32 +77,31 @@
                 var _str = anticoagulantName.options[anticoagulantName.options.length - 1].value;
                 if (_str == "999")
                     anticoagulantName.options.remove(anticoagulantName.options.length - 1);
-                anticoagulantName.options.add(new Option(rowsOld[i].cells[4].innerHTML + "", "999")); //这个兼容IE与firefox 
+                anticoagulantName.options.add(new Option(rowsOld[i].cells[4].innerHTML + "", "999")); //这个兼容IE与firefox
                 anticoagulantName.value = "999";
 
                 var RouteName = rowsNew[i].cells[4].getElementsByTagName('select')[0];
                 var _str = RouteName.options[RouteName.options.length - 1].value;
                 if (_str == "999")
                     RouteName.options.remove(RouteName.options.length - 1);
-                RouteName.options.add(new Option(rowsOld[i].cells[3].innerHTML + "", "999")); //这个兼容IE与firefox 
+                RouteName.options.add(new Option(rowsOld[i].cells[3].innerHTML + "", "999")); //这个兼容IE与firefox
                 RouteName.value = "999";
 
                 var DialyzerName = rowsNew[i].cells[3].getElementsByTagName('select')[0];
                 var _str = DialyzerName.options[DialyzerName.options.length - 1].value;
                 if (_str == "999")
                     DialyzerName.options.remove(DialyzerName.options.length - 1);
-                DialyzerName.options.add(new Option(rowsOld[i].cells[2].innerHTML + "", "999")); //这个兼容IE与firefox 
+                DialyzerName.options.add(new Option(rowsOld[i].cells[2].innerHTML + "", "999")); //这个兼容IE与firefox
                 DialyzerName.value = "999";
 
                 var PatName = rowsNew[i].cells[2].getElementsByTagName('select')[0];
                 var _str = PatName.options[PatName.options.length - 1].value;
                 if (_str == "999")
                     PatName.options.remove(PatName.options.length - 1);
-                PatName.options.add(new Option(rowsOld[i].cells[1].innerHTML + "", rowsOld[i].cells[8].innerHTML + "")); //这个兼容IE与firefox 
+                PatName.options.add(new Option(rowsOld[i].cells[1].innerHTML + "", rowsOld[i].cells[8].innerHTML + "")); //这个兼容IE与firefox
                 PatName.value = rowsOld[i].cells[8].innerHTML + "";
 
-                if (!isEmpty(PatName.value))
-                {
+                if (!isEmpty(PatName.value)) {
                     var Status = rowsNew[i].cells[10].getElementsByTagName('input')[0];
                     Status.value = "1";
                 }
@@ -149,7 +148,7 @@
                 });
             }
         });
-        
+
         $.ajax({
             type: "post",
             url: "/Schedul/SetSchedulMain",
@@ -220,3 +219,5 @@
         </div>
     </div>
 </div>
+
+<div style="clear:both;"></div>

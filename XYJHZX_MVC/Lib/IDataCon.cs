@@ -23,6 +23,8 @@ namespace XYJHZX_MVC.Lib
 
         bool SelTeamMachine(out string str_msg, ref DataSet _ResultData, string str_TeamId);
 
+        bool SelSchedul(out string str_msg, ref DataSet _ResultData, string[] condition);
+
         bool SelSchedulColumnDetail(out string str_msg, out DataSet _ResultData);
 
         bool SelSchedulColumnMain(out string str_msg, out DataSet _ResultData);

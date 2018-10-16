@@ -6,12 +6,10 @@
 }
 <script type="text/javascript">
     function GetNewConnect() {
-
         var teamid = $('#txt_Team option:selected').val();
         if (isEmpty(teamid))
             teamid = "x";
         document.getElementById("aConnect").setAttribute("href", "/CurrentSchedul/ViewForTeam/" + $('#txt_Group option:selected').val() + "/" + teamid);
-        //document.getElementById("aConnect").innerText = "/CurrentSchedul/ViewForTeam/" + $('#txt_Group option:selected').val() + "/" + teamid;
     }
 </script>
 

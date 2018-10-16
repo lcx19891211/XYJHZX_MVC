@@ -276,6 +276,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.4.4.min.js" />
+    <Content Include="Scripts\jquery.jqprint-0.3.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -305,6 +307,9 @@
     <Content Include="Views\Schedul\GetOldSchedul.cshtml" />
     <Content Include="Views\CurrentSchedul\ViewForTeam.cshtml" />
     <Content Include="Views\CurrentSchedul\CurrentManage.cshtml" />
+    <Content Include="Views\Schedul\SchedulExplorer.cshtml" />
+    <Content Include="Views\Schedul\SchedulPrintView.cshtml" />
+    <Content Include="Views\Schedul\SchedulWeight.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

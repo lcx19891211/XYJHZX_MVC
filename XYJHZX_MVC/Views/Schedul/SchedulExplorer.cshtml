@@ -1,0 +1,94 @@
+﻿@{
+    Layout = null;
+    SelectList GroupList = ViewBag.GroupListDate;
+    if (GroupList != null && GroupList.SelectedValue == null)
+    {
+        GroupList.First().Selected = true;
+    }
+    SelectList SplitDateList = ViewBag.SplitDateList;
+    if (SplitDateList != null && SplitDateList.SelectedValue == null)
+    {
+        SplitDateList.First().Selected = true;
+    }
+    string DefaultSchedulDate = DateTime.Now.ToString("yyyy-MM-dd", System.Globalization.DateTimeFormatInfo.InvariantInfo);
+}
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.4.4.min.js"></script>
+<script src="~/Scripts/jquery.jqprint-0.3.js"></script>
+<script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
+<script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+
+<script type="text/javascript">
+    function SelectSchedulInf() {
+        $.ajax({
+            type: "post",
+            url: "/Schedul/SchedulPrintView",
+            data: {
+                "SchedulDate": $('#txt_SchedulDate').val(),
+                "GroupId": $('#txt_Group option:selected').val(),
+                "SchedulTime": $('#txt_SchedulTime option:selected').text()
+            },
+            //dataType: "json",
+            async: true,
+            traditional: false,
+            beforeSend: function () {
+                $('#divTableShow').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#divTableShow').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("加载失败：" + errorThrown);
+            }
+        });
+    }
+    function SelectSchedulWeightInf() {
+        $.ajax({
+            type: "post",
+            url: "/Schedul/SchedulWeightPrint",
+            data: {
+                "SchedulDate": $('#txt_SchedulDate').val(),
+                "GroupId": $('#txt_Group option:selected').val(),
+                "SchedulTime": $('#txt_SchedulTime option:selected').text()
+            },
+            //dataType: "json",
+            async: true,
+            traditional: false,
+            beforeSend: function () {
+                $('#divTableShow').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#divTableShow').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("加载失败：" + errorThrown);
+            }
+        });
+    }
+
+    function PrintSchedulInf() {
+        $("#divTableShow").jqprint();
+    }
+</script>
+
+
+<div class="container body-content">
+    <ul class="nav navbar-nav">
+        <li><label id="lab_SchedulGroup" class="form-control-static">分组:</label></li>
+        <li>@Html.DropDownList("txt_Group", GroupList, new { @class = "form-control", @style = "width:80px" })</li>
+        <li><label id="lab_SchedulDate" class="form-control-static">日期:</label></li>
+        <li><input id="txt_SchedulDate" type="text" class="form-control" style="width:100px" value="@DefaultSchedulDate" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" /></li>
+        <li>@Html.DropDownList("txt_SchedulTime", SplitDateList, new { @class = "form-control", @style = "width:80px" })</li>
+        <li><input id="btn_SelectSchedulInf" class="btn-info" type="submit" value="查询排班表" onclick="SelectSchedulInf()" style="margin:3px;" /></li>
+        <li><input id="btn_SelectSchedulWeightInf" class="btn-info" type="submit" value="查询体重表" onclick="SelectSchedulWeightInf()" style="margin:3px;" /></li>
+        <li><input id="btn_PrintSchedulInf" class="btn-info" type="submit" value="打 印" onclick="PrintSchedulInf()" style="margin:3px;" /></li>
+    </ul>
+</div>
+
+<div id="divTableShow" class="body-content" style="background-color:gray;">
+    @{Html.RenderAction("SchedulPrintView", "Schedul");}
+</div>
+<div style="clear:both;"></div>

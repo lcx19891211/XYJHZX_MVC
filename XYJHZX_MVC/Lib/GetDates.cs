@@ -42,12 +42,12 @@ namespace XYJHZX_MVC.Lib
                 if (_con.SelViewSchedulMain(out str_msg, out _DataTmp, arr_condition))
                 {
                     DataTable _table = _DataTmp.Tables[0];
-                    for(int i=0;i<_table.Rows.Count;i++)
+                    for (int i = 0; i < _table.Rows.Count; i++)
                     {
                         Int64 str_macid = Int64.Parse(_table.Rows[i]["macid"] + "");
-                        foreach(SchedulShowModel _schedulShowModel in arr_schedulShow)
+                        foreach (SchedulShowModel _schedulShowModel in arr_schedulShow)
                         {
-                            if(_schedulShowModel.macid == str_macid)
+                            if (_schedulShowModel.macid == str_macid)
                             {
                                 _schedulShowModel.mainid = Int64.Parse(_table.Rows[i]["mainid"] + "");
                                 _schedulShowModel.patid = Int64.Parse(_table.Rows[i]["patid"] + "");
@@ -137,7 +137,44 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_Patient;
         }
-        
+
+        public List<SchedulPrint> GetSchedulPrint(out string str_msg, string str_GroupId, string str_SchedulDate, string str_SchedulTime)
+        {
+            List<SchedulPrint> arr_schedulPrints = new List<SchedulPrint>();
+            DataSet _DataCollect = new DataSet();
+            string[] arr_condition = { str_SchedulDate, str_SchedulTime, str_GroupId };
+            if (_con.ConInit(out str_msg) && _con.SelSchedul(out str_msg, ref _DataCollect, arr_condition))
+            {
+                DataTable _table = _DataCollect.Tables[0];
+                for (int i = 0; i < _table.Rows.Count; i++)
+                {
+                    SchedulPrint _schedulPrint = new SchedulPrint();
+
+                    _schedulPrint.GroupName = _table.Rows[i]["groupname"] + "";
+                    _schedulPrint.GroupDescption = _table.Rows[i]["groupdescption"] + "";
+                    _schedulPrint.TeamName = _table.Rows[i]["teamname"] + "";
+                    _schedulPrint.TeamDescption = _table.Rows[i]["teamdescption"] + "";
+                    _schedulPrint.MacName = _table.Rows[i]["macname"] + "";
+                    _schedulPrint.MacDescption = _table.Rows[i]["macdescption"] + "";
+                    _schedulPrint.SchedulDate = _table.Rows[i]["SchedulDate"] + "";
+                    _schedulPrint.SchedulTime = _table.Rows[i]["SchedulTime"] + "";
+                    _schedulPrint.DialyzerName = _table.Rows[i]["dialyzerName"] + "";
+                    _schedulPrint.RouteName = _table.Rows[i]["routeName"] + "";
+                    _schedulPrint.AnticoagulantName = _table.Rows[i]["anticoagulantName"] + "";
+                    _schedulPrint.Remark = _table.Rows[i]["remark"] + "";
+                    _schedulPrint.SigninDate = _table.Rows[i]["signinDate"] + "";
+                    _schedulPrint.SignInSeq = int.Parse("0" + _table.Rows[i]["SignInSeq"] );
+                    _schedulPrint.PatName = _table.Rows[i]["patName"] + "";
+                    _schedulPrint.PatIdCardNo = _table.Rows[i]["patIdCardNo"] + "";
+                    _schedulPrint.PatWeightBefore = int.Parse("0" + _table.Rows[i]["patWeightBefore"]);
+                    _schedulPrint.PatWeightAfter = int.Parse("0" + _table.Rows[i]["patWeightAfter"]);
+
+                    arr_schedulPrints.Add(_schedulPrint);
+                }
+            }
+            return arr_schedulPrints;
+        }
+
         public List<SchedulColumns> GetSchedul2Columns(out string str_msg)
         {
             List<SchedulColumns> arr_SchedulColumns = new List<SchedulColumns>();

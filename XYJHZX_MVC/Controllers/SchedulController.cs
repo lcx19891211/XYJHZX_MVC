@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web.Mvc;
 using XYJHZX_MVC.Lib;
 
@@ -27,6 +28,82 @@ namespace XYJHZX_MVC.Models
             ViewBag.SplitDateList = arr_SplitDateList;
             return View();
         }
+
+        /// <summary>
+        /// 返回检查浏览
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SchedulExplorer()
+        {
+            List<GroupModel> arr_Group = _GetData.GetGroupModel(out str_msg);
+            SelectList arr_GroupList = new SelectList(arr_Group, "GroupId", "GroupName");
+            ViewBag.GroupListDate = arr_GroupList;
+
+            List<SplitDateModel> _splitDateModels = _GetData.GetSplitDateModels(out str_msg);
+            SelectList arr_SplitDateList = new SelectList(_splitDateModels, "SplitId", "SplitName");
+            ViewBag.SplitDateList = arr_SplitDateList;
+
+            return View();
+        }
+
+        /// <summary>
+        /// 返回打印格式
+        /// </summary>
+        /// <param name="SchedulDate"></param>
+        /// <param name="GroupId"></param>
+        /// <param name="SchedulTime"></param>
+        /// <returns></returns>
+        public ActionResult SchedulPrintView(string SchedulDate, string GroupId = "2", string SchedulTime = "上午")
+        {
+            bool isFirst = false;
+            if (string.IsNullOrEmpty(SchedulDate))
+            {
+                isFirst = true;
+                SchedulDate = DateTime.Now.ToString("yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo);
+            }
+            List<List<SchedulPrint>> arr2_schedulPrints = new List<List<SchedulPrint>>();
+            List<SchedulPrint> arr_schedulPrints = _GetData.GetSchedulPrint(out str_msg, GroupId, SchedulDate, SchedulTime);
+            int TeamCount = 0;
+            string str_teamName = "";
+            List<SchedulPrint> tmp_schedulPrints = new List<SchedulPrint>();
+            foreach (SchedulPrint sp in arr_schedulPrints)
+            {
+                if (str_teamName != sp.TeamName)
+                {
+                    if (str_teamName != "")
+                    {
+                        arr2_schedulPrints.Add(tmp_schedulPrints);
+                        tmp_schedulPrints = new List<SchedulPrint>();
+                    }
+                    tmp_schedulPrints.Add(sp);
+                    str_teamName = sp.TeamName;
+                    TeamCount++;
+                }
+                else
+                    tmp_schedulPrints.Add(sp);
+            }
+            arr2_schedulPrints.Add(tmp_schedulPrints);
+            tmp_schedulPrints = new List<SchedulPrint>();
+            ViewBag.SchedulDate = arr2_schedulPrints;
+            if (isFirst)
+                return View();
+            else
+                return PartialView("/Views/Schedul/SchedulPrintView.cshtml");
+        }
+
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult SchedulWeightPrint(string SchedulDate, string GroupId = "2", string SchedulTime = "上午")
+        {
+            if (string.IsNullOrEmpty(SchedulDate))
+            {
+                SchedulDate = DateTime.Now.ToString("yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo);
+            }
+            List<SchedulPrint> arr_schedulPrints = _GetData.GetSchedulPrint(out str_msg, GroupId, SchedulDate, SchedulTime);
+            ViewBag.SchedulDate = arr_schedulPrints;
+            return PartialView("/Views/Schedul/SchedulWeight.cshtml");
+        }
+
 
         /// <summary>
         /// 初始化新检查表
@@ -195,5 +272,6 @@ namespace XYJHZX_MVC.Models
                 throw ex;
             }
         }
+
     }
 }

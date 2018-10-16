@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+    var Keyid = "SchedulWeightPrint";
+    List<XYJHZX_MVC.Models.SchedulPrint> Dates = ViewBag.SchedulDate;
+}
+
+
+@if (Dates != null)
+{
+    <table id="@(Keyid)" class="table table-striped table-bordered" style="font-size:10px;">
+        <tr>
+            <td><div style="width:30px;">机号</div></td>
+            <td><div style="width:40px;">姓名</div></td>
+            <td><div style="width:60px;">前体重</div></td>
+            <td><div style="width:60px;">后体重</div></td>
+        </tr>
+        @for(int i=0;i<Dates.Count;i++)
+        { 
+            <tr>
+            <td>@Dates[i].MacName</td>
+            <td>@Dates[i].PatName</td>
+            <td>@((Dates[i].PatWeightBefore == 0) ? "": Dates[i].PatWeightBefore.ToString())</td>
+            <td>@((Dates[i].PatWeightAfter == 0) ? "":Dates[i].PatWeightAfter.ToString())</td>
+            </tr>
+        }
+    </table>
+}

@@ -250,6 +250,47 @@ namespace XYJHZX_MVC.Lib
                 return false;
             }
         }
+
+        /// <summary>
+        /// 查询检查
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        public bool SelSchedul(out string str_msg,ref DataSet _ResultData,string[] condition)
+        {
+            string str_sql = string.Format(@"select t.Groupname          groupname,
+                                                    t.groupdescption     groupdescption,
+                                                    t.teamname           teamname,
+                                                    t.teamdescption      teamdescption,
+                                                    t.macname            macname,
+                                                    t.macdescption       macdescption,
+                                                    a.patWeightBefore    patWeightBefore,
+                                                    a.patWeightAfter     patWeightAfter,
+                                                    a.SchedulDate        SchedulDate,
+                                                    a.SchedulTime        SchedulTime,
+                                                    a.dialyzerName       dialyzerName,
+                                                    a.routeName          routeName,
+                                                    a.anticoagulantName  anticoagulantName,
+                                                    a.remark             remark,
+                                                    a.signinDate         signinDate,
+                                                    a.SignInSeq          SignInSeq,
+                                                    b.patName            patName,
+                                                    b.patIdCardNo        patIdCardNo 
+                                                    from v_groupdetail t 
+                                                    left join t_pro_schedulMain a 
+                                                    on t.macid = a.macid
+                                                    and a.SchedulDate = '{0}'
+                                                    and a.SchedulTime = '{1}'
+                                                    and a.status = 1
+                                                    left join t_pro_patInformation b 
+                                                    on a.patid = b.patId
+                                                    where t.groupid = {2}
+                                                    order by t.groupseq,t.teamseq,t.macseq", condition[0], condition[1], condition[2]);
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
+
         /// <summary>
         /// 查询登记项目可选项
         /// </summary>
