@@ -9,7 +9,8 @@
         var teamid = $('#txt_Team option:selected').val();
         if (isEmpty(teamid))
             teamid = "x";
-        document.getElementById("aConnect").setAttribute("href", "/CurrentSchedul/ViewForTeam/" + $('#txt_Group option:selected').val() + "/" + teamid);
+        document.getElementById("aShowConnect").setAttribute("href", "/CurrentSchedul/ViewForTeam/" + $('#txt_Group option:selected').val() + "/" + teamid);
+        document.getElementById("aSignInConnect").setAttribute("href", "/Schedul/SchedulSignIn/" + $('#txt_Group option:selected').val() );
     }
 </script>
 
@@ -19,6 +20,9 @@
         <li>@Html.DropDownList("txt_Group", GroupDate, new { @class = "form-control", @style = "width:200px", @onchange = "GetNewConnect()" })</li>
         <li><label id="lab_NewSchedulDate" class="form-control-static">分区:</label></li>
         <li>@Html.DropDownList("txt_Team", TeamDate, new { @class = "form-control", @style = "width:300px" , @onchange = "GetNewConnect()" })</li>
-        <li><a id="aConnect" class="navbar-brand" href="/CurrentSchedul/ViewForTeam" target="_blank">打开新页面</a></li>
+        <li><a id="aShowConnect" class="navbar-brand" href="/CurrentSchedul/ViewForTeam" target="_blank">打开显示页面</a></li>
+        <li>
+            <a id="aSignInConnect" class="navbar-brand" href="/Schedul/SchedulSignIn" target="_blank">打开签到页面</a>
+        </li>
     </ul>
 </div>

@@ -39,6 +39,8 @@ namespace XYJHZX_MVC.Lib
 
         bool SelDateTimeSplit(out string str_msg, out DataSet _ResultData);
 
+        bool SelGetDateTimeSplit(out string str_msg, out DataSet _ResultData, string str_Time);
+        
         bool SelGroupDetail(out string str_msg, out DataSet _ResultData);
 
         bool SelSchedulColumn(out string str_msg, out DataSet _ResultData, int int_type);
@@ -46,6 +48,10 @@ namespace XYJHZX_MVC.Lib
         bool SelViewSchedulMain(out string str_msg, out DataSet _ResultData, string[] arr_condition);
 
         bool SelViewCurrentSchedul(out string str_msg, out DataSet _ResultData, string[] arr_condition);
+
+        bool SelMainIDCurrentSchedulForIDCard(out string str_msg, out DataSet _ResultData, string[] arr_condition);
+
+        bool SelMaxCurrentSeq(out string str_msg, out DataSet _ResultData, string[] arr_condition);
 
         bool UpdateGroup(out string str_msg, List<string[]> arr2_values, string[] str_orgid);
 

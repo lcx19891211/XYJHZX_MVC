@@ -149,7 +149,7 @@ namespace XYJHZX_MVC.Lib
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     SchedulPrint _schedulPrint = new SchedulPrint();
-
+                 
                     _schedulPrint.GroupName = _table.Rows[i]["groupname"] + "";
                     _schedulPrint.GroupDescption = _table.Rows[i]["groupdescption"] + "";
                     _schedulPrint.TeamName = _table.Rows[i]["teamname"] + "";
@@ -174,7 +174,7 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_schedulPrints;
         }
-
+        
         public List<SchedulColumns> GetSchedul2Columns(out string str_msg)
         {
             List<SchedulColumns> arr_SchedulColumns = new List<SchedulColumns>();
@@ -293,6 +293,50 @@ namespace XYJHZX_MVC.Lib
             else
                 str_msg = "parameter is null!";
             return arr_currentSchedulModels;
+        }
+
+        /// <summary>
+        /// 返回时间段
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="str_time"></param>
+        /// <returns></returns>
+        public string GetDateSplit(out string str_msg,string str_time)
+        {
+            DataSet _DataResult = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelGetDateTimeSplit(out str_msg, out _DataResult, str_time))
+            {
+                if (_DataResult != null && _DataResult.Tables[0].Rows.Count > 0)
+                {
+                    return _DataResult.Tables[0].Rows[0][0] + "";
+                }
+                else
+                    return string.Empty;
+            }
+            else
+                return string.Empty;
+        }
+        /// <summary>
+        /// 返回排序号最大值
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="str_teamid"></param>
+        /// <returns></returns>
+        public int GetMaxCurrenSeq(out string str_msg, string str_teamid)
+        {
+            DataSet _DataResult = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelMaxCurrentSeq(out str_msg, out _DataResult, new string[] { str_teamid }))
+            {
+                if (_DataResult != null && _DataResult.Tables[0].Rows.Count > 0)
+                {
+                    string str_seq = _DataResult.Tables[0].Rows[0][0] + "";
+                    return (string.IsNullOrEmpty(str_seq) ? 1 : int.Parse(str_seq) + 1);
+                }
+                else
+                    return 1;
+            }
+            else
+                return 1;
         }
     }
 }

@@ -252,6 +252,10 @@
     <Content Include="Lib\Res\Config.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Lib\Res\Dewlt.dll" />
+    <Content Include="Lib\Res\IdrControl.ocx" />
+    <Content Include="Lib\Res\SavePhoto.dll" />
+    <Content Include="Lib\Res\wltrs.dll" />
     <Content Include="Resourse\My97DatePicker\calendar.js" />
     <Content Include="Resourse\My97DatePicker\lang\en.js" />
     <Content Include="Resourse\My97DatePicker\lang\zh-cn.js" />
@@ -269,9 +273,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Lib\Res\DB_XYJHZX.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Lib\Res\DB_XYJHZX.db" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -309,7 +311,9 @@
     <Content Include="Views\CurrentSchedul\CurrentManage.cshtml" />
     <Content Include="Views\Schedul\SchedulExplorer.cshtml" />
     <Content Include="Views\Schedul\SchedulPrintView.cshtml" />
-    <Content Include="Views\Schedul\SchedulWeight.cshtml" />
+    <Content Include="Views\Schedul\SchedulPrintWeight.cshtml" />
+    <Content Include="Views\Schedul\SchedulSignIn.cshtml" />
+    <Content Include="Views\Schedul\SchedulSignInView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

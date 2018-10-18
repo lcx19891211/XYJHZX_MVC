@@ -17,8 +17,7 @@ namespace XYJHZX_MVC.Lib
         {
             Ignore = ignore;
         }
-        public override bool IsValidForRequest(ControllerContext controllerContext,
-          System.Reflection.MethodInfo methodInfo)
+        public override bool IsValidForRequest(ControllerContext controllerContext, System.Reflection.MethodInfo methodInfo)
         {
             if (Ignore)
                 return true;

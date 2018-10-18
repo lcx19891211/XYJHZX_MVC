@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
@@ -63,7 +64,6 @@ namespace XYJHZX_MVC.Models
             }
             List<List<SchedulPrint>> arr2_schedulPrints = new List<List<SchedulPrint>>();
             List<SchedulPrint> arr_schedulPrints = _GetData.GetSchedulPrint(out str_msg, GroupId, SchedulDate, SchedulTime);
-            int TeamCount = 0;
             string str_teamName = "";
             List<SchedulPrint> tmp_schedulPrints = new List<SchedulPrint>();
             foreach (SchedulPrint sp in arr_schedulPrints)
@@ -77,7 +77,6 @@ namespace XYJHZX_MVC.Models
                     }
                     tmp_schedulPrints.Add(sp);
                     str_teamName = sp.TeamName;
-                    TeamCount++;
                 }
                 else
                     tmp_schedulPrints.Add(sp);
@@ -91,6 +90,13 @@ namespace XYJHZX_MVC.Models
                 return PartialView("/Views/Schedul/SchedulPrintView.cshtml");
         }
 
+        /// <summary>
+        /// 返回打印体重视图
+        /// </summary>
+        /// <param name="SchedulDate"></param>
+        /// <param name="GroupId"></param>
+        /// <param name="SchedulTime"></param>
+        /// <returns></returns>
         [HttpPost]
         [HandlerAjaxOnly]
         public ActionResult SchedulWeightPrint(string SchedulDate, string GroupId = "2", string SchedulTime = "上午")
@@ -101,9 +107,88 @@ namespace XYJHZX_MVC.Models
             }
             List<SchedulPrint> arr_schedulPrints = _GetData.GetSchedulPrint(out str_msg, GroupId, SchedulDate, SchedulTime);
             ViewBag.SchedulDate = arr_schedulPrints;
-            return PartialView("/Views/Schedul/SchedulWeight.cshtml");
+            return PartialView("/Views/Schedul/SchedulPrintWeight.cshtml");
+        }
+        /// <summary>
+        /// 签到界面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SchedulSignIn()
+        {
+            string GroupId = RouteData.Values["groupid"] + "";
+            if (string.IsNullOrEmpty(GroupId))
+                GroupId = "2";
+            ViewBag.GroupId = GroupId;
+
+            return View();
         }
 
+        /// <summary>
+        /// 签到显示分部视图
+        /// </summary>
+        /// <param name="GroupId"></param>
+        /// <returns></returns>
+        public ActionResult SchedulSignInView(string GroupId)
+        {
+            string SchedulDate = DateTime.Now.ToString("yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo);
+            string dt_SchedulDate = DateTime.Now.ToString("HH:mm:dd", DateTimeFormatInfo.InvariantInfo);
+            string SchedulTime = _GetData.GetDateSplit(out str_msg, dt_SchedulDate);
+            List<List<SchedulPrint>> arr2_schedulPrints = new List<List<SchedulPrint>>();
+            List<SchedulPrint> arr_schedulPrints = _GetData.GetSchedulPrint(out str_msg, GroupId, SchedulDate, SchedulTime);
+            string str_teamName = "";
+            List<SchedulPrint> tmp_schedulPrints = new List<SchedulPrint>();
+            foreach (SchedulPrint sp in arr_schedulPrints)
+            {
+                if (str_teamName != sp.TeamName)
+                {
+                    if (str_teamName != "")
+                    {
+                        arr2_schedulPrints.Add(tmp_schedulPrints);
+                        tmp_schedulPrints = new List<SchedulPrint>();
+                    }
+                    tmp_schedulPrints.Add(sp);
+                    str_teamName = sp.TeamName;
+                }
+                else
+                    tmp_schedulPrints.Add(sp);
+            }
+            arr2_schedulPrints.Add(tmp_schedulPrints);
+            tmp_schedulPrints = new List<SchedulPrint>();
+            ViewBag.SchedulDate = arr2_schedulPrints;
+            return PartialView("/Views/Schedul/SchedulSignInView.cshtml");
+        }
+
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult SignInIDCard(string IDCard, string GroupId)
+        {
+            if (string.IsNullOrEmpty(IDCard))
+                throw  new Exception("卡号为空或卡号读取失败！");
+            else
+            {
+                DataSet _DataResult = new DataSet();
+                if (_ISchedulCon.ConInit(out str_msg) && _ISchedulCon.SelMainIDCurrentSchedulForIDCard(out str_msg, out _DataResult, new string[] { IDCard.Trim(), GroupId }) && _DataResult != null && _DataResult.Tables[0].Rows.Count > 0)
+                {
+                    string str_mainID = _DataResult.Tables[0].Rows[0][0] + "";
+                    string str_teamid = _DataResult.Tables[0].Rows[0][1] + "";
+                    string[] arr_mainID = { str_mainID };
+                    int int_maxseq = 0;
+                    _DataResult = new DataSet();
+                    int_maxseq = _GetData.GetMaxCurrenSeq(out str_msg, str_teamid);
+                    string SchedulDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+                    List<string[]> arr2_value = new List<string[]> { new string[] { SchedulDateTime.ConvertSqlCondition(), int_maxseq.ToString() } };
+                    if (_ISchedulCon.UpdateSchedulSigninDate(out str_msg, arr2_value, arr_mainID))
+                    {
+                    }
+                    str_msg = "{\"success\";true}";
+                    return Json(str_msg);
+                }
+                else
+                {
+                    throw new Exception("签到失败，找不到未签到记录！");
+                }
+            }
+        }
 
         /// <summary>
         /// 初始化新检查表

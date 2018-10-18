@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Globalization;
 using System.Linq;
 using XYJHZX_MVC.Lib.Class;
 
@@ -386,10 +387,28 @@ namespace XYJHZX_MVC.Lib
             _ResultData = new DataSet();
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
-
+        /// <summary>
+        /// 查询时间段
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <returns></returns>
         public bool SelDateTimeSplit(out string str_msg, out DataSet _ResultData)
         {
             string str_sql = "select * from t_bse_DateTimeSplit Where Status = 1 order by SeqId";
+            _ResultData = new DataSet();
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
+
+        /// <summary>
+        /// 返回特定时间段
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <returns></returns>
+        public bool SelGetDateTimeSplit(out string str_msg, out DataSet _ResultData, string str_Time)
+        {
+            string str_sql = string.Format(@"select SplitName from t_bse_DateTimeSplit Where Status = 1 And BegintTime < strftime('%H:%M:%S','{0}') And EndTime >= strftime('%H:%M:%S','{0}')  order by SeqId", str_Time);
             _ResultData = new DataSet();
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
@@ -465,6 +484,43 @@ namespace XYJHZX_MVC.Lib
             _ResultData = new DataSet();
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
+
+        /// <summary>
+        /// 根据身份证号获取检查主键
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <param name="arr_condition"></param>
+        /// <returns></returns>
+        public bool SelMainIDCurrentSchedulForIDCard(out string str_msg, out DataSet _ResultData, string[] arr_condition)
+        {
+            string str_sql = "select mainid,teamid from V_CurrentSchedul";
+            if (arr_condition.Count() > 0 && !string.IsNullOrEmpty(arr_condition[0]) && arr_condition[0].ProcessSqlStr() && !string.IsNullOrEmpty(arr_condition[1]) && arr_condition[1].ProcessSqlStr())
+            {
+                string str_condition = string.Format(" Where signinseq is null and patIdCardNo = {0} and groupid = {1}", arr_condition[0], arr_condition[1]);
+                str_sql += str_condition;
+            }
+            _ResultData = new DataSet();
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
+        /// <summary>
+        /// 获取分区最大签到值
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <param name="arr_condition"></param>
+        /// <returns></returns>
+        public bool SelMaxCurrentSeq(out string str_msg,out DataSet _ResultData,string[] arr_condition)
+        {
+            string str_sql = "select max(signinseq) seq from V_CurrentSchedul";
+            if (arr_condition.Count() > 0 && !string.IsNullOrEmpty(arr_condition[0]) && arr_condition[0].ProcessSqlStr())
+            {
+                string str_condition = string.Format(" Where teamid = {0} ", arr_condition[0]);
+                str_sql += str_condition;
+            }
+            _ResultData = new DataSet();
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
         #endregion
 
         #region======update======
@@ -490,7 +546,7 @@ namespace XYJHZX_MVC.Lib
         public bool UpdateMachine(out string str_msg, List<string[]> arr2_values, string[] str_orgid)
         {
             string[] arr_condition = { "macname", "desciption", "SeqID" };
-            return UpdateBseDir(out str_msg, arr2_values, str_orgid, "t_bse_Macshine", arr_condition, "macid");
+            return UpdateBseDir(out str_msg, arr2_values, str_orgid, "t_bse_Machine", arr_condition, "macid");
         }
         /// <summary>
         /// 更新分区
@@ -587,7 +643,7 @@ namespace XYJHZX_MVC.Lib
         /// <returns></returns>
         public bool UpdateSchedulSigninDate(out string str_msg, List<string[]> arr2_values, string[] str_orgid)
         {
-            string[] arr_condition = { "signinDate" };
+            string[] arr_condition = { "signinDate" , "signinseq" };
             return UpdateBseDir(out str_msg, arr2_values, str_orgid, "t_pro_SchedulMain", arr_condition, "mainid");
         }
         /// <summary>
