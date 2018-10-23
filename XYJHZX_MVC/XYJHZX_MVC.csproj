@@ -50,6 +50,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClassLib">
+      <HintPath>..\..\DrugStoreSystem_New\DrugStoreSystem_New\bin\Debug\ClassLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ClientGetDateSvr">
+      <HintPath>..\..\DrugStoreSystem_New\DrugStoreSystem_New\bin\Debug\ClientGetDateSvr.dll</HintPath>
+    </Reference>
+    <Reference Include="ControlCalss">
+      <HintPath>..\..\DrugStoreSystem_New\DrugStoreSystem_New\bin\Debug\ControlCalss.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -232,6 +241,7 @@
     <Compile Include="Lib\IBaseClass.cs" />
     <Compile Include="Lib\IDataCon.cs" />
     <Compile Include="Lib\IXmlOper.cs" />
+    <Compile Include="Lib\OraCon.cs" />
     <Compile Include="Lib\XmlOper.cs" />
     <Compile Include="Models\CurrentSchedulModels.cs" />
     <Compile Include="Models\MacGroupModels.cs" />
@@ -252,10 +262,18 @@
     <Content Include="Lib\Res\Config.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Lib\Res\Dewlt.dll" />
-    <Content Include="Lib\Res\IdrControl.ocx" />
-    <Content Include="Lib\Res\SavePhoto.dll" />
-    <Content Include="Lib\Res\wltrs.dll" />
+    <Content Include="Lib\Res\Dewlt.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\Res\IdrControl.ocx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\Res\SavePhoto.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\Res\wltrs.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resourse\My97DatePicker\calendar.js" />
     <Content Include="Resourse\My97DatePicker\lang\en.js" />
     <Content Include="Resourse\My97DatePicker\lang\zh-cn.js" />
@@ -274,6 +292,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Lib\Res\DB_XYJHZX.db" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -284,6 +303,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\judge.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -314,6 +334,7 @@
     <Content Include="Views\Schedul\SchedulPrintWeight.cshtml" />
     <Content Include="Views\Schedul\SchedulSignIn.cshtml" />
     <Content Include="Views\Schedul\SchedulSignInView.cshtml" />
+    <Content Include="Views\Patient\TestView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

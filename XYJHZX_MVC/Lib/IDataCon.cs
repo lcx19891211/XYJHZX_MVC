@@ -53,6 +53,8 @@ namespace XYJHZX_MVC.Lib
 
         bool SelMaxCurrentSeq(out string str_msg, out DataSet _ResultData, string[] arr_condition);
 
+        bool SelPayPatient(out string str_msg, out DataSet _ResultData);
+
         bool UpdateGroup(out string str_msg, List<string[]> arr2_values, string[] str_orgid);
 
         bool UpdateMachine(out string str_msg, List<string[]> arr2_values, string[] str_orgid);

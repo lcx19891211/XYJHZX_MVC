@@ -9,26 +9,26 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script src="~/Scripts/jquery-1.10.2.js"></script>
-    <script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/judge.js"></script>
 </head>
-<body style="background-color:#FFCC99;">
+<body style="background-color:#FFCC99;overflow-y:hidden;">
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#FFCC99">
-        <div class="container">
+        <div class="container" style="font-family:'Microsoft YaHei UI';font-size:16px;color:#336699">
             <div class="navbar-header">
-                <div id="DivTitle" class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:30px;color:#FFFFFF;">血液净化中心</div>
+                <div class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:30px;color:#336699;">血液净化中心 - 请将身份证放在读卡器上等待3秒</div>
+                <div id="DivTitle"></div>
             </div>
         </div>
     </div>
-    <div id="divTableShow" class="container body-content" style="background-color:#FFFFCC;">
+    <div id="divTableShow" class="container body-content" style="background-color:#FFFFCC;margin-top:20px">
         @{Html.RenderAction("SchedulSignInView", "Schedul", new { SchedulDate = str_SchedulDate, GroupId = str_GroupId, SchedulTime = str_SchedulTime });}
     </div>
-    <div style="display:block"><input id="txt_IDCard" onchange="SignIn();" /></div>
+    <div style="display:none"><input id="txt_IDCard" onchange="SignIn();" /></div>
     <object classid="clsid:5EB842AE-5C49-4FD8-8CE9-77D4AF9FD4FF" id="IdrControl1" style="display:none;" />
 </body>
 
 <script type="text/javascript">
     function SignIn() {
-        isReading = true;
         $.ajax({
             type: "post",
             url: "/Schedul/SignInIDCard",
@@ -40,17 +40,17 @@
             async: true,
             traditional: false,
             success: function (data) {
-                alert("签到成功！");
+                divFadeAlert("签到成功！");
                 location.reload(true);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("签到失败：" + errorThrown);
+                divFadeAlert("签到失败：" + errorThrown);
             }
         });
     }
     function updateTime() {
         var timestamp = new Date();
-        document.getElementById("DivTitle").innerText = '血液净化中心 - ' + timestamp.toLocaleString();
+        document.getElementById("DivTitle").innerText = timestamp.toLocaleString();
     }
     function refresh() {
         location.reload(true);
@@ -70,154 +70,55 @@
         var table = document.getElementById("SchedulSignInViews");
         change(table);
     }
-    setInterval('tableInterval()', 3000);
-    setInterval(refresh, 12000);
     updateTime();
     setInterval(updateTime, 1000);
-    setInterval(Idcard, 1000);
-    var isReading = true;
-    var PortOpened = 0;
-    var CpuCardFound = 0;
+    setInterval('tableInterval()', 3000);
+    setInterval(refresh, 12000);
+
     function Idcard() {
-        var result;
-        var cardsn;
-        if (isReading)
-            return;
-        try {
-            isReading = true;
-            var ax = new ActiveXObject("IDRCONTROL.IdrControlCtrl.1");
-            //    alert("已安装");
-        }
-        catch (e) {
-            alert("控件未安装");
-            isReading = false;
-        }
+        var id = 'txt_IDCard';
 
-        //注意：第一个参数为对应的设备端口，USB型为1001，串口型为1至16
-        result = IdrControl1.ReadCard("2", "d:\\test\\test.jpg");
-        //	result=IdrControl1.ReadCard("1001","");
-        if (result == 1) {
-            //document.all.oTable.rows(2).cells(1).innerText = IdrControl1.GetName();
-            //document.all.oTable.rows(3).cells(1).innerText = IdrControl1.GetFolk();
-            //document.all.oTable.rows(4).cells(1).innerText = IdrControl1.GetSex();
-            //document.all.oTable.rows(5).cells(1).innerText = IdrControl1.GetBirthYear() + "年" + IdrControl1.GetBirthMonth() + "月" + IdrControl1.GetBirthDay() + "日";
-            cardsn = IdrControl1.GetCode();
-            //document.all.oTable.rows(6).cells(1).innerText = cardsn;
-            //document.all.oTable.rows(7).cells(1).innerText = IdrControl1.GetAddress();
-            //document.all.oTable.rows(8).cells(1).innerText = IdrControl1.GetAgency();
-            //document.all.oTable.rows(9).cells(1).innerText = IdrControl1.GetValid();
-            //document.all.oTable.rows(10).cells(1).innerText = IdrControl1.GetCardPhotobuf();
-            //document.all.oTable.rows(11).cells(1).innerText = IdrControl1.GetSAMID();
-            //document.all.oTable.rows(12).cells(1).innerText = IdrControl1.GetIDCardSN();
-            $('#txt_IDCard').val(cardsn + "");
+        IdrControl1.InitComm("1001");
 
-            //document.all.notbook.src = "pic.htm";
 
-            //alert(IdrControl1.GetSexN());
-            //alert(IdrControl1.GetFolkN());
 
-            isReading = false;
-        }
-        else {
-            if (result == -1)
-                alert("端口初始化失败！");
-            if (result == -2)
-                alert("请重新将卡片放到读卡器上！");
-            if (result == -3)
-                alert("读取数据失败！");
-            if (result == -4)
-                alert("生成照片文件失败，请检查设定路径和磁盘空间！");
-            isReading = false;
-        }
-    }
+        if (IdrControl1.Authenticate() == 1) {
 
-    function ICcard() {
-        var result;
+            var result;
+            result = IdrControl1.ReadCard("1001", "");
 
-        //注意：参数为对应的设备端口，iDR210为8159，iDR200 USB型为1001，iDR200串口型为1至16
-        result = IdrControl1.ReadICCard("8159");
-        if (result == 1) {
-            $('#txt_IDCard').val(IdrControl1.GetICCardSN()+'');
-        }
-        else {
-            if (result == -1)
-                alert("端口初始化失败！");
-            if (result == -2)
-                alert("读IC卡失败");
+            if (result == 1) {
+
+                document.getElementById(id).value = IdrControl1.GetCode();
+
+                IdrControl1.CloseComm();
+
+            } else {
+                if (result == -1)
+                    divFadeAlert("端口初始化失败！");
+                if (result == -2)
+                    divFadeAlert("请重新将卡片放到读卡器上！");
+                if (result == -3)
+                    divFadeAlert("读取数据失败！");
+                if (result == -4)
+                    divFadeAlert("生成照片文件失败，请检查设定路径和磁盘空间！");
+            }
         }
     }
 
 
-    function Picflesh() {
-        document.all.notbook.src = "pic.htm";
+    //window.setTimeout(Idcard, 5000);
+    window.setInterval(Idcard, 3000);     //测试通过  可以使用
+
+    function divFadeAlert(obj) {
+        var hidvalue_str = obj;
+        var divWidth = 150;
+        var divHeight = 150;
+        var iLeft = ($(window).width() - divWidth) / 2;
+        var iTop = ($(window).height() - divHeight) / 2 + $(document).scrollTop();
+        var divhtml = $("<div>" + hidvalue_str + "</div>").css({
+            position: 'absolute', top: iTop + 'px', left: iLeft + 'px', display: 'none', width: divWidth + 'px', height: divHeight + 'px', 'background-color': '#FFFFFF', 'font-family': 'Microsoft YaHei UI', 'font-size': '30px' });
+        divhtml.appendTo('body').fadeIn();
+        divhtml.appendTo('body').fadeOut(3000);
     }
-
-    function FindCPUCard() {
-        PortOpened = IdrControl1.InitComm(1001);
-        CpuCardFound = 0;
-        if (PortOpened != 1) {
-
-            IdrControl1.CloseComm();
-            alert("端口初始化失败！");
-            PortOpened = 0;
-            return;
-        }
-
-
-        CpuCardFound = IdrControl1.FindICCard();
-        //document.all.oTable.rows(14).cells(1).innerText = "找到卡类型：" + CpuCardFound;
-
-        if (CpuCardFound0 == 0) {
-            IdrControl1.CloseComm();
-            alert("未找到卡！");
-            CpuCardFound = 0;
-            return;
-        }
-        if (CpuCardFound0 > 3) {
-            IdrControl1.CloseComm();
-            alert("找卡失败！");
-            CpuCardFound = 0;
-            return;
-        }
-    }
-
-    function ReadSDCard() {
-        if (CpuCardFound != 2) {
-            alert("请先找CPU卡！");
-            CpuCardFound = 0;
-            return;
-        }
-
-        result = IdrControl1.ReadCitizenCard();
-
-        if (result == 1) {
-            //document.all.oTable.rows(16).cells(1).innerText = IdrControl1.GetCityCardNO();
-            //document.all.oTable.rows(17).cells(1).innerText = IdrControl1.GetCityCardName();
-            //document.all.oTable.rows(18).cells(1).innerText = IdrControl1.GetCityCardIDType();
-            //document.all.oTable.rows(19).cells(1).innerText = IdrControl1.GetCityCardIDCode();
-            //document.all.oTable.rows(20).cells(1).innerText = IdrControl1.GetCityCardAppInfo();
-        }
-        else
-            if (result == -1)
-                alert("端口初始化失败！");
-        if (result == -2)
-            alert("找CPU卡失败！");
-        if (result == -3)
-            alert("读市民卡失败！");
-    }
-
-    function APDU_CMD() {
-        if (CpuCardFound != 2) {
-            alert("请先找CPU卡！");
-            CpuCardFound = 0;
-            return;
-        }
-
-        //alert(document.form1.apdustr.value);
-        //document.all.oTable.rows(22).cells(1).innerText = IdrControl1.Routon_APDU(document.form1.apdustr.value);
-
-    }
-
-
-
 </script>

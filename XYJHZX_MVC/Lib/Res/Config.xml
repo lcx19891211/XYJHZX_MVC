@@ -5,4 +5,8 @@
     <ServerPath>DB_XYJHZX.db</ServerPath>
     <DataBaseName>DB_XYJHZX</DataBaseName>
   </Connect1>
+  <Connect2>
+    <SqlType>ORACLE126</SqlType>
+    <ServerAdr>http://200.10.6.250:9999/Servers.svc</ServerAdr>
+  </Connect2>
 </Servers>

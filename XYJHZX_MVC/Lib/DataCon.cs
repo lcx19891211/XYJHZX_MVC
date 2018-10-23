@@ -810,6 +810,18 @@ namespace XYJHZX_MVC.Lib
             }
         }
 
+        /// <summary>
+        /// 获取透析缴费病人（未实现）
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <returns></returns>
+        public bool SelPayPatient(out string str_msg, out DataSet _ResultData)
+        {
+            str_msg = "";
+            _ResultData = null;
+            return false;
+        }
         #endregion
 
         #region ======insert======

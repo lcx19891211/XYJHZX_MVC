@@ -1,38 +1,118 @@
-﻿<script type="text/javascript">
-    function ImpPatInf() {
+﻿@{ 
+    Layout = null;
+}
 
-    }
-    function SelectPatInf() {
-        //$("#txt_PatName").val('yes');
-        $.ajax({
-            type: "post",
-            url: "/Patient/GetSelectPatient",
-            data: { "condition": $('#txt_PatName').val() },
-            //dataType: "json",
-            async: true,
-            traditional: false,
-            beforeSend: function () {
-                $('#PatDiv').empty().append("<h2>数据加载中。。。</h2>");
-            },
-            success: function (data) {
-                $('#PatDiv').empty().append(data);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("加载失败：" + errorThrown);
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>佛山市第二人民医院 - 血液净化中心 - @ViewBag.Title </title>
+
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.4.4.min.js"></script>
+    <script src="~/Scripts/jquery.jqprint-0.3.js"></script>
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/respond.js"></script>
+    <script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/judge.js"></script>
+    <script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+
+</head>
+<body style="background-color:#99CCFF;">
+    <style type="text/css">
+        ul li {
+            list-style: none;
+            padding: 0; /* 将默认的内边距去掉 */
+            margin: 2px 8px 2px 2px; /* 将默认的外边距去掉 */
+            float: left; /* 往左浮动 */
+        }
+    </style>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#6699CC">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:30px;color:#FFFFFF;">血液净化中心</div>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/MacGroup/Config">区域维护</a></li>
+                    <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/Patient/PatientManage">病人维护</a></li>
+                    <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/Schedul/SchedulConfig">检查排队</a></li>
+                    <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/CurrentSchedul/CurrentManage">视图管理</a></li>
+                    <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/Schedul/SchedulExplorer" target="_blank">表格打印</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+    <div class="container body-content" style="background-color:#99CCFF;">
+
+        <script type="text/javascript">
+            ///导入缴费病人信息
+            function ImpPatInf() {
+                $.ajax({
+                    type: "post",
+                    url: "/Patient/GetPayPateint",
+                    async: true,
+                    beforeSend: function () {
+                        $('#PatDiv').empty().append("<h2>数据加载中。。。</h2>");
+                    },
+                    success: function (data) {
+                        $('#PatDiv').empty().append(data);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("加载失败：" + errorThrown);
+                    }
+                });
             }
-        });
-    }
-</script>
+            ///查询病人信息
+            function SelectPatInf() {
+                $.ajax({
+                    type: "post",
+                    url: "/Patient/GetSelectPatient",
+                    data: { "condition": $('#txt_PatName').val() },
+                    async: true,
+                    traditional: false,
+                    beforeSend: function () {
+                        $('#PatDiv').empty().append("<h2>数据加载中。。。</h2>");
+                    },
+                    success: function (data) {
+                        $('#PatDiv').empty().append(data);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("加载失败：" + errorThrown);
+                    }
+                });
+            }
+        </script>
 
-<div>
-    <ul>
-        <li><input id="btn_PatImp" class="btn-success" type="submit" value="导入已缴费病人资料" onclick="ImpPatInf()" style="margin:3px 20px 0 0;" /></li>
-        <li><label id="lab_PatName" class="form-control-static">姓名/卡号:</label></li>
-        <li><input id="txt_PatName" type="text" class="form-control" style="width:180px" value="" /></li>
-        <li><input id="btn_PatSelect" class="btn-info" type="submit" value="查 询" onclick="SelectPatInf()" style="margin:3px 20px 0 0;" /></li>
-    </ul>
-</div>
-<br />
-<div id="PatDiv" style="overflow:scroll;height:800px;clear:both; margin:4px 0 4px 0">
-    @{Html.RenderAction("GetPatient");}
-</div>
+        <div>
+            <ul>
+                <li><input id="btn_PatImp" class="btn-success" type="submit" value="导入已缴费病人资料" onclick="ImpPatInf()" style="margin:3px 20px 0 0;" /></li>
+                <li><label id="lab_PatName" class="form-control-static">姓名/卡号:</label></li>
+                <li><input id="txt_PatName" type="text" class="form-control" style="width:180px" value="" /></li>
+                <li><input id="btn_PatSelect" class="btn-info" type="submit" value="查 询" onclick="SelectPatInf()" style="margin:3px 20px 0 0;" /></li>
+            </ul>
+        </div>
+        <br />
+        <div id="PatDiv" style="overflow:scroll;height:800px;clear:both; margin:4px 0 4px 0">
+            @{Html.RenderAction("GetPatient");}
+        </div>
+
+        <div style="clear:both;"></div>
+
+        <br />
+        <hr />
+        <div class="clearfix">
+            <footer>
+                <p>&copy; @DateTime.Now.Year - 佛山市第二人民医院</p>
+            </footer>
+        </div>
+    </div>
+
+</body>
+</html>

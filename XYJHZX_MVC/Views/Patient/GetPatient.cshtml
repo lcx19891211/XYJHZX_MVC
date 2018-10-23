@@ -18,22 +18,26 @@
 <script type="text/javascript">
     var DataCounts = @DateCounts;
 
+    ///修改病人
     function EditPatientRows(obj) {
         var x = "PatientChange_" + obj;
         document.getElementById(x).value = "1";
     }
 
+    ///删除已登记病人
     function DeletePatientRows(obj) {
         $('#PatientRows_' + obj).hide();
         var x = "PatientChange_" + obj
         document.getElementById(x).value = "-1";
     }
 
+    ///删除新病人
     function DeleteNewPatientRows(obj) {
         var index = obj;
         $("#PatientRows_" + index).remove();
     }
-    
+
+    ///增加新病人
     function AddPatientRows() {
         DataCounts = DataCounts + 1;
         var indexInt = DataCounts;
@@ -80,19 +84,13 @@
         document.getElementById("PatientAdd_" + (indexInt - 1)).style.display = "none";
         document.getElementById("PatientDel_" + (indexInt - 1)).style.display = "block";
     }
-
-
-
-
+    
+    ///保存登记病人
     function SavePatientRows() {
-
         var _PatList = {};
-
         var trIndex = 0;
         var msg = "";
         $("#@Keyid tr:gt(0)").each(function () {
-
-
             var tr = $(this);
             var PatName = tr.children("td").eq(1).children("input").eq(0);
             var PatSex = tr.children("td").eq(2).children("select").eq(0);
@@ -162,6 +160,8 @@
             }
         });
     }
+
+
 </script>
 
 <div id="PatDiv">
@@ -199,7 +199,7 @@
                     <td>@Html.TextBox("Remark_" + i, Dates[i].Remark, new { @class = "form-control", style = "width:180px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
                     <td style="display:none"><input id="PatId_@(i)" name="PatId_@(i)" value="@Dates[i].PatId" /></td>
                     <td style="display:none"><input id="SendDeptId_@(i)" name="SendDeptId_@(i)" value="@Dates[i].SendDeptId" /></td>
-                    <td style="display:none"><input id="PatientChange_@(i)" name="PatientChange_@(DateCounts)" value="0" /></td>
+                    <td style="display:none"><input id="PatientChange_@(i)" name="PatientChange_@(DateCounts)" value="@Dates[i].IsRead" /></td>
                 </tr>
             }
         }

@@ -13,13 +13,29 @@ namespace XYJHZX_MVC.Controllers
     public class PatientController : Controller
     {
         IDataCon IPatCon = new DataCon();
+        IDataCon IPatOraCon = new OraCon();
         string str_msg = "";
         // GET: Patient
         public ActionResult PatientManage()
         {
             return View();
         }
-
+        /// <summary>
+        /// 测试用
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TestView()
+        {
+            IPatCon.ConInit(out str_msg);
+            DataSet ds = new DataSet();
+            IPatCon.SelDateTimeSplit(out str_msg, out ds);
+            ViewBag.Message = str_msg;
+            return View();
+        }
+        /// <summary>
+        /// 获取已登记病人信息
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GetPatient()
         {
             DataSet _PatData = new DataSet();
@@ -39,7 +55,85 @@ namespace XYJHZX_MVC.Controllers
                 return View();
             }
         }
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult GetPayPateint()
+        {
+            try
+            {
+                DataSet _PatData = new DataSet();
+                if (!IPatCon.ConInit(out str_msg) || !IPatCon.SelPatInformation(out str_msg, out _PatData, string.Empty))
+                {
+                    ViewBag.Message = str_msg;
+                    ViewBag.PatientDate = null;
+                    return View();
+                }
+                else
+                {
+                    var _PatTable = _PatData.Tables[0];
+                    var arr_PatModel = Convert<PatientModel>.ConvertToList(_PatTable);
+                    List<PatientModel> arr_patients = arr_PatModel.ToList<PatientModel>();
+                    if(IPatOraCon.ConInit(out str_msg))
+                    {
+                        DataSet _dataSet = new DataSet();
+                        if (IPatOraCon.SelPayPatient(out str_msg, out _dataSet))
+                        {
+                            DataTable _dataTable = _dataSet.Tables[0];
+                            for (int i = 0; i < _dataTable.Rows.Count; i++)
+                            {
+                                bool isNewPat = true;
+                                PatientModel _patientModel = new PatientModel();
+                                _patientModel.PatName = _dataTable.Rows[i]["病人姓名"] + "";
+                                _patientModel.PatIdCardNo = _dataTable.Rows[i]["身份证"] + "";
+                                _patientModel.PatOutCardNo = _dataTable.Rows[i]["卡号"] + "";
+                                _patientModel.PatSex = _dataTable.Rows[i]["性别"] + "";
+                                _patientModel.SendDeptName = _dataTable.Rows[i]["开方科室"] + "";
+                                _patientModel.TelphoneNo = _dataTable.Rows[i]["电话"] + "";
+                                _patientModel.PaymentDate = _dataTable.Rows[i]["日期"] + "";
+                                _patientModel.PatBrithday = _dataTable.Rows[i]["出生日期"] + "";
+                                DateTime _briDateTime = DateTime.Parse(_patientModel.PatBrithday);
+                                DateTime _payDateTime = DateTime.Parse(_patientModel.PaymentDate);
+                                _patientModel.PatAge = Convert.ToInt32(((_payDateTime - _briDateTime).TotalDays / 365));
+                                _patientModel.IsRead = 1;
+                                for (int j = 0;j<arr_patients.Count;j++)
+                                {
+                                    if(arr_patients[j].PatIdCardNo == _patientModel.PatIdCardNo)
+                                    {
+                                        isNewPat = false;
+                                        break;
+                                    }
+                                }
+                                if(isNewPat)
+                                {
+                                    arr_patients.Add(_patientModel);
+                                }
+                            }
+                            ViewBag.PatientDate = arr_patients;
+                            PartialViewResult x = PartialView("/Views/Patient/GetPatient.cshtml");
+                            return x;
+                        }
+                        else
+                            throw new Exception(str_msg);
+                    }
+                    else
+                    {
+                        throw new Exception(str_msg);
+                    }
 
+
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 获取指定条件已登记病人
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns></returns>
         [HttpPost]
         [HandlerAjaxOnly]
         public ActionResult GetSelectPatient(string condition)
@@ -68,7 +162,11 @@ namespace XYJHZX_MVC.Controllers
                 throw ex;
             }
         }
-
+        /// <summary>
+        /// 保存病人信息
+        /// </summary>
+        /// <param name="_patList"></param>
+        /// <returns></returns>
         [HttpPost]
         [HandlerAjaxOnly]
         public ActionResult SetPatient(List<PatientModel> _patList)
@@ -81,7 +179,6 @@ namespace XYJHZX_MVC.Controllers
                 List<string> arr_updateid = new List<string>();
                 List<string[]> arr2_insertValues = new List<string[]>();
                 List<string[]> arr2_Status = new List<string[]>();
-                arr2_Status.Add(new string[] { "0" });
                 if (IPatCon.ConInit(out str_msg))
                 {
                     foreach (PatientModel _patModel in _patList)
@@ -120,6 +217,7 @@ namespace XYJHZX_MVC.Controllers
                                 break;
                             case -1:
                                 arr_dropid.Add(_patModel.PatId.ToString());
+                                arr2_Status.Add(new string[] { "0" });
                                 break;
                             default: break;
                         }
