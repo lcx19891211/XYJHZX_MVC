@@ -10,9 +10,7 @@ namespace XYJHZX_MVC.Lib
 {
     public class DataCon : IDataCon
     {
-        private string str_username = ""; //服务器连接用户名
         private string str_password = ""; //服务器连接密码
-        private string str_dbname = ""; //服务器连接数据库名称
         private string str_svrpath = ""; //服务器地址
         private string str_sqlCon = "";//连接字符串
         private SQLiteConnection _sqlCon;//Sqlite连接实例
@@ -298,9 +296,14 @@ namespace XYJHZX_MVC.Lib
         /// <param name="str_msg"></param>
         /// <param name="_ResultData"></param>
         /// <returns></returns>
-        public bool SelSchedulColumnDetail(out string str_msg, out DataSet _ResultData)
+        public bool SelSchedulColumnDetail(out string str_msg, out DataSet _ResultData, string str_colMainId)
         {
             string str_sql = "select * from t_bse_SchedulColumnDetail where status = 1";
+            if(!string.IsNullOrEmpty(str_colMainId))
+            {
+                string str_condition = string.Format(" and colMainId = {0} ", str_colMainId.Trim());
+                str_sql += str_condition;
+            }
             _ResultData = new DataSet();
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
@@ -376,7 +379,7 @@ namespace XYJHZX_MVC.Lib
             }
         }
         /// <summary>
-        /// 查询项目填写类型
+        /// 查询字段类型
         /// </summary>
         /// <param name="str_msg"></param>
         /// <param name="_ResultData"></param>

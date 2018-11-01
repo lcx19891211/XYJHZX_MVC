@@ -157,7 +157,12 @@ namespace XYJHZX_MVC.Models
             ViewBag.SchedulDate = arr2_schedulPrints;
             return PartialView("/Views/Schedul/SchedulSignInView.cshtml");
         }
-
+        /// <summary>
+        /// 根据身份证号签到
+        /// </summary>
+        /// <param name="IDCard"></param>
+        /// <param name="GroupId"></param>
+        /// <returns></returns>
         [HttpPost]
         [HandlerAjaxOnly]
         public ActionResult SignInIDCard(string IDCard, string GroupId)
@@ -202,7 +207,7 @@ namespace XYJHZX_MVC.Models
             arr_Patient.Insert(0, _patientModelEmpty);
             ViewBag.PatientListDate = arr_Patient;
 
-            List<SchedulColumns> arr_schedulColumns = _GetData.GetSchedul2Columns(out str_msg);
+            List<SchedulColumns> arr_schedulColumns = _GetData.GetSchedulColumns(out str_msg, 2);
             ViewBag.SchedulColumnsDate = arr_schedulColumns;
             
             ViewBag.SchedulDate = _GetData.SchedulInitTable(out str_msg, GroupId.ToString(), DateTime.Now.ToString("yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo),"上午");
@@ -245,7 +250,7 @@ namespace XYJHZX_MVC.Models
                     arr_Patient.Insert(0, _patientModelEmpty);
                     ViewBag.PatientListDate = arr_Patient;
 
-                    List<SchedulColumns> arr_schedulColumns = _GetData.GetSchedul2Columns(out str_msg);
+                    List<SchedulColumns> arr_schedulColumns = _GetData.GetSchedulColumns(out str_msg, 2);
                     ViewBag.SchedulColumnsDate = arr_schedulColumns;
                     
                     PartialViewResult x = PartialView("/Views/Schedul/GetNewSchedul.cshtml");
@@ -346,7 +351,7 @@ namespace XYJHZX_MVC.Models
                 arr_Patient.Insert(0, _patientModelEmpty);
                 ViewBag.PatientListDate = arr_Patient;
 
-                List<SchedulColumns> arr_schedulColumns = _GetData.GetSchedul2Columns(out str_msg);
+                List<SchedulColumns> arr_schedulColumns = _GetData.GetSchedulColumns(out str_msg, 2);
                 ViewBag.SchedulColumnsDate = arr_schedulColumns;
                 
                 PartialViewResult _partialViewResult = PartialView("/Views/Schedul/GetNewSchedul.cshtml");

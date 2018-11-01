@@ -1,7 +1,5 @@
 ﻿@{
     Layout = null;
-    var GroupList = ViewBag.GroupDate;
-    var TeamList = ViewBag.TeamDate;
 }
 
 <!DOCTYPE html>
@@ -17,9 +15,9 @@
     <script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="~/Scripts/jquery-1.4.4.min.js"></script>
     <script src="~/Scripts/jquery.jqprint-0.3.js"></script>
-    <script src="/Scripts/modernizr-2.6.2.js"></script>
-    <script src="/Scripts/bootstrap.js"></script>
-    <script src="/Scripts/respond.js"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/respond.js"></script>
     <script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
     <script src="~/Scripts/judge.js"></script>
     <script src="~/Scripts/jquery-migrate-1.2.1.min.js"></script>
@@ -52,29 +50,32 @@
     </div>
     <div style="clear:both;"></div>
     <div class="container body-content" style="background-color:#99CCFF;">
-        <script type="text/javascript">
-            function Redirect() {
 
-                window.location.href = '/MacGroup/Config/' + $("#DropDownGroupList option:selected").val() + '/' + $("#DropDownTeamList option:selected").val();
-            }
-        </script>
+        <div class="pull-left">
+            <div>
+                <div>
+                    <ul>
+                        <li></li>
+                    </ul>
+                </div>
+                <div id="TitleDiv" style="width:550px;height:700px;overflow-y:scroll;">
+                    @{Html.RenderAction("Titles", "SchedulItem");}
+                </div>
 
-        <h2>@ViewBag.Title</h2>
-        <h3>分组维护</h3>
-        <div class="GroupView" style="overflow:scroll;width:800px;height:400px;">@{Html.RenderAction("GetGroup");}</div>
-        <div>
-            <h3>分区维护 - </h3> @Html.DropDownList("DropDownGroupList", GroupList as List<SelectListItem>
-, new { @ID = "DropDownGroupList", @class = "form-control", @style = "width:180px; margin:2mm 0cm 3mm 0cm;", @onchange = "Redirect()" })
+            </div>
         </div>
-        <div class="TeamView" style="overflow:scroll;width:800px;height:400px;">@{Html.RenderAction("GetTeam");}</div>
-        <div>
-            <h3>机位维护</h3>@Html.DropDownList("DropDownTeamList", TeamList as List<SelectListItem>
-, new { @ID = "DropDownTeamList", @class = "form-control", @style = "width:180px; margin:2mm 0cm 3mm 0cm;", @onchange = "Redirect()" })
+        <div class="pull-right">
+            <div>
+                <ul>
+                    <li></li>
+                </ul>
+            </div>
+            <div id="ItemsDev" style="width:550px;height:700px;overflow-y:scroll;">
+                @{Html.RenderAction("Items", "SchedulItem");}
+            </div>
         </div>
-        <div class="MachineView" style="overflow:scroll;width:800px;height:400px;">@{Html.RenderAction("GetMachine");}</div>
 
         <div style="clear:both;"></div>
-
         <br />
         <hr />
         <div class="clearfix">

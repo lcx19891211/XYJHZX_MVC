@@ -5,14 +5,14 @@
 
     List<XYJHZX_MVC.Models.SchedulShowModel> Dates = ViewBag.SchedulDate;
 }
-<div style="overflow:scroll;width:580px;height:700px;">
+<div style="overflow:scroll;width:450px;height:700px;">
     <table id="@Keyid" class="table table-striped table-bordered">
         <tr>
             <td><div style="width:30px;">机号</div></td>
             <td><div style="width:60px;">姓名</div></td>
             <td><div style="width:60px;">透析器</div></td>
             <td><div style="width:60px;">路径</div></td>
-            <td><div style="width:120px;">抗凝剂</div></td>
+            <td><div style="width:60px;">抗凝剂</div></td>
             <td><div style="width:120px;">备注</div></td>
         </tr>
         @if (Dates != null)

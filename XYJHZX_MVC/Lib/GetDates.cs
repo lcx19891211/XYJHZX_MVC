@@ -13,14 +13,21 @@ namespace XYJHZX_MVC.Lib
     public class GetData
     {
         IDataCon _con = new DataCon();
-
+        /// <summary>
+        /// 返回检查排队列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="str_GroupId"></param>
+        /// <param name="str_SchedulDate"></param>
+        /// <param name="str_SchedulTime"></param>
+        /// <returns></returns>
         public List<SchedulShowModel> SchedulInitTable(out string str_msg, string str_GroupId, string str_SchedulDate, string str_SchedulTime)
         {
             List<SchedulShowModel> arr_schedulShow = new List<SchedulShowModel>();
-            DataSet _DataCollect = new DataSet();
-            if (_con.ConInit(out str_msg) && _con.SelGroupDetail(out str_msg, out _DataCollect))
+            DataSet _DataSet = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelGroupDetail(out str_msg, out _DataSet))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     if (_table.Rows[i]["groupid"] + "" == str_GroupId)
@@ -31,7 +38,7 @@ namespace XYJHZX_MVC.Lib
                         arr_schedulShow.Add(_SchedulShowModel);
                     }
                 }
-                _DataCollect = null;
+                _DataSet = null;
             }
             else
                 return null;
@@ -68,13 +75,18 @@ namespace XYJHZX_MVC.Lib
             return arr_schedulShow;
         }
 
+        /// <summary>
+        /// 获取分区列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <returns></returns>
         public List<GroupModel> GetGroupModel(out string str_msg)
         {
             List<GroupModel> arr_Group = new List<GroupModel>();
-            DataSet _DataCollect = new DataSet();
-            if (_con.ConInit(out str_msg) && _con.SelGroup(out str_msg, ref _DataCollect))
+            DataSet _DataSet = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelGroup(out str_msg, ref _DataSet))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     GroupModel _GroupModel = new GroupModel();
@@ -87,14 +99,18 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_Group;
         }
-
+        /// <summary>
+        /// 返回分组列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <returns></returns>
         public List<TeamModel> GetTeamModel(out string str_msg)
         {
             List<TeamModel> arr_Group = new List<TeamModel>();
-            DataSet _DataCollect = new DataSet();
-            if (_con.ConInit(out str_msg) && _con.SelTeam(out str_msg, ref _DataCollect))
+            DataSet _DataSet = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelTeam(out str_msg, ref _DataSet))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     TeamModel _TeamModel = new TeamModel();
@@ -107,15 +123,19 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_Group;
         }
-
+        /// <summary>
+        /// 返回病人列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <returns></returns>
         public List<PatientModel> GetPatientModels(out string str_msg)
         {
             List<PatientModel> arr_Patient = new List<PatientModel>();
 
-            DataSet _DataCollect = new DataSet();
-            if (_con.ConInit(out str_msg) && _con.SelPatInformation(out str_msg, out _DataCollect, string.Empty))
+            DataSet _DataSet = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelPatInformation(out str_msg, out _DataSet, string.Empty))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     PatientModel _patientModel = new PatientModel();
@@ -137,15 +157,22 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_Patient;
         }
-
+        /// <summary>
+        /// 返回检查打印列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="str_GroupId"></param>
+        /// <param name="str_SchedulDate"></param>
+        /// <param name="str_SchedulTime"></param>
+        /// <returns></returns>
         public List<SchedulPrint> GetSchedulPrint(out string str_msg, string str_GroupId, string str_SchedulDate, string str_SchedulTime)
         {
             List<SchedulPrint> arr_schedulPrints = new List<SchedulPrint>();
-            DataSet _DataCollect = new DataSet();
+            DataSet _DataSet = new DataSet();
             string[] arr_condition = { str_SchedulDate, str_SchedulTime, str_GroupId };
-            if (_con.ConInit(out str_msg) && _con.SelSchedul(out str_msg, ref _DataCollect, arr_condition))
+            if (_con.ConInit(out str_msg) && _con.SelSchedul(out str_msg, ref _DataSet, arr_condition))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     SchedulPrint _schedulPrint = new SchedulPrint();
@@ -174,15 +201,19 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_schedulPrints;
         }
-        
-        public List<SchedulColumns> GetSchedul2Columns(out string str_msg)
+        /// <summary>
+        /// 返回检查Columns列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <returns></returns>
+        public List<SchedulColumns> GetSchedulColumns(out string str_msg,int int_colType)
         {
             List<SchedulColumns> arr_SchedulColumns = new List<SchedulColumns>();
 
-            DataSet _DataCollect = new DataSet();
-            if (_con.ConInit(out str_msg) && _con.SelSchedulColumn(out str_msg, out _DataCollect, 2))
+            DataSet _DataSet = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelSchedulColumn(out str_msg, out _DataSet, int_colType))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     SchedulColumns _schedulColumns = new SchedulColumns();
@@ -197,15 +228,19 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_SchedulColumns;
         }
-
+        /// <summary>
+        /// 返回检查项目列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <returns></returns>
         public List<SchedulColumns> GetSchedul1Columns(out string str_msg)
         {
             List<SchedulColumns> arr_SchedulColumns = new List<SchedulColumns>();
 
-            DataSet _DataCollect = new DataSet();
-            if (_con.ConInit(out str_msg) && _con.SelSchedulColumn(out str_msg, out _DataCollect, 1))
+            DataSet _DataSet = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelSchedulColumn(out str_msg, out _DataSet, 1))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     SchedulColumns _schedulColumns = new SchedulColumns();
@@ -220,14 +255,18 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_SchedulColumns;
         }
-
+        /// <summary>
+        /// 返回时间段列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <returns></returns>
         public List<SplitDateModel> GetSplitDateModels(out string str_msg)
         {
             List<SplitDateModel> arr_splitDateModels = new List<SplitDateModel>();
-            DataSet _DataCollect = new DataSet();
-            if (_con.ConInit(out str_msg) && _con.SelDateTimeSplit(out str_msg, out _DataCollect))
+            DataSet _DataSet = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelDateTimeSplit(out str_msg, out _DataSet))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     SplitDateModel _splitDateModel = new SplitDateModel();
@@ -241,14 +280,20 @@ namespace XYJHZX_MVC.Lib
             }
             return arr_splitDateModels;
         }
-
+        /// <summary>
+        /// 返回当前时间检查排队列表
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="str_GroupId"></param>
+        /// <param name="str_TeamId"></param>
+        /// <returns></returns>
         public List<CurrentSchedulModel> GetCurrentSchedulModels(out string str_msg,string str_GroupId, string str_TeamId)
         {
             List<CurrentSchedulModel> arr_currentSchedulModels = new List<CurrentSchedulModel>();
-            DataSet _DataCollect = new DataSet();
-            if(_con.ConInit(out str_msg) && _con.SelGroupDetail(out str_msg,out _DataCollect))
+            DataSet _DataSet = new DataSet();
+            if(_con.ConInit(out str_msg) && _con.SelGroupDetail(out str_msg,out _DataSet))
             {
-                DataTable _table = _DataCollect.Tables[0];
+                DataTable _table = _DataSet.Tables[0];
                 for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     if (!string.IsNullOrEmpty(str_GroupId) && str_GroupId == _table.Rows[i]["GroupId"] + "" && ((string.IsNullOrEmpty(str_TeamId) || (!string.IsNullOrEmpty(str_TeamId) && str_TeamId == _table.Rows[i]["teamid"] + ""))))
@@ -263,7 +308,7 @@ namespace XYJHZX_MVC.Lib
                 }
             }
 
-            _DataCollect = new DataSet();
+            _DataSet = new DataSet();
             if (!string.IsNullOrEmpty(str_GroupId))
             {
                 List<string> arr_condition = new List<string>();
@@ -272,9 +317,9 @@ namespace XYJHZX_MVC.Lib
                 {
                     arr_condition.Add(str_TeamId);
                 }
-                if (_con.SelViewCurrentSchedul(out str_msg, out _DataCollect, arr_condition.ToArray()))
+                if (_con.SelViewCurrentSchedul(out str_msg, out _DataSet, arr_condition.ToArray()))
                 {
-                    DataTable _table = _DataCollect.Tables[0];
+                    DataTable _table = _DataSet.Tables[0];
                     for (int i = 0; i < _table.Rows.Count; i++)
                     {
                         for (int j = 0; j < arr_currentSchedulModels.Count(); j++)
@@ -337,6 +382,85 @@ namespace XYJHZX_MVC.Lib
             }
             else
                 return 1;
+        }
+
+
+        /// <summary>
+        /// 返回字段类型
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <returns></returns>
+        public List<SchedulColumnTypeModel> GetSchedulColumnType(out string str_msg)
+        {
+            List<SchedulColumnTypeModel> arr_schedulColumnTypeModels = new List<SchedulColumnTypeModel>();
+
+            DataSet _DataSet = new DataSet();
+            if (_con.ConInit(out str_msg) && _con.SelSchedulColumnType(out str_msg, out _DataSet))
+            {
+                DataTable _table = _DataSet.Tables[0];
+                for (int i = 0; i < _table.Rows.Count; i++)
+                {
+                    SchedulColumnTypeModel _schedulColumns = new SchedulColumnTypeModel();
+                    _schedulColumns.TypeSign = _table.Rows[i]["typeSign"] + "";
+                    _schedulColumns.TypeName = _table.Rows[i]["typeName"] + "";
+                    arr_schedulColumnTypeModels.Add(_schedulColumns);
+                }
+            }
+            return arr_schedulColumnTypeModels;
+        }
+
+        /// <summary>
+        /// 返回列标题
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <returns></returns>
+        public List<SchedulColumnMainModel> GetSchedulColumnMain(out string str_msg)
+        {
+            List<SchedulColumnMainModel> arr_schedulColumnMainModels = new List<SchedulColumnMainModel>();
+            DataSet _DataSet = new DataSet();
+            if(_con.ConInit(out str_msg)&&_con.SelSchedulColumnMain(out str_msg,out _DataSet))
+            {
+                DataTable _table = _DataSet.Tables[0];
+                for(int i=0;i<_table.Rows.Count;i++)
+                {
+                    SchedulColumnMainModel _schedulColumnMainModel = new SchedulColumnMainModel();
+                    _schedulColumnMainModel.ColMainId = int.Parse(_table.Rows[i]["colMainId"] + "");
+                    _schedulColumnMainModel.ColName = _table.Rows[i]["colName"] + "";
+                    _schedulColumnMainModel.ColType = int.Parse(_table.Rows[i]["colType"] + "");
+                    _schedulColumnMainModel.Desciption = _table.Rows[i]["desciption"] + "";
+                    _schedulColumnMainModel.Status = "0";
+                    arr_schedulColumnMainModels.Add(_schedulColumnMainModel);
+                }
+            }
+            return arr_schedulColumnMainModels;
+        }
+
+        /// <summary>
+        /// 返回可选值
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="str_colMainId"></param>
+        /// <returns></returns>
+        public List<SchedulColumnDetailModel> GetSchedulColumnDetail(out string str_msg,string str_colMainId)
+        {
+            List<SchedulColumnDetailModel> _schedulColumnDetailModels = new List<SchedulColumnDetailModel>();
+            DataSet _DataSet = new DataSet();
+            if(_con.ConInit(out str_msg)&&_con.SelSchedulColumnDetail(out str_msg,out _DataSet ,str_colMainId))
+            {
+                DataTable _table = _DataSet.Tables[0];
+                for(int i= 0;i<_table.Rows.Count;i++)
+                {
+                    SchedulColumnDetailModel _schedulColumnDetailModel = new SchedulColumnDetailModel();
+                    _schedulColumnDetailModel.ColDetailId = int.Parse(_table.Rows[i]["colDetailId"] + "");
+                    _schedulColumnDetailModel.ColDetailName = _table.Rows[i]["colDetailName"] + "";
+                    _schedulColumnDetailModel.ColMainId = int.Parse(_table.Rows[i]["colMainId"] + "");
+                    _schedulColumnDetailModel.Desciption = _table.Rows[i]["desciption"] + "";
+                    _schedulColumnDetailModel.Status = "0";
+                    _schedulColumnDetailModels.Add(_schedulColumnDetailModel);
+
+                }
+            }
+            return _schedulColumnDetailModels;
         }
     }
 }

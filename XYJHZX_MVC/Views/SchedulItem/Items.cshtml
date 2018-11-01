@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+    List<XYJHZX_MVC.Models.SchedulColumnDetailModel> DetailData = ViewBag.DetailData;
+
+    string Keyid = "ColumnDetail";
+}
+
+<script type="text/javascript">
+    function deleteDetail(obj) {
+        $('#TrDetail_' + obj).hide();
+        var x = "DetailStatus_" + obj
+        document.getElementById(x).value = "-1";
+    }
+    function EditColDetailRows(obj) {
+        var x = "MainStatus_" + obj
+        document.getElementById(x).value = "1";
+    }
+</script>
+@if (DetailData != null)
+{
+<table id="@Keyid" class="table table-striped table-bordered">
+
+    <tr>
+        <td></td>
+        <td>选项名称</td>
+        <td>选项描述</td>
+    </tr>
+    @for (int i = 0; i < DetailData.Count; i++)
+    {
+    <tr id="TrDetail_@i">
+        <td><input class="btn-info" type="button" value="删除" onclick="deleteDetail(@(i))" /></td>
+        <td style="display:none">@Html.TextBox("ColDetailId_" + i, DetailData[i].ColDetailId, new { @class = "form-control" })</td>
+        <td><div>@Html.TextBox("ColDetailName_" + i, DetailData[i].ColDetailName, new { @class = "form-control", @onchange = "EditColDetailRows(" + (i) + ")" })</div></td>
+        <td><div>@Html.TextBox("Desciption_" + i, DetailData[i].Desciption, new { @class = "form-control", @onchange = "EditColDetailRows(" + (i) + ")" })</div></td>
+        <td style="display:none"><div><input id="DetailStatus_@(i)" value="@DetailData[i].Status" /></div></td>
+        <td style="display:none"><div><input id="ColMainId_@(i)" value="@DetailData[i].ColMainId" /></div></td>
+    </tr>
+    }
+</table>
+}

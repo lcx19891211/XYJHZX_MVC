@@ -225,6 +225,7 @@
     <Compile Include="Controllers\CurrentSchedulController.cs" />
     <Compile Include="Controllers\MacGroupController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Controllers\SchedulItemController.cs" />
     <Compile Include="ExtendClass.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -247,6 +248,7 @@
     <Compile Include="Models\MacGroupModels.cs" />
     <Compile Include="Models\PatientModels.cs" />
     <Compile Include="Controllers\SchedulController.cs" />
+    <Compile Include="Models\SchedulColumnsModels.cs" />
     <Compile Include="Models\SchedulModels.cs" />
     <Compile Include="Models\SplitDateModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -294,6 +296,7 @@
     <Content Include="Lib\Res\DB_XYJHZX.db" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-migrate-1.2.1.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -335,6 +338,9 @@
     <Content Include="Views\Schedul\SchedulSignIn.cshtml" />
     <Content Include="Views\Schedul\SchedulSignInView.cshtml" />
     <Content Include="Views\Patient\TestView.cshtml" />
+    <Content Include="Views\SchedulItem\Config.cshtml" />
+    <Content Include="Views\SchedulItem\Items.cshtml" />
+    <Content Include="Views\SchedulItem\Titles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

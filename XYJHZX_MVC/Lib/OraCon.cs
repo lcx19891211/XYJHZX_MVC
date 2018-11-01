@@ -9,7 +9,6 @@ namespace XYJHZX_MVC.Lib
 
     public class OraCon : IDataCon
     {
-        string error = "";
         SvrInterface sif = new SvrInterface();
         IOAGetData proxy = null;
         private IXmlOper IXmlConfig = new XmlOper();//Xml设置接口
@@ -71,6 +70,7 @@ namespace XYJHZX_MVC.Lib
                 return false;
         }
 
+        #region 未实现接口函数
         public bool SetDBPwd(out string str_msg, string str_orgpassword, string str_newpassword) { str_msg = ""; return true; }
 
         public bool SelGroup(out string str_msg, ref DataSet _ResultData) { str_msg = ""; return true; }
@@ -85,7 +85,7 @@ namespace XYJHZX_MVC.Lib
 
         public bool SelSchedul(out string str_msg, ref DataSet _ResultData, string[] condition) { str_msg = ""; return true; }
 
-        public bool SelSchedulColumnDetail(out string str_msg, out DataSet _ResultData) { str_msg = ""; _ResultData = null; return true; }
+        public bool SelSchedulColumnDetail(out string str_msg, out DataSet _ResultData, string str_colMainId) { str_msg = ""; _ResultData = null; return true; }
 
         public bool SelSchedulColumnMain(out string str_msg, out DataSet _ResultData) { str_msg = ""; _ResultData = null; return true; }
 
@@ -172,5 +172,6 @@ namespace XYJHZX_MVC.Lib
         public bool DeleteMachineWithTeam(out string str_msg, string[] arr_pkid) { str_msg = ""; return true; }
 
         public bool DeleteTeamWithGroup(out string str_msg, string[] arr_pkid) { str_msg = ""; return true; }
+        #endregion
     }
 }

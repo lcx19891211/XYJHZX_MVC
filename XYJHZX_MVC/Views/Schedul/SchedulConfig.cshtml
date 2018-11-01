@@ -33,7 +33,7 @@
     <script src="/Scripts/respond.js"></script>
     <script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
     <script src="~/Scripts/judge.js"></script>
-    <script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Scripts/jquery-migrate-1.2.1.min.js"></script>
 
 </head>
 <body style="background-color:#99CCFF;">
@@ -227,6 +227,8 @@
                 $("#AnticoagulantName_" + obj).val('');
                 $("#PatId_" + obj).val('');
                 $("#SchedulStatus_" + obj).val('1');
+                $("#Remark_" + obj).val(''); 
+                
             }
             function EditSchedulRows(obj) {
                 $("#SchedulStatus_" + obj).val('1');
