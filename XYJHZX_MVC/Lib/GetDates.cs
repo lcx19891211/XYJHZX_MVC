@@ -441,14 +441,14 @@ namespace XYJHZX_MVC.Lib
         /// <param name="str_msg"></param>
         /// <param name="str_colMainId"></param>
         /// <returns></returns>
-        public List<SchedulColumnDetailModel> GetSchedulColumnDetail(out string str_msg,string str_colMainId)
+        public List<SchedulColumnDetailModel> GetSchedulColumnDetail(out string str_msg, string str_colMainId)
         {
             List<SchedulColumnDetailModel> _schedulColumnDetailModels = new List<SchedulColumnDetailModel>();
             DataSet _DataSet = new DataSet();
-            if(_con.ConInit(out str_msg)&&_con.SelSchedulColumnDetail(out str_msg,out _DataSet ,str_colMainId))
+            if (_con.ConInit(out str_msg) && !string.IsNullOrEmpty(str_colMainId) && _con.SelSchedulColumnDetail(out str_msg, out _DataSet, str_colMainId))
             {
                 DataTable _table = _DataSet.Tables[0];
-                for(int i= 0;i<_table.Rows.Count;i++)
+                for (int i = 0; i < _table.Rows.Count; i++)
                 {
                     SchedulColumnDetailModel _schedulColumnDetailModel = new SchedulColumnDetailModel();
                     _schedulColumnDetailModel.ColDetailId = int.Parse(_table.Rows[i]["colDetailId"] + "");

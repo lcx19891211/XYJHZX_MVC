@@ -17,8 +17,8 @@
     string Keyid = "ColumnMain";
 }
 <script type="text/javascript">
-    function deleteMain(obj) {
-        $('#TrMain_' + obj).hide();
+    function DeleteMain(obj) {
+        $('#TrMain_' + obj).hide(); 
         var x = "MainStatus_" + obj
         document.getElementById(x).value = "-1";
     }
@@ -57,7 +57,6 @@
     <table id="@Keyid" class="table table-striped table-bordered">
         <tr>
             <td></td>
-            <td></td>
             <td>标题名称</td>
             <td>字段类型</td>
             <td>所属分类</td>
@@ -65,13 +64,18 @@
         @for (int i = 0; i < MainData.Count; i++)
         {
         <tr id="TrMain_@i">
-            <td><input class="btn-info" type="button" value="删除" onclick="deleteMain(@(i))" /></td>
-            <td><input class="btn-info" type="button" value="修改" onclick="EditMain(@(i))" /></td>
+            <td style="display:none;" ><input class="btn-info" type="button" value="删除" onclick="DeleteMain(@(i))" /></td>
+            <td>
+                @if (MainData[i].Desciption == "List")
+                {
+                    <input class="btn-info" type="button" value="修改" onclick="EditMain(@(i))" />
+                }
+            </td>
             <td style="display:none">@Html.TextBox("ColMainId_" + i, MainData[i].ColMainId, new { @class = "form-control" })</td>
             <td><div>@Html.TextBox("ColName_" + i, MainData[i].ColName, new { @class = "form-control", @onchange = "EditColRows(" + (i) + ")" })</div></td>
             <td><div>@Html.DropDownList("Desciption_" + i, new SelectList(TypeData, "TypeSign", "TypeName", MainData[i].Desciption + ""), new { @class = "form-control", @onchange = "EditColRows(" + (i) + ")" })</div></td>
             <td><div>@Html.DropDownList("ColType_" + i, new SelectList(_schedulColumnTypeModels, "TypeSign", "TypeName", MainData[i].ColType + ""), new { @class = "form-control", @onchange = "EditColRows(" + (i) + ")" })</div></td>
-            <td style="display:none"><div><input id="MainStatus_@(i)" value="@MainData[i].Status" /></div></td>
+            <td style="display:none"><input id="MainStatus_@(i)" value="@MainData[i].Status" /></td>
         </tr>
         }
     </table>

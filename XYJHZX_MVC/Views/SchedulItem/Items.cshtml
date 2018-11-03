@@ -1,40 +1,155 @@
 ﻿@{
     Layout = null;
     List<XYJHZX_MVC.Models.SchedulColumnDetailModel> DetailData = ViewBag.DetailData;
-
+    int DetailCount = 0;
     string Keyid = "ColumnDetail";
+    string ColMainID = ViewBag.ColMainID;
+    if(DetailData != null)
+    {
+        DetailCount = DetailData.Count();
+    }
 }
 
 <script type="text/javascript">
-    function deleteDetail(obj) {
+    var DetailCount = @DetailCount;
+
+    function AddColDetail() {
+        if (isEmpty($("#ColDetailName_" + (DetailCount)).val())) {
+            alert('请输入可选项目名称！' + (DetailCount));
+            return;
+        }
+        DetailCount = DetailCount + 1;
+        var indexInt = DetailCount;
+        var document = "<tr id='TrDetail_" + indexInt + "'>" +
+            "<td><input id='btnDetailDel_" + indexInt + "' style='display:none' class='btn-info' type='button' value='删除' onclick='DeleteDetail(" + indexInt + ")' /><input id='btnDetailAdd_" + indexInt + "' class='btn-info' type='button' value='增加' onclick='AddColDetail()' /></td>" +
+            "<td style='display:none'><input id='ColDetailId_" + indexInt + "' class='form-control' value='0' /></td>" +
+            "<td><input id='ColDetailName_" + indexInt + "' class='form-control' value='' onchange='EditColDetailRows(" + indexInt + ")'  /></td>" +
+            "<td><input id='DetailDesciption_" + indexInt + "' class='form-control' value='' onchange='EditColDetailRows(" + indexInt + ")'  /></td>" +
+            "<td style='display:none'><input id='DetailStatus_" + indexInt + "' value='0' /></td>" +
+            "<td style='display:none'><input id='DetailColMainId_" + indexInt + "' value='@ColMainID' /></td></tr>";
+        $("#@Keyid").append(document);
+
+        $("#btnDetailDel_" + (indexInt - 1)).attr({ 'style': 'display:block' });
+        $("#btnDetailAdd_" + (indexInt - 1)).attr({ 'style': 'display:none' });
+
+        @*var tr = $("#@Keyid tr").eq(-2).clone();
+        tr.attr('id', "TrDetail_" + indexInt);
+
+        var ColDetailId = tr.children("td").eq(1).children("input").eq(0);
+        var ColDetailName = tr.children("td").eq(2).children("input").eq(0);
+        var DetailDesciption = tr.children("td").eq(3).children("input").eq(0);
+        var DetailStatus = tr.children("td").eq(4).children("input").eq(0);
+        var DetailColMainId = tr.children("td").eq(5).children("input").eq(0);
+        var btnDetailDel = tr.children("td").eq(0).children("input").eq(0);
+        var btnDetailAdd = tr.children("td").eq(0).children("input").eq(1);
+
+        ColDetailId.attr({ 'id': 'ColDetailId_' + indexInt, 'onchange': 'EditColDetailRows(' + indexInt + ')', 'value': '' });
+        ColDetailName.attr({ 'id': 'ColDetailName_' + indexInt, 'onchange': 'EditColDetailRows(' + indexInt + ')', 'value': '' });
+        DetailDesciption.attr({ 'id': 'DetailDesciption_' + indexInt, 'onchange': 'EditColDetailRows(' + indexInt + ')', 'value': '' });
+        DetailStatus.attr({ 'id': 'DetailStatus_' + indexInt,'value': '0' });
+        DetailColMainId.attr({ 'id': 'DetailColMainId_' + indexInt, 'value': '@ColMainID'});
+
+        btnDetailDel.attr({ 'id': 'btnDetailDel_' + indexInt, 'style': 'display:none', 'onclick': 'DeleteDetail(' + indexInt + ')' });
+        btnDetailAdd.attr({ 'id': 'btnDetailAdd_' + indexInt, 'style': 'display:block', 'onclick': 'AddColDetail()' });
+
+        var newtr = $("#@Keyid tr").eq(-2).after(tr);
+
+        document.getElementById("btnDetailDel_" + (indexInt - 1)).style.display = "block";
+        document.getElementById("btnDetailAdd_" + (indexInt - 1)).style.display = "none";*@
+    }
+
+    function DeleteDetail(obj) {
         $('#TrDetail_' + obj).hide();
         var x = "DetailStatus_" + obj
         document.getElementById(x).value = "-1";
     }
+
     function EditColDetailRows(obj) {
-        var x = "MainStatus_" + obj
+        var x = "DetailStatus_" + obj
         document.getElementById(x).value = "1";
+    }
+
+    function SaveColDetail() {
+
+        var _ColDetailList = [];
+        $("#@Keyid tr:gt(0)").each(function () {
+            var tr = $(this);
+            var status = tr.children("td").eq(4).children("input").eq(0);
+            var colDetailName = tr.children("td").eq(2).children("input").eq(0);
+
+            if (status.val() != "0" && !isEmpty(colDetailName)) {
+
+                var colDetailId = tr.children("td").eq(1).children("input").eq(0);
+                var colMainId = tr.children("td").eq(5).children("input").eq(0);
+                var desciption = tr.children("td").eq(3).children("input").eq(0);
+
+                _ColDetailList.push({
+                    ColDetailId: colDetailId.val().toString(),
+                    ColMainId: colMainId.val().toString(),
+                    ColDetailName: colDetailName.val().toString(),
+                    Desciption: desciption.val().toString(),
+                    Status: status.val().toString()
+                });
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: "/SchedulItem/SaveItems",
+            contentType: "application/json",
+            data: JSON.stringify(_ColDetailList),
+            //dataType: "json",
+            async: true,
+            traditional: true,
+            beforeSend: function () {
+                $('#ItemsDev').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#ItemsDev').empty().append(data);
+                alert("保存成功！");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("保存失败：" + errorThrown);
+                location.reload(true);
+            }
+        });
     }
 </script>
 @if (DetailData != null)
-{
-<table id="@Keyid" class="table table-striped table-bordered">
-
-    <tr>
-        <td></td>
-        <td>选项名称</td>
-        <td>选项描述</td>
-    </tr>
-    @for (int i = 0; i < DetailData.Count; i++)
     {
-    <tr id="TrDetail_@i">
-        <td><input class="btn-info" type="button" value="删除" onclick="deleteDetail(@(i))" /></td>
-        <td style="display:none">@Html.TextBox("ColDetailId_" + i, DetailData[i].ColDetailId, new { @class = "form-control" })</td>
-        <td><div>@Html.TextBox("ColDetailName_" + i, DetailData[i].ColDetailName, new { @class = "form-control", @onchange = "EditColDetailRows(" + (i) + ")" })</div></td>
-        <td><div>@Html.TextBox("Desciption_" + i, DetailData[i].Desciption, new { @class = "form-control", @onchange = "EditColDetailRows(" + (i) + ")" })</div></td>
-        <td style="display:none"><div><input id="DetailStatus_@(i)" value="@DetailData[i].Status" /></div></td>
-        <td style="display:none"><div><input id="ColMainId_@(i)" value="@DetailData[i].ColMainId" /></div></td>
-    </tr>
-    }
-</table>
+    <div><input class="btn-info" type="button" value="保存可选项目" onclick="SaveColDetail()" /></div>
+    <table id="@Keyid" class="table table-striped table-bordered">
+
+        <tr>
+            <td></td>
+            <td>选项名称</td>
+            <td>选项描述</td>
+        </tr>
+        @for (int i = 0; i < DetailData.Count; i++)
+        {
+            <tr id="TrDetail_@i">
+                <td>
+                    <input id="btnDetailDel_@i" class="btn-info" type="button" value="删除" onclick="DeleteDetail(@(i))" />
+                    <input id="btnDetailAdd_@i" style="display:none" class="btn-info" type="button" value="增加" onclick="AddColDetail()" />
+                </td>
+                <td style="display:none">@Html.TextBox("ColDetailId_" + i, DetailData[i].ColDetailId, new { @class = "form-control" })</td>
+                <td>@Html.TextBox("ColDetailName_" + i, DetailData[i].ColDetailName, new { @class = "form-control", @onchange = "EditColDetailRows(" + (i) + ")" })</td>
+                <td>@Html.TextBox("DetailDesciption_" + i, DetailData[i].Desciption, new { @class = "form-control", @onchange = "EditColDetailRows(" + (i) + ")" })</td>
+                <td style="display:none"><input id="DetailStatus_@(i)" value="@DetailData[i].Status" /></td>
+                <td style="display:none"><input id="DetailColMainId_@(i)" value="@DetailData[i].ColMainId" /></td>
+            </tr>
+        }
+
+        <tr id="TrDetail_@DetailCount">
+            <td>
+                <input id="btnDetailDel_@DetailCount" style="display:none" class="btn-info" type="button" value="删除" onclick="DeleteDetail(@(DetailCount))" />
+                <input id="btnDetailAdd_@DetailCount" class="btn-info" type="button" value="增加" onclick="AddColDetail()" />
+            </td>
+            <td style="display:none">@Html.TextBox("ColDetailId_" + DetailCount, 0, new { @class = "form-control" })</td>
+            <td>@Html.TextBox("ColDetailName_" + DetailCount, "", new { @class = "form-control", @onchange = "EditColDetailRows(" + (DetailCount) + ")" })</td>
+            <td>@Html.TextBox("DetailDesciption_" + DetailCount, "", new { @class = "form-control", @onchange = "EditColDetailRows(" + (DetailCount) + ")" })</td>
+            <td style="display:none"><input id="DetailStatus_@(DetailCount)" value="0" /></td>
+            <td style="display:none"><input id="DetailColMainId_@(DetailCount)" value="@ColMainID" /></td>
+        </tr>
+    </table>
 }

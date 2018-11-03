@@ -580,9 +580,10 @@ namespace XYJHZX_MVC.Lib
         /// <returns></returns>
         public bool UpdateSchedulColumnMain(out string str_msg, List<string[]> arr2_values, string[] str_orgid)
         {
-            string[] arr_condition = { "colName", "desciption" };
+            string[] arr_condition = { "colName", "desciption", "coltype" };
             return UpdateBseDir(out str_msg, arr2_values, str_orgid, "t_bse_SchedulColumnMain", arr_condition, "colMainId");
         }
+
         /// <summary>
         /// 更新登记项目可选项
         /// </summary>
@@ -869,7 +870,7 @@ namespace XYJHZX_MVC.Lib
         /// <returns></returns>
         public bool InsertSchedulColumnMain(out string str_msg, List<string[]> arr2_values)
         {
-            string[] arr_condition = { "colName", "desciption" };
+            string[] arr_condition = { "colName", "desciption", "coltype" };
             return InsertBseDir(out str_msg, arr2_values, "t_bse_SchedulColumnMain", arr_condition.ToList());
         }
         /// <summary>
