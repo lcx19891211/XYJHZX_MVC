@@ -87,30 +87,18 @@
         TeamRowId = TeamRowId + 1;
         var indexInt = TeamRowId;
 
-        var tr = $("#@Keyid tr").eq(-2).clone();
-        tr.attr('id', "TeamRows_" + indexInt);
+        var document = "<tr id='TeamRows_" + indexInt + "'>" +
+            "<td><input id='TeamName_" + indexInt + "' class='form-control' value='' style = 'width: 100px' onchange='EditTeamRows(" + indexInt + ")' /></td>" +
+            "<td><input id='TeamDesciption_" + indexInt + "' class='form-control' value='' style = 'width: 300px' onchange='EditTeamRows(" + indexInt + ")'  /></td>" +
+            "<td><input id='TeamSeqID_" + indexInt + "' class='form-control' value='" + (indexInt + 1) +"' style = 'width: 60px' onchange='EditTeamRows(" + indexInt + ")' /></td>" +
+            "<td style='display:none'><input id='TeamID_" + indexInt + "' value='0' /></td>" +
+            "<td style='display:none'><input id='TeamChange_" + indexInt + "' value='0' /></td>" +
+            "<td><a id='TeamDel_" + indexInt + "' style='display:none' href='javascript:void(0)' onclick='DeleteNewTeamRows(" + indexInt + ")'>删除</a><a id='TeamAdd_" + indexInt + "' href='javascript:void(0)' onclick='AddTeamRows()'>添加</a></td></tr>";
 
-        var TeamName = tr.children("td").eq(0).children("input").eq(0);
-        var TeamDesciption = tr.children("td").eq(1).children("input").eq(0);
-        var TeamSeqID = tr.children("td").eq(2).children("input").eq(0);
-        var TeamID = tr.children("td").eq(3).children("input").eq(0);
-        var TeamChange = tr.children("td").eq(4).children("input").eq(0);
-        var newAdd = tr.children("td").eq(5).children("div").eq(0).children("a").eq(0);
-        var newDel = tr.children("td").eq(5).children("div").eq(0).children("a").eq(1);
+        var newtr = $("#@Keyid tr").eq(-2).after(document);
 
-        TeamName.attr({ 'id': 'TeamName_' + indexInt, 'name': 'TeamName_' + indexInt, 'onchange': 'EditTeamRows(' + indexInt + ')', 'value': '' });
-        TeamDesciption.attr({ 'id': 'TeamDesciption_' + indexInt, 'name': 'TeamDesciption_' + indexInt, 'onchange': 'EditTeamRows(' + indexInt + ')', 'value': '' });
-        TeamSeqID.attr({ 'id': 'TeamSeqID_' + indexInt, 'name': 'TeamSeqID_' + indexInt, 'onchange': 'EditTeamRows(' + indexInt + ')', 'value': (indexInt + 1)+'' });
-        TeamID.attr({ 'id': 'TeamID_' + indexInt, 'name': 'TeamID_' + indexInt, 'value': '0' });
-        TeamChange.attr({ 'id': 'TeamChange_' + indexInt, 'name': 'TeamChange_' + indexInt, 'value': '0' });
-
-        newAdd.attr({ 'id': 'TeamAdd_' + indexInt, 'style': 'display:block', 'onclick': 'AddTeamRows(' + indexInt + ')'});
-        newDel.attr({ 'id': 'TeamDel_' + indexInt, 'style': 'display:none', 'onclick': 'DeleteNewTeamRows(' + indexInt + ')'});
-
-        var newtr = $("#@Keyid tr").eq(-2).after(tr);
-
-        document.getElementById("TeamAdd_" + (indexInt - 1)).style.display = "none";
-        document.getElementById("TeamDel_" + (indexInt - 1)).style.display = "block";
+        $("#TeamDel_" + (indexInt - 1)).attr({ 'style': 'display:block' });
+        $("#TeamAdd_" + (indexInt - 1)).attr({ 'style': 'display:none' });
     }
 
 

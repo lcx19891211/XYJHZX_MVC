@@ -87,31 +87,19 @@
     function AddGroupRows() {
         GroupRowId = GroupRowId + 1;
         var indexInt = GroupRowId;
-
-        var tr = $("#@Keyid tr").eq(-2).clone();
-        tr.attr('id', "GroupRows_" + indexInt);
-
-        var GroupName = tr.children("td").eq(0).children("input").eq(0);
-        var GroupDesciption = tr.children("td").eq(1).children("input").eq(0);
-        var GroupSeqID = tr.children("td").eq(2).children("input").eq(0);
-        var GroupID = tr.children("td").eq(3).children("input").eq(0);
-        var GroupChange = tr.children("td").eq(4).children("input").eq(0);
-        var newAdd = tr.children("td").eq(5).children("div").eq(0).children("a").eq(0);
-        var newDel = tr.children("td").eq(5).children("div").eq(0).children("a").eq(1);
-
-        GroupName.attr({ 'id': 'GroupName_' + indexInt, 'name': 'GroupName_' + indexInt, 'onchange': 'EditGroupRows(' + indexInt + ')', 'value': '' });
-        GroupDesciption.attr({ 'id': 'GroupDesciption_' + indexInt, 'name': 'GroupDesciption_' + indexInt, 'onchange': 'EditGroupRows(' + indexInt + ')', 'value': (indexInt + 1) + '' });
-        GroupSeqID.attr({ 'id': 'GroupSeqID_' + indexInt, 'name': 'GroupSeqID_' + indexInt, 'onchange': 'EditGroupRows(' + indexInt + ')', 'value': '' });
-        GroupID.attr({ 'id': 'GroupID_' + indexInt, 'name': 'GroupID_' + indexInt, 'value': '0' });
-        GroupChange.attr({ 'id': 'GroupChange_' + indexInt, 'name': 'GroupChange_' + indexInt, 'value': '0'});
-
-        newAdd.attr({ 'id': 'GroupAdd_' + indexInt, 'style': 'display:block', 'onclick': 'AddGroupRows(' + indexInt + ')' });
-        newDel.attr({ 'id': 'GroupDel_' + indexInt, 'style': 'display:none', 'onclick': 'DeleteNewGroupRows(' + indexInt + ')' });
         
-        var newtr = $("#@Keyid tr").eq(-2).after(tr);
+        var document = "<tr id='GroupRows_" + indexInt + "'>" +
+            "<td><input id='GroupName_" + indexInt + "' class='form-control' value='' style = 'width: 100px' onchange='EditGroupRows(" + indexInt + ")' /></td>" +
+            "<td><input id='GroupDesciption_" + indexInt + "' class='form-control' value='' style = 'width: 300px' onchange='EditGroupRows(" + indexInt + ")'  /></td>" +
+            "<td><input id='GroupSeqID_" + indexInt + "' class='form-control' value='" + (indexInt + 1) +"' style = 'width: 60px' onchange='EditGroupRows(" + indexInt + ")' /></td>" +
+            "<td style='display:none'><input id='GroupID_" + indexInt + "' value='0' /></td>" +
+            "<td style='display:none'><input id='GroupChange_" + indexInt + "' value='0' /></td>" +
+            "<td><a id='GroupDel_" + indexInt + "' style='display:none' href='javascript:void(0)' onclick='DeleteNewGroupRows(" + indexInt + ")'>删除</a><a id='GroupAdd_" + indexInt + "' href='javascript:void(0)' onclick='AddGroupRows()'>添加</a></td></tr>";
 
-        document.getElementById("GroupAdd_" + (indexInt - 1)).style.display = "none";
-        document.getElementById("GroupDel_" + (indexInt - 1)).style.display = "block";
+        var newtr = $("#@Keyid tr").eq(-2).after(document);
+
+        $("#GroupDel_" + (indexInt - 1)).attr({ 'style': 'display:block' });
+        $("#GroupAdd_" + (indexInt - 1)).attr({ 'style': 'display:none' });
     }
 
 

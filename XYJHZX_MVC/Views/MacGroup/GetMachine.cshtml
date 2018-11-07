@@ -88,31 +88,19 @@
     function AddMachineRows() {
         MachineRowId = MachineRowId + 1;
         var indexInt = MachineRowId;
-
-        var tr = $("#@Keyid tr").eq(-2).clone();
-        tr.attr('id', "MachineRows_" + indexInt);
-
-        var MachineName = tr.children("td").eq(0).children("input").eq(0);
-        var MachineDesciption = tr.children("td").eq(1).children("input").eq(0);
-        var MachineSeqID = tr.children("td").eq(2).children("input").eq(0);
-        var MachineID = tr.children("td").eq(3).children("input").eq(0);
-        var MachineChange = tr.children("td").eq(4).children("input").eq(0);
-        var newAdd = tr.children("td").eq(5).children("div").eq(0).children("a").eq(0);
-        var newDel = tr.children("td").eq(5).children("div").eq(0).children("a").eq(1);
-
-        MachineName.attr({ 'id': 'MachineName_' + indexInt, 'name': 'MachineName_' + indexInt, 'onchange': 'EditMachineRows(' + indexInt + ')', 'value': '' });
-        MachineDesciption.attr('id', 'MachineDesciption_' + indexInt); ({ 'id': 'MachineDesciption_' + indexInt, 'name': 'MachineDesciption_' + indexInt, 'onchange': 'EditMachineRows(' + indexInt + ')', 'value': '' });
-        MachineSeqID.attr('id', 'MachineSeqID_' + indexInt); ({ 'id': 'MachineSeqID_' + indexInt, 'name': 'MachineSeqID_' + indexInt, 'onchange': 'EditMachineRows(' + indexInt + ')', 'value': (indexInt + 1) + '' });
-        MachineID.attr('id', 'MachineID_' + indexInt); ({ 'id': 'MachineID_' + indexInt, 'name': 'MachineID_' + indexInt, 'onchange': 'EditMachineRows(' + indexInt + ')', 'value': '0' });
-        MachineChange.attr('id', 'MachineChange_' + indexInt); ({ 'id': 'MachineChange_' + indexInt, 'name': 'MachineChange_' + indexInt, 'value': '0' });
-
-        newAdd.attr({ 'id': 'MachineAdd_' + indexInt, 'onclick': 'AddMachineRows(' + indexInt + ')', 'style': 'display:block'});
-        newDel.attr({ 'id': 'MachineDel_' + indexInt, 'onclick': 'DeleteNewMachineRows(' + indexInt + ')', 'style': 'display:none'});
         
-        var newtr = $("#@Keyid tr").eq(-2).after(tr);
+        var document = "<tr id='MachineRows_" + indexInt + "'>" +
+            "<td><input id='MachineName_" + indexInt + "' class='form-control' value='' style = 'width: 100px' onchange='EditMachineRows(" + indexInt + ")' /></td>" +
+            "<td><input id='MachineDesciption_" + indexInt + "' class='form-control' value='' style = 'width: 300px' onchange='EditMachineRows(" + indexInt + ")'  /></td>" +
+            "<td><input id='MachineSeqID_" + indexInt + "' class='form-control' value='" + (indexInt + 1) +"' style = 'width: 60px' onchange='EditMachineRows(" + indexInt + ")' /></td>" +
+            "<td style='display:none'><input id='MachineID_" + indexInt + "' value='0' /></td>" +
+            "<td style='display:none'><input id='MachineChange_" + indexInt + "' value='0' /></td>" +
+            "<td><a id='MachineDel_" + indexInt + "' style='display:none' href='javascript:void(0)' onclick='DeleteNewMachineRows(" + indexInt + ")'>删除</a><a id='MachineAdd_" + indexInt + "' href='javascript:void(0)' onclick='AddMachineRows()'>添加</a></td></tr>";
 
-        document.getElementById("MachineAdd_" + (indexInt - 1)).style.display = "none";
-        document.getElementById("MachineDel_" + (indexInt - 1)).style.display = "block";
+        var newtr = $("#@Keyid tr").eq(-2).after(document);
+
+        $("#MachineDel_" + (indexInt - 1)).attr({ 'style': 'display:block' });
+        $("#MachineAdd_" + (indexInt - 1)).attr({ 'style': 'display:none' });
     }
 
 

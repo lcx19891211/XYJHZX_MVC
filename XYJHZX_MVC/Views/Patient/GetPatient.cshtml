@@ -151,8 +151,8 @@
             beforeSend: function () {
                 $('#PatDiv').empty().append("<h2>数据加载中。。。</h2>");
             },
-            success: function () {
-                location.reload(true);
+            success: function (data) {
+                $('#PatDiv').empty().append(data);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 //alert("保存失败：" + errorThrown);
@@ -189,13 +189,13 @@
                     </td>
                     <td>@Html.TextBox("PatName_" + i, Dates[i].PatName, new { @class = "form-control", @style = "width:80px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
                     <td>@Html.DropDownList("PatSex_" + i, new SelectList(arr_sex, Dates[i].PatSex), Dates[i].PatSex, new { @class = "form-control", @style = "width:60px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
-                    <td>@Html.TextBox("PatBrithday_" + i, Dates[i].PatBrithday, new { @class = "form-control", @style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("PatBrithday_" + i, Dates[i].PatBrithday, new { @class = "form-control", @readonly = "@readonly", @style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (i) + ")" })</td>
                     <td>@Html.TextBox("PatAge_" + i, Dates[i].PatAge, new { @class = "form-control", style = "width:60px", @onKeyUp = "CheckNum(this)", @onchange = "EditPatientRows(" + (i) + ")" })</td>
                     <td>@Html.TextBox("PatIdCardNo_" + i, Dates[i].PatIdCardNo, new { @class = "form-control", style = "width:120px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
                     <td>@Html.TextBox("SendDeptName_" + i, Dates[i].SendDeptName, new { @class = "form-control", style = "width:100px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
                     <td>@Html.TextBox("PatOutCardNo_" + i, Dates[i].PatOutCardNo, new { @class = "form-control", style = "width:120px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
                     <td>@Html.TextBox("TelphoneNo_" + i, Dates[i].TelphoneNo, new { @class = "form-control", style = "width:80px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
-                    <td>@Html.TextBox("PaymentDate_" + i, Dates[i].PaymentDate, new { @class = "form-control", style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "DateCounts(" + (i) + ")" })</td>
+                    <td>@Html.TextBox("PaymentDate_" + i, Dates[i].PaymentDate, new { @class = "form-control", style = "width:100px", @readonly = "@readonly", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "DateCounts(" + (i) + ")" })</td>
                     <td>@Html.TextBox("Remark_" + i, Dates[i].Remark, new { @class = "form-control", style = "width:180px", @onchange = "EditPatientRows(" + (i) + ")" })</td>
                     <td style="display:none"><input id="PatId_@(i)" name="PatId_@(i)" value="@Dates[i].PatId" /></td>
                     <td style="display:none"><input id="SendDeptId_@(i)" name="SendDeptId_@(i)" value="@Dates[i].SendDeptId" /></td>
@@ -212,13 +212,13 @@
             </td>
             <td>@Html.TextBox("PatName_" + DateCounts, "", new { @class = "form-control", @style = "width:80px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
             <td>@Html.DropDownList("PatSex_" + DateCounts, new SelectList(arr_sex, "男"), new { @class = "form-control", @style = "width:60px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
-            <td>@Html.TextBox("PatBrithday_" + DateCounts, "", new { @class = "form-control", @style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("PatBrithday_" + DateCounts, "", new { @class = "form-control", @style = "width:100px", @readonly = "@readonly", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
             <td>@Html.TextBox("PatAge_" + DateCounts, "", new { @class = "form-control", style = "width:60px", @onKeyUp = "CheckNum(this)", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
             <td>@Html.TextBox("PatIdCardNo_" + DateCounts, "", new { @class = "form-control", style = "width:120px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
             <td>@Html.TextBox("SendDeptName_" + DateCounts, "", new { @class = "form-control", style = "width:100px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
             <td>@Html.TextBox("PatOutCardNo_" + DateCounts, "", new { @class = "form-control", style = "width:120px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
             <td>@Html.TextBox("TelphoneNo_" + DateCounts, "", new { @class = "form-control", style = "width:80px", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
-            <td>@Html.TextBox("PaymentDate_" + DateCounts, "", new { @class = "form-control", style = "width:100px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
+            <td>@Html.TextBox("PaymentDate_" + DateCounts, "", new { @class = "form-control", style = "width:100px", @readonly = "@readonly", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })", @onchange = "EditPatientRows(" + (DateCounts) + ")" })</td>
             <td>@Html.TextBox("Remark_" + DateCounts, "", new { @class = "form-control", style = "width:180px" })</td>
             <td style="display:none"><input id="PatId_@(DateCounts)" name="PatId_@(DateCounts)" value="" /></td>
             <td style="display:none"><input id="SendDeptId_@(DateCounts)" name="SendDeptId_@(DateCounts)" value="" /></td>

@@ -12,7 +12,7 @@
     <script src="~/Scripts/jquery.jqprint-0.3.js"></script>
     <script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
     <script src="~/Scripts/judge.js"></script>
-    <script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Scripts/jquery-migrate-1.2.1.min.js"></script>
 
 </head>
 <body style="background-color:#99CCFF;">
@@ -53,6 +53,7 @@
                     <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/Schedul/SchedulConfig">检查排队</a></li>
                     <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/CurrentSchedul/CurrentManage">视图管理</a></li>
                     <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/Schedul/SchedulExplorer" target="_blank">表格打印</a></li>
+                    <li><a class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:20px;color:#FFFFFF;" href="/SchedulItem/Config">项目维护</a></li>
                 </ul>
             </div>
         </div>
@@ -60,13 +61,11 @@
     <div style="clear:both;"></div>
     <div class="container body-content"style="background-color:#99CCFF;">
         @RenderBody()
-        <br />
-        <hr />
-        <div class="clearfix">
+        @*<div class="clearfix">
             <footer>
                 <p>&copy; @DateTime.Now.Year - 佛山市第二人民医院</p>
             </footer>
-        </div>
+        </div>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
