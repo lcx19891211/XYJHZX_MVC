@@ -12,6 +12,8 @@
     <script src="~/Scripts/judge.js"></script>
 </head>
 <body style="background-color:#FFCC99;overflow-y:hidden;">
+    <div></div>
+    <div @*style="display:none"*@><input id="txt_IDCard" onchange="SignIn();" /></div>
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#FFCC99">
         <div class="container" style="font-family:'Microsoft YaHei UI';font-size:16px;color:#336699">
             <div class="navbar-header">
@@ -23,30 +25,11 @@
     <div id="divTableShow" class="container body-content" style="background-color:#FFFFCC;margin-top:20px">
         @{Html.RenderAction("SchedulSignInView", "Schedul", new { SchedulDate = str_SchedulDate, GroupId = str_GroupId, SchedulTime = str_SchedulTime });}
     </div>
-    <div style="display:none"><input id="txt_IDCard" onchange="SignIn();" /></div>
     <object classid="clsid:5EB842AE-5C49-4FD8-8CE9-77D4AF9FD4FF" id="IdrControl1" style="display:none;" />
 </body>
 
 <script type="text/javascript">
     function SignIn() {
-        $.ajax({
-            type: "post",
-            url: "/Schedul/SignInIDCard",
-            data: {
-                "IDCard": $('#txt_IDCard').val(),
-                "GroupId": @str_GroupId
-            },
-            //dataType: "json",
-            async: true,
-            traditional: false,
-            success: function (data) {
-                divFadeAlert("签到成功！");
-                location.reload(true);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                divFadeAlert("签到失败：" + errorThrown);
-            }
-        });
     }
     function updateTime() {
         var timestamp = new Date();
@@ -76,7 +59,7 @@
     setInterval(refresh, 12000);
 
     function Idcard() {
-        var id = 'txt_IDCard';
+        //var id = 'txt_IDCard';
 
         IdrControl1.InitComm("1001");
 
@@ -88,8 +71,31 @@
             result = IdrControl1.ReadCard("1001", "");
 
             if (result == 1) {
-
-                document.getElementById(id).value = IdrControl1.GetCode();
+			    
+                var IDCode = IdrControl1.GetCode();
+				$('#txt_IDCard').val(IdrControl1.GetCode()); 
+				//divFadeAlert($('#txt_IDCard').val() + '签到中。。。');
+				if(!isEmpty(IDCode))
+				{
+        $.ajax({
+            type: "post",
+            url: "/Schedul/SignInIDCard",
+            data: {
+                "IDCard": $('#txt_IDCard').val(),
+                "GroupId": @str_GroupId,
+            },
+            //dataType: "json",
+            async: true,
+            traditional: false,
+            success: function (data) {
+				divFadeAlert($('#txt_IDCard').val() + '签到成功！');
+                $('#divTableShow').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                divFadeAlert("签到失败：" + errorThrown);
+            }
+        });
+		}
 
                 IdrControl1.CloseComm();
 

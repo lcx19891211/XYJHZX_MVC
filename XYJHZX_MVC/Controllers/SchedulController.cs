@@ -105,8 +105,29 @@ namespace XYJHZX_MVC.Models
             {
                 SchedulDate = DateTime.Now.ToString("yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo);
             }
+
+            List<List<SchedulPrint>> arr2_schedulPrints = new List<List<SchedulPrint>>();
             List<SchedulPrint> arr_schedulPrints = _GetData.GetSchedulPrint(out str_msg, GroupId, SchedulDate, SchedulTime);
-            ViewBag.SchedulDate = arr_schedulPrints;
+            string str_teamName = "";
+            List<SchedulPrint> tmp_schedulPrints = new List<SchedulPrint>();
+            foreach (SchedulPrint sp in arr_schedulPrints)
+            {
+                if (str_teamName != sp.TeamName)
+                {
+                    if (str_teamName != "")
+                    {
+                        arr2_schedulPrints.Add(tmp_schedulPrints);
+                        tmp_schedulPrints = new List<SchedulPrint>();
+                    }
+                    tmp_schedulPrints.Add(sp);
+                    str_teamName = sp.TeamName;
+                }
+                else
+                    tmp_schedulPrints.Add(sp);
+            }
+            arr2_schedulPrints.Add(tmp_schedulPrints);
+            tmp_schedulPrints = new List<SchedulPrint>();
+            ViewBag.SchedulDate = arr2_schedulPrints;
             return PartialView("/Views/Schedul/SchedulPrintWeight.cshtml");
         }
         /// <summary>
@@ -185,8 +206,33 @@ namespace XYJHZX_MVC.Models
                     if (_ISchedulCon.UpdateSchedulSigninDate(out str_msg, arr2_value, arr_mainID))
                     {
                     }
-                    str_msg = "{\"success\";true}";
-                    return Json(str_msg);
+
+                    string SchedulDate = DateTime.Now.ToString("yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo);
+                    string dt_SchedulDate = DateTime.Now.ToString("HH:mm:dd", DateTimeFormatInfo.InvariantInfo);
+                    string SchedulTime = _GetData.GetDateSplit(out str_msg, dt_SchedulDate);
+                    List<List<SchedulPrint>> arr2_schedulPrints = new List<List<SchedulPrint>>();
+                    List<SchedulPrint> arr_schedulPrints = _GetData.GetSchedulPrint(out str_msg, GroupId, SchedulDate, SchedulTime);
+                    string str_teamName = "";
+                    List<SchedulPrint> tmp_schedulPrints = new List<SchedulPrint>();
+                    foreach (SchedulPrint sp in arr_schedulPrints)
+                    {
+                        if (str_teamName != sp.TeamName)
+                        {
+                            if (str_teamName != "")
+                            {
+                                arr2_schedulPrints.Add(tmp_schedulPrints);
+                                tmp_schedulPrints = new List<SchedulPrint>();
+                            }
+                            tmp_schedulPrints.Add(sp);
+                            str_teamName = sp.TeamName;
+                        }
+                        else
+                            tmp_schedulPrints.Add(sp);
+                    }
+                    arr2_schedulPrints.Add(tmp_schedulPrints);
+                    tmp_schedulPrints = new List<SchedulPrint>();
+                    ViewBag.SchedulDate = arr2_schedulPrints;
+                    return PartialView("/Views/Schedul/SchedulSignInView.cshtml");
                 }
                 else
                 {

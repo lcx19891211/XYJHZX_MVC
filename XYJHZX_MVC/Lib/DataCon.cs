@@ -345,6 +345,7 @@ namespace XYJHZX_MVC.Lib
                 str_condition = string.Format(" and (patName like '%{0}%' or patIdCardNo like '%{0}%' or patOutCardNo like '%{0}%' )", str_condition);
                 str_sql += str_condition;
             }
+            str_sql += " order by patName ";
             _ResultData = new DataSet();
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
