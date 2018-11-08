@@ -12,8 +12,7 @@
     <script src="~/Scripts/judge.js"></script>
 </head>
 <body style="background-color:#FFCC99;overflow-y:hidden;">
-    <div></div>
-    <div @*style="display:none"*@><input id="txt_IDCard" onchange="SignIn();" /></div>
+    <div style="display:none"><input id="txt_IDCard" onchange="SignIn();" /></div>
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#FFCC99">
         <div class="container" style="font-family:'Microsoft YaHei UI';font-size:16px;color:#336699">
             <div class="navbar-header">
@@ -71,33 +70,34 @@
             result = IdrControl1.ReadCard("1001", "");
 
             if (result == 1) {
-			    
-                var IDCode = IdrControl1.GetCode();
-				$('#txt_IDCard').val(IdrControl1.GetCode()); 
-				//divFadeAlert($('#txt_IDCard').val() + '签到中。。。');
-				if(!isEmpty(IDCode))
-				{
-        $.ajax({
-            type: "post",
-            url: "/Schedul/SignInIDCard",
-            data: {
-                "IDCard": $('#txt_IDCard').val(),
-                "GroupId": @str_GroupId,
-            },
-            //dataType: "json",
-            async: true,
-            traditional: false,
-            success: function (data) {
-				divFadeAlert($('#txt_IDCard').val() + '签到成功！');
-                $('#divTableShow').empty().append(data);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                divFadeAlert("签到失败：" + errorThrown);
-            }
-        });
-		}
 
+                var IDCode = IdrControl1.GetCode();
+                $('#txt_IDCard').val(IdrControl1.GetCode());
+                //divFadeAlert($('#txt_IDCard').val() + '签到中。。。');
                 IdrControl1.CloseComm();
+                if(!isEmpty(IDCode))
+                {
+                    $.ajax({
+                        type: "post",
+                        url: "/Schedul/SignInIDCard",
+                        data: {
+                            "IDCard": $('#txt_IDCard').val(),
+                            "GroupId": @str_GroupId,
+                        },
+                        //dataType: "json",
+                        async: true,
+                        traditional: false,
+                        success: function (data) {
+                            divFadeAlert($('#txt_IDCard').val() + '签到成功！');
+                            $('#divTableShow').empty().append(data);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            divFadeAlert("签到失败：" + errorThrown);
+                        }
+                    });
+                }
+                $('#txt_IDCard').val('');
+
 
             } else {
                 if (result == -1)
