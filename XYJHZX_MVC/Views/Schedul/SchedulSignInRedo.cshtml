@@ -1,0 +1,98 @@
+﻿@{
+    SelectList GroupList = ViewBag.GroupListDate;
+    if (GroupList != null && GroupList.SelectedValue == null)
+    {
+        GroupList.First().Selected = true;
+    }
+    SelectList SplitDateList = ViewBag.SplitDateList;
+    if (SplitDateList != null && SplitDateList.SelectedValue == null)
+    {
+        SplitDateList.First().Selected = true;
+    }
+
+    string DefaultSchedulDate = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
+}
+<script type="text/javascript">
+    function SelectNewSchedulInf() {
+        $.ajax({
+            type: "post",
+            url: "/Schedul/SchedulSignInDetail",
+            data: {
+                "SchedulDate": $('#txt_NewSchedulDate').val(),
+                "SchedulTime": $('#txt_NewSchedulTime option:selected').text(),
+                "GroupId": $('#txt_Group option:selected').val()
+            },
+            //dataType: "json",
+            async: true,
+            traditional: false,
+            beforeSend: function () {
+                $('#NewSchedulDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#NewSchedulDiv').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("加载失败：" + errorThrown);
+            }
+        });
+    }
+    function Redo(obj) {
+        $.ajax({
+            type: "post",
+            url: "/Schedul/SchedulRedo",
+            data: {
+                "MainId": obj + ""
+            },
+            //dataType: "json",
+            async: true,
+            traditional: false,
+            beforeSend: function () {
+                $('#NewSchedulDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#NewSchedulDiv').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("加载失败：" + errorThrown);
+            }
+        });
+    }
+    function SignIn(obj) {
+        $.ajax({
+            type: "post",
+            url: "/Schedul/SchedulSignIn",
+            data: {
+                "MainId": obj + ""
+            },
+            //dataType: "json",
+            async: true,
+            traditional: false,
+            beforeSend: function () {
+                $('#NewSchedulDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#NewSchedulDiv').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("加载失败：" + errorThrown);
+            }
+        });
+    }
+</script>
+
+
+
+<div>
+    <div>
+        <ul>
+            <li><label id="lab_NewSchedulDate" class="form-control-static">分组:</label></li>
+            <li>@Html.DropDownList("txt_Group", GroupList, new { @class = "form-control", @style = "width:80px", @onchange = "SelectNewSchedulInf();" })</li>
+            <li><label id="lab_NewSchedulDate" class="form-control-static">日期:</label></li>
+            <li><input id="txt_NewSchedulDate" type="text" class="form-control" style="width:100px" value="@DefaultSchedulDate" readonly="readonly" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" onchange="SelectNewSchedulInf()" /></li>
+            <li>@Html.DropDownList("txt_NewSchedulTime", SplitDateList, new { @class = "form-control", @style = "width:80px", @onchange = "SelectNewSchedulInf()" })</li>
+        </ul>
+    </div>
+    <div id="NewSchedulDiv">
+        @{Html.RenderAction("SchedulSignInDetail", "Schedul", new { SchedulDate = DateTime.Now.ToString("yyyy-MM-dd", System.Globalization.DateTimeFormatInfo.InvariantInfo), SchedulTime = "上午", GroupId = GroupList.First().Value });}
+    </div>
+</div>

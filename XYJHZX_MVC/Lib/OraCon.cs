@@ -85,6 +85,8 @@ namespace XYJHZX_MVC.Lib
 
         public bool SelSchedul(out string str_msg, ref DataSet _ResultData, string[] condition) { str_msg = ""; return true; }
 
+        public bool SelSchedulWithMainId(out string str_msg, ref DataSet _ResultData, string str_mainid) { str_msg = ""; return true; }
+
         public bool SelSchedulColumnDetail(out string str_msg, out DataSet _ResultData, string str_colMainId) { str_msg = ""; _ResultData = null; return true; }
 
         public bool SelSchedulColumnMain(out string str_msg, out DataSet _ResultData) { str_msg = ""; _ResultData = null; return true; }
@@ -112,6 +114,8 @@ namespace XYJHZX_MVC.Lib
         public bool SelMainIDCurrentSchedulForIDCard(out string str_msg, out DataSet _ResultData, string[] arr_condition) { str_msg = ""; _ResultData = null; return true; }
 
         public bool SelMaxCurrentSeq(out string str_msg, out DataSet _ResultData, string[] arr_condition) { str_msg = ""; _ResultData = null; return true; }
+
+        public bool SelMaxSchedulSeq(out string str_msg, out DataSet _ResultData, string[] arr_condition) { str_msg = ""; _ResultData = null; return true; }
 
         public bool UpdateGroup(out string str_msg, List<string[]> arr2_values, string[] str_orgid) { str_msg = ""; return true; }
 

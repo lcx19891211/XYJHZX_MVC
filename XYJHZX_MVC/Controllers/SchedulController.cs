@@ -46,6 +46,21 @@ namespace XYJHZX_MVC.Models
 
             return View();
         }
+        /// <summary>
+        /// 返回签到重置确认表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SchedulSignInRedo()
+        {
+            List<GroupModel> arr_Group = _GetData.GetGroupModel(out str_msg);
+            SelectList arr_GroupList = new SelectList(arr_Group, "GroupId", "GroupName");
+            ViewBag.GroupListDate = arr_GroupList;
+
+            List<SplitDateModel> _splitDateModels = _GetData.GetSplitDateModels(out str_msg);
+            SelectList arr_SplitDateList = new SelectList(_splitDateModels, "SplitId", "SplitName");
+            ViewBag.SplitDateList = arr_SplitDateList;
+            return View();
+        }
 
         /// <summary>
         /// 返回打印格式
@@ -178,6 +193,17 @@ namespace XYJHZX_MVC.Models
             ViewBag.SchedulDate = arr2_schedulPrints;
             return PartialView("/Views/Schedul/SchedulSignInView.cshtml");
         }
+
+        /// <summary>
+        /// 获取签到初始表
+        /// </summary>
+        /// <param name="GroupId"></param>
+        /// <returns></returns>
+        public ActionResult SchedulSignInDetail( string SchedulDate, string SchedulTime, int GroupId = 1)
+        {
+            ViewBag.SchedulDate = _GetData.GetSchedulPrint(out str_msg, GroupId.ToString(), SchedulDate, SchedulTime);
+            return PartialView("/Views/Schedul/SchedulSignInDetail.cshtml");
+        }
         /// <summary>
         /// 根据身份证号签到
         /// </summary>
@@ -193,7 +219,7 @@ namespace XYJHZX_MVC.Models
             else
             {
                 DataSet _DataResult = new DataSet();
-                if (_ISchedulCon.ConInit(out str_msg) && _ISchedulCon.SelMainIDCurrentSchedulForIDCard(out str_msg, out _DataResult, new string[] { IDCard.Trim(), GroupId }) && _DataResult != null && _DataResult.Tables[0].Rows.Count > 0)
+                if (_ISchedulCon.ConInit(out str_msg) && _ISchedulCon.SelMainIDCurrentSchedulForIDCard(out str_msg, out _DataResult, new string[] { IDCard.ToUpper().Trim(), GroupId }) && _DataResult != null && _DataResult.Tables[0].Rows.Count > 0)
                 {
                     string str_mainID = _DataResult.Tables[0].Rows[0][0] + "";
                     string str_teamid = _DataResult.Tables[0].Rows[0][1] + "";
@@ -407,6 +433,63 @@ namespace XYJHZX_MVC.Models
             {
                 throw ex;
             }
+        }
+        
+        /// <summary>
+        /// 重置签到病人
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult SchedulRedo(string MainId)
+        {
+            List<SchedulPrint> SchedulData = new List<SchedulPrint>();
+            DataSet _SchedulData = new DataSet();
+            if (_ISchedulCon.ConInit(out str_msg) && _ISchedulCon.SelSchedulWithMainId(out str_msg, ref _SchedulData, MainId))
+            {
+                DataTable _SchedulTable = _SchedulData.Tables[0];
+                string str_GroupId = _SchedulTable.Rows[0]["Groupid"] + "";
+                string str_SchedulDate = _SchedulTable.Rows[0]["SchedulDate"] + "";
+                string str_SchedulTime = _SchedulTable.Rows[0]["SchedulTime"] + "";
+
+                List<string[]> arr2_value = new List<string[]> { new string[] { ("").ConvertSqlCondition(), ("").ConvertSqlCondition() } };
+                if (_ISchedulCon.UpdateSchedulSigninDate(out str_msg, arr2_value, new string[]{ MainId }))
+                {
+                    SchedulData = _GetData.GetSchedulPrint(out str_msg, str_GroupId, str_SchedulDate, str_SchedulTime);
+                }
+            }
+            ViewBag.SchedulDate = SchedulData;
+            return PartialView("/Views/Schedul/SchedulSignInDetail.cshtml");
+        }
+        /// <summary>
+        /// 手工签到病人
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult SchedulSignIn(string MainId)
+        {
+            List<SchedulPrint> SchedulData = new List<SchedulPrint>();
+            DataSet _SchedulData = new DataSet();
+            if (_ISchedulCon.ConInit(out str_msg) && _ISchedulCon.SelSchedulWithMainId(out str_msg, ref _SchedulData, MainId))
+            {
+                DataTable _SchedulTable = _SchedulData.Tables[0];
+                string str_GroupId = _SchedulTable.Rows[0]["Groupid"] + "";
+                string str_SchedulDate = _SchedulTable.Rows[0]["SchedulDate"] + "";
+                string str_SchedulTime = _SchedulTable.Rows[0]["SchedulTime"] + "";
+                string str_Teamid = _SchedulTable.Rows[0]["Teamid"] + "";
+                _SchedulData = new DataSet();
+                _ISchedulCon.SelMaxSchedulSeq(out str_msg,out _SchedulData, new string[] { str_Teamid, str_SchedulDate, str_SchedulTime });
+                int int_maxseq = Int32.Parse("0" + _SchedulData.Tables[0].Rows[0][0]);
+                string SchedulDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+                List<string[]> arr2_value = new List<string[]> { new string[] { SchedulDateTime.ConvertSqlCondition(), (int_maxseq + 1).ToString() } };
+                if (_ISchedulCon.UpdateSchedulSigninDate(out str_msg, arr2_value, new string[] { MainId }))
+                {
+                    SchedulData = _GetData.GetSchedulPrint(out str_msg, str_GroupId, str_SchedulDate, str_SchedulTime);
+                }
+            }
+            ViewBag.SchedulDate = SchedulData;
+            return PartialView("/Views/Schedul/SchedulSignInDetail.cshtml");
         }
 
     }

@@ -1,0 +1,53 @@
+﻿@{
+    Layout = null;
+    var Keyid = "SchedulSignInDetail";
+    var Message = ViewBag.Message;
+
+    List<XYJHZX_MVC.Models.SchedulPrint> Dates = ViewBag.SchedulDate;
+}
+<div style="overflow-y:scroll;width:1000px;height:700px;">
+    <table id="@Keyid" class="table table-striped table-bordered" style="font-family:'Microsoft YaHei UI';font-size:24px;">
+        <tr>
+            <td></td>
+            <td></td>
+            <td><div style="width:60px;">机号</div></td>
+            <td><div style="width:60px;">姓名</div></td>
+            <td><div style="width:100px;">签到时间</div></td>
+            <td><div style="width:100px;">签到排序</div></td>
+        </tr>
+        @if (Dates != null)
+        {
+            for (int i = 0; i < Dates.Count; i++)
+            {
+                <tr id="OldSchedulRows_@(i)">
+                    <td>
+                        <input class="btn-info" type="button" value="重置" onclick="Redo(@Dates[i].MainId)" style="margin:3px 20px 0 0;" />
+                    </td>
+                    <td>
+                        <input class="btn-info" type="button" value="签到" onclick="SignIn(@Dates[i].MainId)" style="margin:3px 20px 0 0;" />
+                    </td>
+                    <td>@Dates[i].MacName</td>
+                    <td>@Dates[i].PatName</td>
+                    <td>@Dates[i].SigninDate</td>
+                    <td>@Dates[i].SignInSeq</td>
+                    <td style="display:none">@Dates[i].MainId></td>
+                    <td style="display:none">@Dates[i].SchedulDate</td>
+                    <td style="display:none">@Dates[i].SchedulTime</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">
+                    查无数据！
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="6">
+                共 @Dates.Count 条记录
+            </td>
+        </tr>
+    </table>
+</div>

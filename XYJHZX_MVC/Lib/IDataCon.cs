@@ -25,6 +25,8 @@ namespace XYJHZX_MVC.Lib
 
         bool SelSchedul(out string str_msg, ref DataSet _ResultData, string[] arr_condition);
 
+        bool SelSchedulWithMainId(out string str_msg, ref DataSet _ResultData, string str_mainid);
+
         bool SelSchedulColumnDetail(out string str_msg, out DataSet _ResultData, string str_colMainId);
 
         bool SelSchedulColumnMain(out string str_msg, out DataSet _ResultData);
@@ -52,6 +54,8 @@ namespace XYJHZX_MVC.Lib
         bool SelMainIDCurrentSchedulForIDCard(out string str_msg, out DataSet _ResultData, string[] arr_condition);
 
         bool SelMaxCurrentSeq(out string str_msg, out DataSet _ResultData, string[] arr_condition);
+
+        bool SelMaxSchedulSeq(out string str_msg, out DataSet _ResultData, string[] arr_condition);
 
         bool SelPayPatient(out string str_msg, out DataSet _ResultData);
 

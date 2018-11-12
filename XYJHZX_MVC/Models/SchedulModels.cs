@@ -124,6 +124,9 @@ namespace XYJHZX_MVC.Models
         [Display(Name = "分组名称")]
         public string GroupName{ get; set; }
         [Required]
+        [Display(Name = "主键")]
+        public string MainId { get; set; }
+        [Required]
         [Display(Name = "分组描述")]
         public string GroupDescption{ get; set; }
         [Required]

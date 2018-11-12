@@ -62,7 +62,7 @@ namespace XYJHZX_MVC.Controllers
             try
             {
                 DataSet _PatData = new DataSet();
-                if (!IPatCon.ConInit(out str_msg) || !IPatCon.SelPatInformation(out str_msg, out _PatData, string.Empty))
+                if (!IPatCon.ConInit(out str_msg))
                 {
                     ViewBag.Message = str_msg;
                     ViewBag.PatientDate = null;
@@ -70,18 +70,15 @@ namespace XYJHZX_MVC.Controllers
                 }
                 else
                 {
-                    var _PatTable = _PatData.Tables[0];
-                    var arr_PatModel = Convert<PatientModel>.ConvertToList(_PatTable);
-                    List<PatientModel> arr_patients = arr_PatModel.ToList<PatientModel>();
                     if (IPatOraCon.ConInit(out str_msg))
                     {
                         DataSet _dataSet = new DataSet();
                         if (IPatOraCon.SelPayPatient(out str_msg, out _dataSet))
                         {
+                            List<string[]> arr2_insertValues = new List<string[]>();
                             DataTable _dataTable = _dataSet.Tables[0];
                             for (int i = 0; i < _dataTable.Rows.Count; i++)
                             {
-                                bool isNewPat = true;
                                 PatientModel _patientModel = new PatientModel();
                                 _patientModel.PatName = _dataTable.Rows[i]["病人姓名"] + "";
                                 _patientModel.PatIdCardNo = _dataTable.Rows[i]["身份证"] + "";
@@ -97,20 +94,33 @@ namespace XYJHZX_MVC.Controllers
                                 _patientModel.PatBrithday = string.IsNullOrEmpty(str_Brithday) ? string.Empty : string.Format("{0:yyyy-MM-dd}", _briDateTime);
                                 _patientModel.PatAge = Convert.ToInt32(((_payDateTime - _briDateTime).TotalDays / 365));
                                 _patientModel.IsRead = 1;
-                                for (int j = 0; j < arr_patients.Count; j++)
+                                string[] arr_check = { _patientModel.PatName, _patientModel.PatIdCardNo };
+                                string[] arr_ValueTmp = {
+                                        _patientModel.PatName.ConvertSqlCondition()
+                                        , _patientModel.PatSex.ConvertSqlCondition()
+                                        , _patientModel.PatBrithday.ConvertSqlCondition()
+                                        ,_patientModel.PatAge.ToString()
+                                        ,_patientModel.PatIdCardNo.ConvertSqlCondition()
+                                        ,_patientModel.SendDeptId.ConvertSqlCondition()
+                                        ,_patientModel.SendDeptName.ConvertSqlCondition()
+                                        ,_patientModel.PatOutCardNo.ToUpper().ConvertSqlCondition()
+                                        ,_patientModel.TelphoneNo.ConvertSqlCondition()
+                                        ,_patientModel.PaymentDate.ConvertSqlCondition()
+                                        ,_patientModel.Remark.ConvertSqlCondition()
+                                        };
+                                if (IPatCon.CheckPatIsRead(out str_msg, arr_check))
                                 {
-                                    if (arr_patients[j].PatIdCardNo == _patientModel.PatIdCardNo)
-                                    {
-                                        isNewPat = false;
-                                        break;
-                                    }
-                                }
-                                if (isNewPat)
-                                {
-                                    arr_patients.Add(_patientModel);
+                                    arr2_insertValues.Add(arr_ValueTmp);
                                 }
                             }
-                            ViewBag.PatientDate = arr_patients;
+                            if (arr2_insertValues != null)
+                                IPatCon.InsertPatInformation(out str_msg, arr2_insertValues);
+                            if (IPatCon.SelPatInformation(out str_msg, out _PatData, string.Empty))
+                            {
+                                var _PatTable = _PatData.Tables[0];
+                                var arr_PatModel = Convert<PatientModel>.ConvertToList(_PatTable);
+                                ViewBag.PatientDate = arr_PatModel.ToList<PatientModel>();
+                            }
                             PartialViewResult x = PartialView("/Views/Patient/GetPatient.cshtml");
                             return x;
                         }

@@ -12,7 +12,8 @@
     <script src="~/Scripts/judge.js"></script>
 </head>
 <body style="background-color:#FFCC99;overflow-y:hidden;">
-    <div style="display:none"><input id="txt_IDCard" onchange="SignIn();" /></div>
+    <br />
+    <div @*style="display:none"*@><input id="txt_IDCard" onchange="SignIn();" /></div>
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#FFCC99">
         <div class="container" style="font-family:'Microsoft YaHei UI';font-size:16px;color:#336699">
             <div class="navbar-header">
@@ -29,6 +30,27 @@
 
 <script type="text/javascript">
     function SignIn() {
+        if(!isEmpty($('#txt_IDCard').val()))
+        {
+            $.ajax({
+                type: "post",
+                url: "/Schedul/SignInIDCard",
+                data: {
+                    "IDCard": $('#txt_IDCard').val(),
+                    "GroupId": @str_GroupId,
+                },
+                //dataType: "json",
+                async: true,
+                traditional: false,
+                success: function (data) {
+                    divFadeAlert($('#txt_IDCard').val() + '签到成功！');
+                    $('#divTableShow').empty().append(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    divFadeAlert("签到失败：" + errorThrown);
+                }
+            });
+        }
     }
     function updateTime() {
         var timestamp = new Date();
@@ -38,13 +60,9 @@
         location.reload(true);
     }
     function change(table) {
-        for (x = 0; x < 6; x++) {
+        for (x = 0; x < 14; x++) {
             var row = table.insertRow(table.rows.length);
-            for (j = 0; j < table.rows[0].cells.length; j++) {
-                var cell = row.insertCell(j);
-                cell.height = "24px";
-                cell.innerHTML = table.rows[0].cells[j].innerHTML;
-            }
+            row.innerHTML = table.rows[0].innerHTML;
             table.deleteRow(0);
         }
     }
@@ -54,7 +72,7 @@
     }
     updateTime();
     setInterval(updateTime, 1000);
-    setInterval('tableInterval()', 3000);
+    setInterval('tableInterval()', 7000);
     setInterval(refresh, 12000);
 
     function Idcard() {

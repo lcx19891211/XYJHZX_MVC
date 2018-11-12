@@ -260,6 +260,7 @@ namespace XYJHZX_MVC.Lib
         public bool SelSchedul(out string str_msg,ref DataSet _ResultData,string[] condition)
         {
             string str_sql = string.Format(@"select t.Groupname          groupname,
+                                                    a.mainid             mainid,
                                                     t.groupdescption     groupdescption,
                                                     t.teamname           teamname,
                                                     t.teamdescption      teamdescption,
@@ -290,6 +291,27 @@ namespace XYJHZX_MVC.Lib
             return SelectOpr(out str_msg, str_sql, ref _ResultData);
         }
 
+        /// <summary>
+        /// 主键获取信息
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <param name="str_mainid"></param>
+        /// <returns></returns>
+        public bool SelSchedulWithMainId(out string str_msg, ref DataSet _ResultData, string str_mainid)
+        {
+            string str_sql = string.Format(@"select t.groupid            Groupid,
+                                                    t.teamid             Teamid,
+                                                    a.SchedulDate        SchedulDate,
+                                                    a.SchedulTime        SchedulTime  
+                                                    from v_groupdetail t 
+                                                    left join t_pro_SchedulMain a 
+                                                    on t.macid = a.macid
+                                                    and a.status = 1
+                                                    where a.mainid = {0}", str_mainid);
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
+        
         /// <summary>
         /// 查询登记项目可选项
         /// </summary>
@@ -501,7 +523,7 @@ namespace XYJHZX_MVC.Lib
             string str_sql = "select mainid,teamid from V_CurrentSchedul";
             if (arr_condition.Count() > 0 && !string.IsNullOrEmpty(arr_condition[0]) && arr_condition[0].ProcessSqlStr() && !string.IsNullOrEmpty(arr_condition[1]) && arr_condition[1].ProcessSqlStr())
             {
-                string str_condition = string.Format(" Where signinseq is null and patIdCardNo = {0} and groupid = {1}", arr_condition[0], arr_condition[1]);
+                string str_condition = string.Format(" Where signinseq is null and patIdCardNo = '{0}' and groupid = {1}", arr_condition[0], arr_condition[1]);
                 str_sql += str_condition;
             }
             _ResultData = new DataSet();
@@ -520,6 +542,24 @@ namespace XYJHZX_MVC.Lib
             if (arr_condition.Count() > 0 && !string.IsNullOrEmpty(arr_condition[0]) && arr_condition[0].ProcessSqlStr())
             {
                 string str_condition = string.Format(" Where teamid = {0} ", arr_condition[0]);
+                str_sql += str_condition;
+            }
+            _ResultData = new DataSet();
+            return SelectOpr(out str_msg, str_sql, ref _ResultData);
+        }
+        /// <summary>
+        /// 获取检查最大值
+        /// </summary>
+        /// <param name="str_msg"></param>
+        /// <param name="_ResultData"></param>
+        /// <param name="arr_condition"></param>
+        /// <returns></returns>
+        public bool SelMaxSchedulSeq(out string str_msg, out DataSet _ResultData, string[] arr_condition)
+        {
+            string str_sql = "select max(signinseq) seq from V_SchedulMain";
+            if (arr_condition.Count() > 0 && !string.IsNullOrEmpty(arr_condition[0]) && arr_condition[0].ProcessSqlStr() && !string.IsNullOrEmpty(arr_condition[1]) && arr_condition[1].ProcessSqlStr() && !string.IsNullOrEmpty(arr_condition[2]) && arr_condition[2].ProcessSqlStr())
+            {
+                string str_condition = string.Format(" Where teamid = {0} and SchedulDate = '{1}' and SchedulTime = '{2}'", arr_condition[0], arr_condition[1], arr_condition[2]);
                 str_sql += str_condition;
             }
             _ResultData = new DataSet();
@@ -623,7 +663,7 @@ namespace XYJHZX_MVC.Lib
             return UpdateBseDir(out str_msg, arr2_values, str_orgid, "t_pro_SchedulMain", arr_condition, "mainid");
         }
         /// <summary>
-        /// 检查病人是否存在
+        /// 更新病人已读
         /// </summary>
         /// <param name="str_msg"></param>
         /// <param name="_ResultData"></param>
@@ -938,6 +978,7 @@ namespace XYJHZX_MVC.Lib
         public bool InsertPatInformation(out string str_msg, List<string[]> arr2_values)
         {
             string[] arr_condition = { "patName", "patSex", "patBrithday", "patAge", "patIdCardNo", "sendDeptId", "sendDeptName", "patOutCardNo", "TelphoneNo", "paymentDate", "remark" };
+            DeletePatInfo(out str_msg);
             return InsertBseDir(out str_msg, arr2_values, "t_pro_PatInformation", arr_condition.ToList());
         }
         
@@ -1081,6 +1122,15 @@ namespace XYJHZX_MVC.Lib
                 else
                     return false;
             }
+            return ExecOpr(out str_msg, arr_strSql);
+        }
+
+        private bool DeletePatInfo(out string str_msg)
+        {
+            List<string> arr_strSql = new List<string>();
+            string SchedulDate = DateTime.Now.AddDays(-40).ToString("yyyy-MM-dd", System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            string arr_strSqlTmp = string.Format("Delete from t_pro_PatInformation where (isRead = 0 or status = 0) and paymentDate < '{0}'", SchedulDate);
+            arr_strSql.Add(arr_strSqlTmp);
             return ExecOpr(out str_msg, arr_strSql);
         }
         #endregion

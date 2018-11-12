@@ -193,6 +193,7 @@ namespace XYJHZX_MVC.Lib
                     _schedulPrint.SignInSeq = int.Parse("0" + _table.Rows[i]["SignInSeq"] );
                     _schedulPrint.PatName = _table.Rows[i]["patName"] + "";
                     _schedulPrint.PatIdCardNo = _table.Rows[i]["patIdCardNo"] + "";
+                    _schedulPrint.MainId = _table.Rows[i]["mainid"] + "";
                     _schedulPrint.PatWeightBefore = int.Parse("0" + _table.Rows[i]["patWeightBefore"]);
                     _schedulPrint.PatWeightAfter = int.Parse("0" + _table.Rows[i]["patWeightAfter"]);
 
