@@ -83,6 +83,8 @@ namespace XYJHZX_MVC.Models
             List<SchedulPrint> tmp_schedulPrints = new List<SchedulPrint>();
             foreach (SchedulPrint sp in arr_schedulPrints)
             {
+                sp.SchedulDate = SchedulDate;
+                sp.SchedulTime = SchedulTime;
                 if (str_teamName != sp.TeamName)
                 {
                     if (str_teamName != "")
@@ -127,6 +129,8 @@ namespace XYJHZX_MVC.Models
             List<SchedulPrint> tmp_schedulPrints = new List<SchedulPrint>();
             foreach (SchedulPrint sp in arr_schedulPrints)
             {
+                sp.SchedulDate = SchedulDate;
+                sp.SchedulTime = SchedulTime;
                 if (str_teamName != sp.TeamName)
                 {
                     if (str_teamName != "")

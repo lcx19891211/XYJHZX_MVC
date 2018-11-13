@@ -11,8 +11,8 @@
         @for (int i = 0; i < Dates.Count; i += 2)
         {
             <tr style="font-size:36px;border-color:black;border:solid;">
-                <td colspan="7" style="border:solid;">@Dates[i][0].TeamDescption</td>
-                <td colspan="7" style="border:solid;">@((i + 1 < Dates.Count) ? Dates[i + 1][0].TeamDescption : "")</td>
+                <td colspan="7" style="border:solid;font-size:22px;">@Dates[i][0].TeamDescption @Dates[i][0].SchedulDate @Dates[i][0].SchedulTime</td>
+                <td colspan="7" style="border:solid;font-size:22px;">@((i + 1 < Dates.Count) ? Dates[i + 1][0].TeamDescption + Dates[i + 1][0].SchedulDate + Dates[i + 1][0].SchedulTime: "")</td>
             </tr>
             <tr style="font-size:20px;border-color:black;border:solid;">
                 <td style="border:solid;"><div style="width:50px;font-stretch:wider;">机号</div></td>
