@@ -8,6 +8,7 @@
 }
 
 
+
     <div style="overflow:scroll;width:650px;height:700px;">
         <table id="@Keyid" class="table table-striped table-bordered">
             <tr>
@@ -59,7 +60,7 @@
                     <tr id="PatientRows_@(i)">
                         <td><input class="btn-info" type="button" value="清 空" onclick="ClearNewSchedulRows(@(i))" /></td>
                         <td>@Html.Label("MacName_@i", @Dates[i].macname, new { @class = "form-inline", @style = "width:40px;" })</td>
-                        <td>@Html.DropDownList("PatName_" + i, new SelectList(PatientListTmp, "PatId", "PatName", Dates[i].patid + ""), new { @class = "form-control", @style = "width:100px", @onchange = "EditSchedulRows(" + (i) + ")" })</td>
+                        <td>@Html.DropDownList("PatName_" + i, new SelectList(PatientListTmp, "PatId", "PatName", Dates[i].patid + ""), new { @class = "bootstrap-select selectpicker",  @style = "width:100px", @onchange = "EditSchedulRows(" + (i) + ")" })</td>
                         <td>@Html.DropDownList("DialyzerName_" + i, new SelectList(SchedulColumnsList.Where(x => x.colMainId == 19).ToList<XYJHZX_MVC.Models.SchedulColumns>(), "colDetailId", "colDetailName", (Dates[i].dialyzerName == null || Dates[i].dialyzerName == "") ? "919" : SchedulColumnsList.Where(x => x.colDetailName == Dates[i].dialyzerName + "").ToList<XYJHZX_MVC.Models.SchedulColumns>()[0].colDetailId + ""), new { @class = "form-control", @style = "width:100px", @onchange = "EditSchedulRows(" + (i) + ")" })</td>
                         <td>@Html.DropDownList("RouteName_" + i, new SelectList(SchedulColumnsList.Where(x => x.colMainId == 20).ToList(), "colDetailId", "colDetailName", (Dates[i].routeName == null || Dates[i].routeName == "") ? "920" : SchedulColumnsList.Where(x => x.colDetailName == Dates[i].routeName + "").ToList<XYJHZX_MVC.Models.SchedulColumns>()[0].colDetailId + ""), new { @class = "form-control", @style = "width:100px", @onchange = "EditSchedulRows(" + (i) + ")" })</td>
                         <td>@Html.DropDownList("AnticoagulantName_" + i, new SelectList(SchedulColumnsList.Where(x => x.colMainId == 21).ToList(), "colDetailId", "colDetailName", (Dates[i].anticoagulantName == null || Dates[i].anticoagulantName == "") ? "921" : SchedulColumnsList.Where(x => x.colDetailName == Dates[i].anticoagulantName + "").ToList<XYJHZX_MVC.Models.SchedulColumns>()[0].colDetailId + ""), new { @class = "form-control", @style = "width:80px", @onchange = "EditSchedulRows(" + (i) + ")" })</td>

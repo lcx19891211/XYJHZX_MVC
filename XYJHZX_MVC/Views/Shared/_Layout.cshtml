@@ -7,12 +7,24 @@
     <title>佛山市第二人民医院 - 血液净化中心 - @ViewBag.Title </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)    
+    @*<script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="~/Scripts/jquery-1.4.4.min.js"></script>
+    <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" type="text/css">
     <script src="~/Scripts/jquery.jqprint-0.3.js"></script>
-    <script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
-    <script src="~/Scripts/judge.js"></script>
     <script src="~/Scripts/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <script src="~/Scripts/defaults-zh_CN.min.js"></script>
+    <script src="~/Scripts/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
+    <script src="~/Scripts/judge.js"></script>
+    <script src="~/Resourse/My97DatePicker/WdatePicker.js"></script>
+
 
 </head>
 <body style="background-color:#99CCFF;">
@@ -69,8 +81,5 @@
         </div>*@
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>

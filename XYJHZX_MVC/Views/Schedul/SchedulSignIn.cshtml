@@ -8,12 +8,13 @@
 <head>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
     <script src="~/Scripts/judge.js"></script>
 </head>
 <body style="background-color:#FFCC99;overflow-y:hidden;">
     <br />
-    <div @*style="display:none"*@><input id="txt_IDCard" onchange="SignIn();" /></div>
+    <div style="display:none"><input id="txt_IDCard" onchange="SignIn();" /></div>
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#FFCC99">
         <div class="container" style="font-family:'Microsoft YaHei UI';font-size:16px;color:#336699">
             <div class="navbar-header">
@@ -30,7 +31,7 @@
 
 <script type="text/javascript">
     function SignIn() {
-        if(!isEmpty($('#txt_IDCard').val()))
+        @*if(!isEmpty($('#txt_IDCard').val()))
         {
             $.ajax({
                 type: "post",
@@ -50,7 +51,7 @@
                     divFadeAlert("签到失败：" + errorThrown);
                 }
             });
-        }
+        }*@
     }
     function updateTime() {
         var timestamp = new Date();
