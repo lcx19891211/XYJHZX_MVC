@@ -254,8 +254,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\combo.select.css" />
     <Content Include="Content\pagerstyles.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -288,24 +288,22 @@
     <Content Include="Resourse\My97DatePicker\skin\whyGreen\datepicker.css" />
     <Content Include="Resourse\My97DatePicker\skin\whyGreen\img.gif" />
     <Content Include="Resourse\My97DatePicker\WdatePicker.js" />
-    <Content Include="Scripts\bootstrap-select.js" />
-    <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\bootstrap-select.css.map" />
+    <Content Include="Content\combo.select.scss" />
     <None Include="Lib\Res\DB_XYJHZX.db" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Scripts\bootstrap-select.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\defaults-zh_CN.min.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Scripts\jquery-migrate-1.2.1.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
+    <Content Include="Scripts\jquery.combo.select.js" />
     <Content Include="Scripts\jquery.jqprint-0.3.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />

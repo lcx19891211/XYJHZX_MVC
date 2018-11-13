@@ -190,10 +190,10 @@
                     <div>
                         <ul>
                             <li><label id="lab_NewSchedulDate" class="form-control-static">分组:</label></li>
-                            <li>@Html.DropDownList("txt_Group", GroupList, new { @class = "form-control", @style = "width:80px", @onchange = "SelectNewSchedulInf();SelectOldSchedulInf();" })</li>
+                            <li>@Html.DropDownList("txt_Group", GroupList, new { @class = "form-control", @style = "width:100px", @onchange = "SelectNewSchedulInf();SelectOldSchedulInf();" })</li>
                             <li><label id="lab_NewSchedulDate" class="form-control-static">日期:</label></li>
                             <li><input id="txt_NewSchedulDate" type="text" class="form-control" style="width:100px" value="@DefaultSchedulDate" readonly="readonly" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" onchange="SelectNewSchedulInf()" /></li>
-                            <li>@Html.DropDownList("txt_NewSchedulTime", SplitDateList, new { @class = "form-control", @style = "width:80px", @onchange = "SelectNewSchedulInf()" })</li>
+                            <li>@Html.DropDownList("txt_NewSchedulTime", SplitDateList, new { @class = "form-control", @style = "width:100px", @onchange = "SelectNewSchedulInf()" })</li>
                             <li><input id="btn_NewSchedulCopy" class="btn-info" type="submit" value="保 存" onclick="SaveNewSchedulInf()" style="margin:3px;" /></li>
                         </ul>
                     </div>
@@ -208,7 +208,7 @@
                     <ul>
                         <li><label id="lab_OldSchedulDate" class="form-control-static">日期:</label></li>
                         <li><input id="txt_OldSchedulDate" type="text" class="form-control" style="width:120px" value="@DefaultSchedulDate" readonly="readonly" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" /></li>
-                        <li>@Html.DropDownList("txt_OldSchedulTime", SplitDateList, new { @class = "form-control", @style = "width:80px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })" })</li>
+                        <li>@Html.DropDownList("txt_OldSchedulTime", SplitDateList, new { @class = "form-control", @style = "width:90px", @onclick = "WdatePicker({ isShowWeek: true, isShowClear: false })" })</li>
                         <li><input id="btn_OldSchedulSelect" class="btn-info" type="submit" value="查 询" onclick="SelectOldSchedulInf()" style="margin:3px 20px 0 0;" /></li>
                         <li><input id="btn_OldSchedulCopy" class="btn-info" type="submit" value="复制排班" onclick="CopyOldSchedulInf()" style="margin:3px 10px 0 0;" /></li>
                     </ul>
