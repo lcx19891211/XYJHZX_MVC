@@ -72,6 +72,7 @@
                     for (var i = 1; i < rowsOld.length - 1; i++) {
                         var remark = rowsNew[i].cells[6];
                         remark.getElementsByTagName('input')[0].value = rowsOld[i].cells[5].innerHTML + "";
+                        
                         var anticoagulantName = rowsNew[i].cells[5].getElementsByTagName('select')[0];
                         var _str = anticoagulantName.options[anticoagulantName.options.length - 1].value;
                         if (_str == "999")
@@ -114,7 +115,7 @@
                     var tr = $(this);
 
                     var status = tr.children("td").eq(10).children("input").eq(0);
-                    var patid = tr.children("td").eq(2).children("select").find("option:selected").val();
+                    var patid = tr.children("td").eq(2).children("div").find("option:selected").val();
                     if (status.val() == "1" && !isEmpty(patid) && patid != '0') {
 
                         var mainid = tr.children("td").eq(8).children("input").eq(0).val();
@@ -122,9 +123,9 @@
                         var SchedulTime = $('#txt_NewSchedulTime option:selected').text();
                         var groupid = $("#txt_Group").val();
                         var macid = tr.children("td").eq(7).children("input").eq(0).val();
-                        var dialyzerName = tr.children("td").eq(3).children("select").find("option:selected").text();
-                        var routeName = tr.children("td").eq(4).children("select").find("option:selected").text();
-                        var anticoagulantName = tr.children("td").eq(5).children("select").find("option:selected").text();
+                        var dialyzerName = tr.children("td").eq(3).children("div").find("option:selected").text();
+                        var routeName = tr.children("td").eq(4).children("div").find("option:selected").text();
+                        var anticoagulantName = tr.children("td").eq(5).children("div").find("option:selected").text();
                         var remark = tr.children("td").eq(6).children("input").eq(0).val();
 
                         _SchedulList.push({
