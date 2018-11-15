@@ -106,6 +106,7 @@
                             Status.value = "1";
                         }
                     }
+                    $('select').comboSelect();
                 }
             }
 
@@ -176,7 +177,11 @@
                 $("#AnticoagulantName_" + obj).val('');
                 $("#PatId_" + obj).val('');
                 $("#SchedulStatus_" + obj).val('1');
-                $("#Remark_" + obj).val(''); 
+                $("#Remark_" + obj).val('');
+                $('#PatName_' + obj).comboSelect();
+                $('#DialyzerName_' + obj).comboSelect();
+                $('#RouteName_' + obj).comboSelect();
+                $('#AnticoagulantName_' + obj).comboSelect();
             }
             function EditSchedulRows(obj) {
                 $("#SchedulStatus_" + obj).val('1');
