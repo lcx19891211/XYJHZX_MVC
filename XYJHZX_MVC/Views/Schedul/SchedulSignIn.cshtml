@@ -16,9 +16,9 @@
     <br />
     <div style="display:none"><input id="txt_IDCard" onchange="SignIn();" /></div>
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#FFCC99">
-        <div class="container" style="font-family:'Microsoft YaHei UI';font-size:16px;color:#336699">
+        <div class="container" style="font-family:'SimHei';font-size:16px;color:#336699">
             <div class="navbar-header">
-                <div class="navbar-brand" style="font-family:'Microsoft YaHei UI';font-size:30px;color:#336699;">血液净化中心 - 请将身份证放在读卡器上等待3秒</div>
+                <div class="navbar-brand" style="font-family:'SimHei';font-size:30px;color:#336699;">血液净化中心 - 请将身份证放在读卡器上等待3秒</div>
                 <div id="DivTitle"></div>
             </div>
         </div>
@@ -142,7 +142,7 @@
         var iLeft = ($(window).width() - divWidth) / 2;
         var iTop = ($(window).height() - divHeight) / 2 + $(document).scrollTop();
         var divhtml = $("<div>" + hidvalue_str + "</div>").css({
-            position: 'absolute', top: iTop + 'px', left: iLeft + 'px', display: 'none', width: divWidth + 'px', height: divHeight + 'px', 'background-color': '#FFFFFF', 'font-family': 'Microsoft YaHei UI', 'font-size': '30px' });
+            position: 'absolute', top: iTop + 'px', left: iLeft + 'px', display: 'none', width: divWidth + 'px', height: divHeight + 'px', 'background-color': '#FFFFFF', 'font-family': 'SimHei', 'font-size': '30px' });
         divhtml.appendTo('body').fadeIn();
         divhtml.appendTo('body').fadeOut(3000);
     }

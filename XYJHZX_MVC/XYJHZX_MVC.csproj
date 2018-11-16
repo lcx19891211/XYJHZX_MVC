@@ -226,6 +226,7 @@
     <Compile Include="Controllers\MacGroupController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\SchedulItemController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="ExtendClass.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -251,6 +252,7 @@
     <Compile Include="Models\SchedulColumnsModels.cs" />
     <Compile Include="Models\SchedulModels.cs" />
     <Compile Include="Models\SplitDateModels.cs" />
+    <Compile Include="Models\StatisticsModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -346,6 +348,8 @@
     <Content Include="Views\SchedulItem\Titles.cshtml" />
     <Content Include="Views\Schedul\SchedulSignInRedo.cshtml" />
     <Content Include="Views\Schedul\SchedulSignInDetail.cshtml" />
+    <Content Include="Views\Statistics\MainRecord.cshtml" />
+    <Content Include="Views\Statistics\GetRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

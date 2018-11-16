@@ -1,0 +1,65 @@
+﻿@{
+    SelectList GroupList = ViewBag.GroupListDate;
+    if (GroupList != null && GroupList.SelectedValue == null)
+    {
+        GroupList.First().Selected = true;
+    }
+    SelectList SplitDateList = ViewBag.SplitDateList;
+    if (SplitDateList != null && SplitDateList.SelectedValue == null)
+    {
+        SplitDateList.First().Selected = true;
+    }
+
+    string DefaultSchedulDate = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
+}
+<script type="text/javascript">
+    function SelectCount() {
+        $.ajax({
+            type: "post",
+            url: "/Statistics/GetRecord",
+            contentType: "application/json",
+            data: {
+                "FromSchedulDate": $('#txt_FromSchedulDate').val(),
+                "ToSchedulDate": $('#txt_ToSchedulDate').val(),
+                "GroupId": $('#txt_Group option:selected').val(),
+                "SchedulTime": $('#txt_SchedulTime option:selected').text()
+            },
+            async: true,
+            traditional: true,
+            beforeSend: function () {
+                $('#RecordDiv').empty().append("<h2>数据加载中。。。</h2>");
+            },
+            success: function (data) {
+                $('#RecordDiv').empty().append(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("保存失败：" + errorThrown);
+                location.reload(true);
+            }
+        });
+    }
+    function ChangeFromSchedulDate(){
+        if($("#txt_ToSchedulDate").val()<$("#txt_FromSchedulDate").val())
+        {
+            $("#txt_FromSchedulDate").val($("#txt_ToSchedulDate").val());
+        }
+    }
+</script>
+
+
+<div>
+    <ul>
+        <li><label id="lab_NewSchedulDate" class="form-control-static" style="font-family:SimHei;font-size:20px;">分组:</label></li>
+        <li>@Html.DropDownList("txt_Group", GroupList, new { @class = "form-control", @style = "width:100px" })</li>
+        <li><label id="lab_SchedulDate" class="form-control-static" style="font-family:SimHei;font-size:20px;">统计日期:</label></li>
+        <li><input id="txt_FromSchedulDate" type="text" class="form-control" style="width:100px" value="@DefaultSchedulDate" readonly="readonly" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" /></li>
+        <li><label id="lab_NewSchedulDate" class="form-control-static" style="font-family:SimHei;font-size:20px;">到</label></li>
+        <li><input id="txt_ToSchedulDate" type="text" class="form-control" style="width:100px" value="@DefaultSchedulDate" readonly="readonly" onclick="WdatePicker({ isShowWeek: true, isShowClear: false })" onchange="ChangeFromSchedulDate()" /></li>
+        <li style="font-family:SimHei;font-size:20px;"><input id="chk_IsSchedulTime" type="checkbox" style="width:20px;height:20px ;float:left;" checked="checked" />勾选时间段:</li>
+        <li>@Html.DropDownList("txt_SchedulTime", SplitDateList, new { @class = "form-control", @style = "width:100px" })</li>
+        <li><input id="btn_SelectCount" class="btn-info" type="submit" value="查 询" onclick="SelectCount()" style="margin:3px;" /></li>
+    </ul>
+</div>
+<div id="RecordDiv" style="width:1000px;height:700px;overflow-y:scroll;">
+    @{Html.RenderAction("GetRecord", "Statistics",new { FromSchedulDate = DefaultSchedulDate, ToSchedulDate = DefaultSchedulDate, GroupId = 2, SchedulTime = "上午"});}
+</div>

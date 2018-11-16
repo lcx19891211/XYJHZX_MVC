@@ -53,6 +53,12 @@ namespace XYJHZX_MVC
                 url: "{controller}/{action}/{groupid}/{teamid}/", // 带有参数的 URL
                 defaults: new { controller = "MacGroup", action = "Config", groupid = 1, teamid = 1 } // 参数默认值
             );
+            ///统计报表路由
+            routes.MapRoute(
+                name: "Statistics", // 路由名称
+                url: "{controller}/{action}/", // 带有参数的 URL
+                defaults: new { controller = "Statistics", action = "MainRecord" } // 参数默认值
+            );
         }
     }
 }

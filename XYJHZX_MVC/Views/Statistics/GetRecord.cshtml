@@ -1,0 +1,15 @@
+﻿@{
+    Layout = null;
+    var Keyid = "StatisticsRecord";
+    List<XYJHZX_MVC.Models.StatisticsModels> arr_StatisticsModels = ViewBag.CountData;
+}
+
+
+<table id="@Keyid" class="table table-striped table-bordered" style="font-family:'SimHei';font-size:16px;">
+    <tr>
+        <td rowspan="@(arr_StatisticsModels.Count+1)"></td>
+        <td>项目分类</td>
+        <td>统计数量</td>
+    </tr>
+
+</table>

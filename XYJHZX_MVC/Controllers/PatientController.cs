@@ -55,6 +55,10 @@ namespace XYJHZX_MVC.Controllers
                 return View();
             }
         }
+        /// <summary>
+        /// 导入已缴费病人信息
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [HandlerAjaxOnly]
         public ActionResult GetPayPateint()

@@ -1,24 +1,11 @@
 ﻿
-        <div class="pull-left">
-            <div>
-                <div>
-                    <ul>
-                        <li></li>
-                    </ul>
-                </div>
-                <div id="TitleDiv" style="width:550px;height:700px;overflow-y:scroll;">
-                    @{Html.RenderAction("Titles", "SchedulItem");}
-                </div>
-
-            </div>
-        </div>
-        <div class="pull-right">
-            <div>
-                <ul>
-                    <li></li>
-                </ul>
-            </div>
-            <div id="ItemsDev" style="width:550px;height:700px;overflow-y:scroll;">
-                @{Html.RenderAction("Items", "SchedulItem");}
-            </div>
-        </div>
+<div class="pull-left">
+    <div id="TitleDiv" style="width:550px;height:700px;overflow-y:scroll;">
+        @{Html.RenderAction("Titles", "SchedulItem");}
+    </div>
+</div>
+<div class="pull-right">
+    <div id="ItemsDev" style="width:550px;height:700px;overflow-y:scroll;">
+        @{Html.RenderAction("Items", "SchedulItem");}
+    </div>
+</div>
