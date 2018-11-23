@@ -12,7 +12,7 @@ namespace XYJHZX_MVC.Controllers
 {
     public class PatientController : Controller
     {
-        IDataCon IPatCon = new DataCon();
+        IDataCon IPatCon = new OraCon();
         IDataCon IPatOraCon = new OraCon();
         string str_msg = "";
         // GET: Patient
@@ -77,6 +77,7 @@ namespace XYJHZX_MVC.Controllers
                     if (IPatOraCon.ConInit(out str_msg))
                     {
                         DataSet _dataSet = new DataSet();
+                        IPatOraCon.ConInit(out str_msg);
                         if (IPatOraCon.SelPayPatient(out str_msg, out _dataSet))
                         {
                             List<string[]> arr2_insertValues = new List<string[]>();

@@ -12,7 +12,7 @@ namespace XYJHZX_MVC.Lib
 {
     public class GetData
     {
-        IDataCon _con = new DataCon();
+        IDataCon _con = new OraCon();
         /// <summary>
         /// 返回检查排队列表
         /// </summary>

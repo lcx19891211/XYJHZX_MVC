@@ -11,7 +11,7 @@ namespace XYJHZX_MVC.Controllers
 {
     public class StatisticsController : Controller
     {
-        IDataCon _ICon = new DataCon();
+        IDataCon _ICon = new OraCon();
         GetData _GetData = new GetData();
         string str_msg = "";
         // GET: Statistics

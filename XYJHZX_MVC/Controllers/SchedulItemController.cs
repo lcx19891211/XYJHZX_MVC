@@ -7,7 +7,7 @@ namespace XYJHZX_MVC.Controllers
 {
     public class SchedulItemController : Controller
     {
-        IDataCon _ICon = new DataCon();
+        IDataCon _ICon = new OraCon();
         GetData _GetData = new GetData();
         string str_msg = "";
 

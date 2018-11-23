@@ -10,7 +10,7 @@ namespace XYJHZX_MVC.Models
 {
     public class SchedulController : Controller
     {
-        IDataCon _ISchedulCon = new DataCon();
+        IDataCon _ISchedulCon = new OraCon();
         GetData _GetData = new GetData();
         string str_msg = "";
 

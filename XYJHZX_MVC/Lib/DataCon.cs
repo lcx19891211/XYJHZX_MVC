@@ -14,8 +14,7 @@ namespace XYJHZX_MVC.Lib
         private string str_svrpath = ""; //服务器地址
         private string str_sqlCon = "";//连接字符串
         private SQLiteConnection _sqlCon;//Sqlite连接实例
-        private XmlOper _XmlConfig = new XmlOper();//Xml设置实例
-        private IXmlOper IXmlConfig;//Xml设置接口
+        private IXmlOper IXmlConfig = new XmlOper();//Xml设置接口
 
         #region 连接初始化
         /// <summary>
@@ -28,7 +27,6 @@ namespace XYJHZX_MVC.Lib
         {
             try
             {
-                IXmlConfig = _XmlConfig;//获取Xml设置
                 List<string> arr_strConfig = new List<string>();
 
                 if (IXmlConfig.GetDataForXml(out str_svrpath, ref arr_strConfig, "Connect1"))
@@ -70,7 +68,6 @@ namespace XYJHZX_MVC.Lib
         {
             try
             {
-                IXmlConfig = _XmlConfig;
                 List<string> arr_strConfig = new List<string>();
 
                 if (IXmlConfig.GetDataForXml(out str_svrpath, ref arr_strConfig, "Connect1"))

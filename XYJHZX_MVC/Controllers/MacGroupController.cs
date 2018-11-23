@@ -9,7 +9,7 @@ namespace XYJHZX_MVC.Controllers
 {
     public class MacGroupController : Controller
     {
-        IDataCon IMacGroupDataCon = new DataCon(); //创建新连接，可替换其他连接；
+        IDataCon IMacGroupDataCon = new OraCon(); //创建新连接，可替换其他连接；
 
         public ActionResult Config()
         {
