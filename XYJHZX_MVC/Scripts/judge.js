@@ -11,3 +11,16 @@ function isEmpty(obj) {
         return false;
     }
 }
+
+function divFadeAlert(obj) {
+    var hidvalue_str = obj;
+    var divWidth = 150;
+    var divHeight = 150;
+    var iLeft = ($(window).width() - divWidth) / 2;
+    var iTop = ($(window).height() - divHeight) / 2 + $(document).scrollTop();
+    var divhtml = $("<div>" + hidvalue_str + "</div>").css({
+        position: 'absolute', top: iTop + 'px', left: iLeft + 'px', display: 'none', width: divWidth + 'px', height: divHeight + 'px', 'background-color': '#FFFFFF', 'font-family': 'SimHei', 'font-size': '30px'
+    });
+    divhtml.appendTo('body').fadeIn();
+    divhtml.appendTo('body').fadeOut(3000);
+}
