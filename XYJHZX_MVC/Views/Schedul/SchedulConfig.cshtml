@@ -118,6 +118,7 @@
 
                     var status = tr.children("td").eq(10).children("input").eq(0);
                     var patid = tr.children("td").eq(2).children("div").find("option:selected").val();
+                    var patName = tr.children("td").eq(2).children("div").find("option:selected").text;
                     if (status.val() == "1" && !isEmpty(patid) && patid != '0') {
 
                         var mainid = tr.children("td").eq(8).children("input").eq(0).val();
@@ -149,14 +150,17 @@
                             lastDate: ""
                         });
                     }
-                    else {
-                        divFadeAlert('机号：' + tr.children("td").eq(7).children("input").eq(0).val() + ' 病人维护没有该病人！');
-                        isWrong = true;
-                        return;
-                    }
+                //    else {
+                //        if (!isEmpty(patName) && (!isEmpty(patid) && patid != '0'))
+                //        {
+                //            divFadeAlert('机号：' + tr.children("td").eq(7).children("input").eq(0).val() + ' 病人维护没有该病人！');
+                //            isWrong = true;
+                //            return;
+                //        }
+                    //    }
                 });
-                if (!isWrong)
-                    return;
+                //if (isWrong)
+                //    return;
 
                 $.ajax({
                     type: "post",
